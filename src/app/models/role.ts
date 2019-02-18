@@ -8,7 +8,7 @@ export enum Roles {
 
 export class Role {
   public user_name: string; // Имя пользователя
-  public user_role: number; // Пользовательская роль
+  public user_role: Roles; // Пользовательская роль
 
   constructor(model: any) {
     this.user_name = model.Name;

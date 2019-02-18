@@ -1,17 +1,23 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { User } from '../../models/user';
 import { Utils } from '../../utils/utils';
+import { Wsm2AccountService } from '../../services/wsm2-account-service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { State } from '../../_state';
 
 @Component({
   selector: 'identificator',
   templateUrl: './identification.component.html',
   styleUrls: ['./identification.component.scss']
 })
-export class IdentificationComponent {
+export class IdentificationComponent implements OnInit {
   private login: string = '';
   private password: string = '';
   public deny: boolean = false;
   public user: User = null;
+
+
 
   public get login() {
     return this.login;
@@ -35,18 +41,23 @@ export class IdentificationComponent {
     }
   }
 
+  constructor(protected accountService: Wsm2AccountService,
+              router: Router,
+              activatedRoute: ActivatedRoute,
+              store: Store<State>) {
+
+  }
+
   public enabledLogin(): boolean {
     return (this.login !== '' && this.password !== '');
   }
 
   public tryIdentify() {
     // Отправляем в сервис логин и пароль пользователя на проверку
-    let passed = false;
-    if (passed) {
+    const user = this.accountService.checkUser(this.login, this.password);
+    if (Utils.exists(user)) {
       // Запрос в сервис на юзера по логину
       console.log(`Пользователь с логином ${this.login} существует и пароль введен верно`);
-      this.user = new User();
-      this.user.login = this.login;
       this.identify();
     } else {
       console.log(`Пользователя с логином ${this.login} не существует или пароль введен неверно`);

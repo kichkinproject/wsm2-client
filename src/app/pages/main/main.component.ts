@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'wsm2-main',
   templateUrl: './main.component.html'
 })
-export class WsmMainComponent {
+export class MainComponent {
 
 }
