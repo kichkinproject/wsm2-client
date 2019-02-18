@@ -18,10 +18,7 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       { path: 'identification', loadChildren: '../identification/identification.module#IdentificationModule' },
-      { path: 'list', loadChildren: '../list/list.module#ListModule', canActivate: [MainGuard] },
-      { path: 'edit', loadChildren: '../edit/edit.module#EditModule', canActivate: [MainGuard] },
-      { path: 'create', loadChildren: '../create/create.module#CreateModule', canActivate: [MainGuard] },
-      { path: 'view', loadChildren: '../view/view.module#ViewModule', canActivate: [MainGuard] },
+      { path: 'authorized', loadChildren: '../authorized/authorized.module#AuthorizedModule', canActivate: [MainGuard] },
       { path: '**', redirectTo: 'identification' }
     ]
   }
