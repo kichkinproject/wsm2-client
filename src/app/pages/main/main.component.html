@@ -1,0 +1,25 @@
+<mat-sidenav-container class="sidenav-container">
+  <menu-panel></menu-panel>
+  <mat-sidenav-content>
+    <mat-toolbar *ngIf="!isRestricted">
+      <mat-toolbar-row class="primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          [ngClass]="{active: drawer.isOpen}"
+          (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <div class="toolbar-left">
+          <a class="nav" *ngIf="goBack$|async" [routerLink]="(goBack$|async)?.link"
+             [queryParams]="(goBack$|async)?.params">
+            <mat-icon>arrow_back</mat-icon>
+          </a>
+        </div>
+        <div class="toolbar-center"></div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
