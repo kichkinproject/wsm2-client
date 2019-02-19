@@ -7,14 +7,14 @@ import { Store } from '@ngrx/store';
 import { State } from '../../_state';
 
 @Component({
-  selector: 'identificator',
+  selector: 'wsm-identification',
   templateUrl: './identification.component.html',
   styleUrls: ['./identification.component.scss']
 })
 export class IdentificationComponent implements OnInit {
   private login: string = '';
   private password: string = '';
-  public deny: boolean = false;
+  public deny = false;
   public user: User = null;
 
 
@@ -68,5 +68,9 @@ export class IdentificationComponent implements OnInit {
 
   public identify() {
     console.log(`${this.user.login} идентифицирован`);
+  }
+
+  public ngOnInit() {
+
   }
 }

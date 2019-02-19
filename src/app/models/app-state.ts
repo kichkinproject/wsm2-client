@@ -1,6 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable, InjectionToken} from '@angular/core';
 import { Utils } from '../utils/utils';
 import { GUID } from './guid';
+
+export interface IAppState {
+  moniker: string;
+  clientguid: string;
+}
+
+export declare const AppStateToken: InjectionToken<IAppState>;
+
 
 @Injectable()
 export class AppState {

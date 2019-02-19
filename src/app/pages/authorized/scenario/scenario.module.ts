@@ -1,0 +1,33 @@
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ScenarioComponent } from './scenario.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: ScenarioComponent,
+    children: [
+      { path: 'create', loadChildren: './create/scenario-create.module#ScenarioCreateModule' },
+      { path: 'edit', loadChildren: './edit/scenario-edit.module#ScenarioEditModule' },
+      { path: 'list', loadChildren: './list/scenario-list.module#ScenarioListModule' },
+      { path: 'view', loadChildren: './view/scenario-view.module#ScenarioViewModule' },
+      { path: '**', redirectTo: 'list' },
+    ],
+  },
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forChild(routes),
+    CommonModule,
+  ],
+  exports: [
+    ScenarioComponent,
+  ],
+  declarations: [
+    ScenarioComponent,
+  ],
+})
+export class ScenarioModule {
+}

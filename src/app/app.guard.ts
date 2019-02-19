@@ -8,6 +8,7 @@ import { LayoutSetUser } from './_state/actions/layout.actions';
 import { GetCurrentUser, State } from './_state';
 import { select, Store } from '@ngrx/store';
 import { Wsm2AccountService } from './services/wsm2-account-service';
+import {Utils} from './utils/utils';
 
 @Injectable()
 export class AppGuard implements CanActivate {
@@ -20,7 +21,7 @@ export class AppGuard implements CanActivate {
     this.store.pipe(select(GetCurrentUser)).subscribe(user => this.$user.next(user));
   }
 
-  public cajActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     if (!this.$user.getValue()) {
       return this.accountService.currentUserInfo().pipe(
         flatMap(user => {
@@ -29,5 +30,16 @@ export class AppGuard implements CanActivate {
     } else {
       return of(true);
     }
+  }
+
+  private setUser(user: any): Observable<boolean> {
+    const role = new Role(user);
+    return this.accountService.getUserSettings().pipe(
+      flatMap((settings: string) => {
+        role.settings = Utils.exists(settings) ? JSON.parse(settings) : {};
+        this.store.dispatch(new LayoutSetUser(role));
+        return of(true);
+      }),
+    );
   }
 }
