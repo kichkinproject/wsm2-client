@@ -3,6 +3,35 @@
     <label>
       Логин:
       <input [(ngModel)]="login" placeholder='user' [disabled]="identificatorAcessed()">
+      <span *ngIf="checkExistingLogin()">Такой администратор уже зарегистрирован в системе</span>
+      <span *ngIf="!checkRightLogin()">Не правильный формат ввода логина</span>
+    </label>
+  </div>
+  <div class="password">
+    <label>
+      Пароль:
+      <input type="password" [(ngModel)]="password" placeholder='*******' [disabled]="accessed()">
+      <span *ngIf="!checkFirstPassword()">Неверный формат для пароля</span>
+    </label>
+    <label *ngIf="!blocked()">
+      Повторите пароль:
+      <input type="password" [(ngModel)]="repeatPassword" placeholder='*******' [disabled]="accessed()">
+      <span *ngIf="!checkSecondPassword()">Неверный формат для пароля</span>
+    </label>
+    <span *ngIf="!checkPasswords()">Пароли не совпадают</span>
+  </div>
+  <div class="name">
+    <label>
+      ФИО:
+      <input [(ngModel)]="name" placeholder='ФИО' [disabled]="accessed()">
+      <span *ngIf="!checkName()">Не правильный формат ввода ФИО администратора</span>
+    </label>
+  </div>
+  <div class="info">
+    <label>
+      Информация об адинистраторе:
+      <input [(ngModel)]="info" placeholder='Информация об администраторе ФИО' [disabled]="accessed()">
+      <span *ngIf="!checkInfo()">Не правильный формат ввода информации об администраторе</span>
     </label>
   </div>
 </div>
