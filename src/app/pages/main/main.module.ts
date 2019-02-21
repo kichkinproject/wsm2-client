@@ -10,16 +10,22 @@ import {
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
-import { MainGuard } from './main.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: MainComponent,
     children: [
-      { path: 'identification', loadChildren: '../identification/identification.module#IdentificationModule' },
-      { path: 'authorized', loadChildren: '../authorized/authorized.module#AuthorizedModule', canActivate: [MainGuard] },
-      { path: '**', redirectTo: 'identification' }
+      { path: 'about', loadChildren: './about/about.module#AboutModule' },
+      { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
+      { path: 'controller', loadChildren: './controller/controller.module#ControllerModule' },
+      { path: 'integrator', loadChildren: './integrator/integrator.module#IntegratorModule' },
+      { path: 'scenario', loadChildren: './scenario/scenario.module#ScenarioModule' },
+      { path: 'sensor', loadChildren: './sensor/sensor.module#SensorModule' },
+      { path: 'thing', loadChildren: './thing/thing.module#ThingModule' },
+      { path: 'user', loadChildren: './user/user.module#UserModule' },
+      { path: 'user-group', loadChildren: './user-group/user-group.module#UserGroupModule' },
+      { path: '**', redirectTo: 'about' }
     ]
   }
 ];
@@ -39,9 +45,9 @@ const routes: Routes = [
   exports: [
     MainComponent
   ],
-  providers: [
-    MainGuard
-  ],
+  // providers: [
+  //   MainGuard
+  // ],
   declarations: [
     MainComponent
   ]

@@ -88,13 +88,17 @@ export class Wsm2AccountService extends ApiService {
   //   // return this.
   // }
 
-  public userInfo(user: User) {
+  public getUserSettings(): Observable<any> {
+    return this.post<any>(`${this.url}/LoadUserConfig`, {});
+  }
+
+  public setUserSettings(body?: any): Observable<any> {
+    return this.post<any>(`${this.url}/SaveUserConfig`, body);
+  }
+
+  private userInfo(user: User) {
     return user.info;
   }
 
-  public currentUserInfo(): Observable<string> {
-
-    // return this.post<string>(`${}`);
-  }
 }
 

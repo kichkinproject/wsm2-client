@@ -3,20 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Менеджер сценариев</title>
-  <base href="/">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <base href="/">
+  <style>
+    body,html{height:100%}body{-webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch;display:-webkit-box;display:-ms-flexbox;display:flex;margin:0;width:100%;overflow:auto}#app-loading{position:relative;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-flex:1;-ms-flex:1;flex:1;display:-webkit-box;display:-ms-flexbox;display:flex;height:100%;background:rgba(0,0,0,.8)}.spinner{position:relative;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:200px;height:200px;text-align:center;z-index:1000;display:-webkit-box;display:-ms-flexbox;display:flex}.spinner::before,.spinner::after{position:absolute;content:'';top:0;left:0;width:100%;height:100%;-webkit-box-sizing:border-box;box-sizing:border-box;border-radius:500rem;border-style:solid;border-width:.3rem}.spinner:before{border-color:#767676}.spinner:after{-webkit-animation:loader 2s linear;animation:loader 2s linear;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;border-color:#fff transparent transparent;-webkit-box-shadow:0 0 0 1px transparent;box-shadow:0 0 0 1px transparent}.logo{margin-left:-8px;}@-webkit-keyframes loader{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes loader{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
-  <div id="app-loading">
-    <div class="spinner">
-      <div class="logo">
-        <img src="data:" height="120px" alt="Умный дом: Менеджер сценариев">
-      </div>
-    </div>
-  </div>
+  <!--<div id="app-loading">-->
+    <!--<div class="spinner">-->
+      <!--<div class="logo">-->
+        <!--<img src="data:" height="120px" alt="Умный дом: Менеджер сценариев">-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
   <wsm-app></wsm-app>
 </body>
 </html>

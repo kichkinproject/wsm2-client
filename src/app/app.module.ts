@@ -31,9 +31,6 @@ export function appInit(config: AppConfig) {
     OverlayModule,
     AppRoutingModule,
   ],
-  declarations: [
-  AppComponent,
-],
   bootstrap: [AppComponent],
   providers: [
     Wsm2AccountService,

@@ -1,5 +1,126 @@
 <mat-sidenav-container class="sidenav-container">
-  <menu-panel></menu-panel>
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="'over'"
+    [fixedTopGap]="'72px'">
+    <ng-container *ngIf="isMainAdmin">
+      <mat-nav-list>
+        <h4 class="menu-group">Главный администратор</h4>
+        <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>home</mat-icon>
+          <span class="general-item-name">Главная страница</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/admin/admin-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>local_library</mat-icon>
+          <span class="general-item-name">Администраторы</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/user-group/user-group-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>group</mat-icon>
+          <span class="general-item-name">Группы пользователей</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+          <mat-icon>assignment</mat-icon>
+          <span class="general-item-name">Сценарии</span>
+        </a>
+      </mat-nav-list>
+    </ng-container>
+    <ng-container *ngIf="isAdmin">
+      <mat-nav-list>
+        <ng-container>
+          <h4 class="menu-group">Администратор</h4>
+          <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+            <mat-icon>home</mat-icon>
+            <span class="general-item-name">Главная страница</span>
+          </a>
+          <a mat-list-item class="general-item-link" [routerLink]="'/admin/admin-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+            <mat-icon>local_library</mat-icon>
+            <span class="general-item-name">Администраторы</span>
+          </a>
+          <a mat-list-item class="general-item-link" [routerLink]="'/user-group/user-group-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+            <mat-icon>group</mat-icon>
+            <span class="general-item-name">Группы пользователей</span>
+          </a>
+          <a mat-list-item class="general-item-link" [routerLink]="'/integrator/integrator-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+            <mat-icon>airline_seat_recline_normal</mat-icon>
+            <span class="general-item-name">Интеграторы</span>
+          </a>
+          <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+            <mat-icon>assignment</mat-icon>
+            <span class="general-item-name">Сценарии</span>
+          </a>
+        </ng-container>
+      </mat-nav-list>
+    </ng-container>
+    <ng-container *ngIf="isIntegrator">
+      <mat-nav-list>
+        <h4 class="menu-group">Интегратор</h4>
+        <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>home</mat-icon>
+          <span class="general-item-name">Главная страница</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/integrator/integrator-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>airline_seat_recline_normal</mat-icon>
+          <span class="general-item-name">Интеграторы</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/user-group/user-group-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>group</mat-icon>
+          <span class="general-item-name">Группы пользователей</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/user/user-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>mood</mat-icon>
+          <span class="general-item-name">Пользователи</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+          <mat-icon>assignment</mat-icon>
+          <span class="general-item-name">Сценарии</span>
+          <!--</a>-->
+          <!--<a mat-list-item class="general-item-link" [routerLink]="'/controller/controller-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
+          <!--<mat-icon>cast_connected</mat-icon>-->
+          <!--<span class="general-item-name">Контроллеры</span>-->
+          <!--</a>-->
+          <!--<a mat-list-item class="general-item-link" [routerLink]="'/thing/thing-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
+          <!--<mat-icon>speaker_group</mat-icon>-->
+          <!--<span class="general-item-name">Умные вещи</span>-->
+          <!--</a>-->
+          <!--<a mat-list-item class="general-item-link" [routerLink]="'/sensor/sensor-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
+          <!--<mat-icon>wb_iridescent</mat-icon>-->
+          <!--<span class="general-item-name">Датчики</span>-->
+        </a>
+      </mat-nav-list>
+    </ng-container>
+    <ng-container *ngIf="isUser">
+      <mat-nav-list>
+        <h4 class="menu-group">Пользователь</h4>
+        <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>home</mat-icon>
+          <span class="general-item-name">Главная страница</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+          <mat-icon>assignment</mat-icon>
+          <span class="general-item-name">Сценарии</span>
+        </a>
+      </mat-nav-list>
+    </ng-container>>
+    <div class="main-bottom-row">
+      <!--<div class="precision-picker">-->
+      <!--<label>Целые</label>-->
+      <!--<mat-slide-toggle [(ngModel)]="isPrecision"></mat-slide-toggle>-->
+      <!--<label>Правила</label>-->
+      <!--</div>-->
+      <!--<div class="theme-picker">-->
+      <!--<label>Светлая</label>-->
+      <!--<mat-slide-toggle [(ngModel)]="isDark"></mat-slide-toggle>-->
+      <!--<label>Тёмная</label>-->
+      <!--</div>-->
+      <div class="copy">
+        НИУ "ВШЭ" 2019
+      </div>
+    </div>
+  </mat-sidenav>
+
   <mat-sidenav-content>
     <mat-toolbar *ngIf="!isRestricted">
       <mat-toolbar-row class="primary">
@@ -11,12 +132,12 @@
           (click)="drawer.toggle()">
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <div class="toolbar-left">
-          <a class="nav" *ngIf="goBack$|async" [routerLink]="(goBack$|async)?.link"
-             [queryParams]="(goBack$|async)?.params">
-            <mat-icon>arrow_back</mat-icon>
-          </a>
-        </div>
+        <!--<div class="toolbar-left">-->
+          <!--<a class="nav" *ngIf="goBack$|async" [routerLink]="(goBack$|async)?.link"-->
+             <!--[queryParams]="(goBack$|async)?.params">-->
+            <!--<mat-icon>arrow_back</mat-icon>-->
+          <!--</a>-->
+        <!--</div>-->
         <div class="toolbar-center"></div>
       </mat-toolbar-row>
     </mat-toolbar>

@@ -39,6 +39,3 @@ export const GetConfig = createSelector(getLayoutState, fromLayout.GetConfig);
 export const GetLoaded = createSelector(getLayoutState, fromLayout.GetLoaded);
 export const GetCurrentUser = createSelector(getLayoutState, fromLayout.GetCurrentUser);
 export const GetHeader = createSelector(getLayoutState, fromLayout.GetHeader);
-export const GetTheme = createSelector(getLayoutState, fromLayout.GetTheme);
-export const GetGoNext = createSelector(getLayoutState, fromLayout.GetGoNext);
-export const GetGoBack = createSelector(getLayoutState, fromLayout.GetGoBack);

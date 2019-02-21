@@ -7,10 +7,13 @@ export enum Roles {
 }
 
 export class Role {
+  public user_login: string;
   public user_name: string; // Имя пользователя
   public user_role: Roles; // Пользовательская роль
+  public settings: any;
 
   constructor(model: any) {
+    this.user_login = model.Login;
     this.user_name = model.Name;
     this.user_role = model.Role;
   }

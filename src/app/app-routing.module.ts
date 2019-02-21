@@ -5,9 +5,17 @@ import { environment } from '../environments/environment';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'identification',
+    loadChildren: './pages/identification/identification.module#IdentificationModule',
+  },
+  {
+    path: 'main',
     loadChildren: './pages/main/main.module#MainModule',
     canActivate: [AppGuard]
+  },
+  {
+    path: '**',
+    redirectTo: 'identification'
   }
 ];
 
