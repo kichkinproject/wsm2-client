@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="collection">
+  <a class="collection-header">Датчики</a>
+  <a class="collection-item" *ngFor="let sensor of sensors">
+    <p class="item-name">{{sensor.name}}</p>
+    <p class="item-description">{{sensor.description}}</p>
+  </a>
+</div>

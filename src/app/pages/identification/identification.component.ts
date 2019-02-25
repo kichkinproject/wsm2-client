@@ -12,32 +12,32 @@ import { State } from '../../_state';
   styleUrls: ['./identification.component.scss']
 })
 export class IdentificationComponent implements OnInit {
-  private login: string = '';
-  private password: string = '';
-  public deny = false;
-  public user: User = null;
+  private $login: string = '';
+  private $password: string = '';
+  public $deny = false;
+  public $user: User = null;
 
 
 
   public get login() {
-    return this.login;
+    return this.$login;
   }
 
   public get password() {
-    return this.password;
+    return this.$password;
   }
 
   public set login(log: string) {
     if (Utils.exists(log)) {
-      this.login = _.escape(log);
-      this.deny = false;
+      this.$login = _.escape(log);
+      this.$deny = false;
     }
   }
 
   public set password(pass: string) {
     if (Utils.exists(pass)) {
-      this.password = _.escape(pass);
-      this.deny = false;
+      this.$password = _.escape(pass);
+      this.$deny = false;
     }
   }
 
@@ -49,25 +49,25 @@ export class IdentificationComponent implements OnInit {
   }
 
   public enabledLogin(): boolean {
-    return (this.login !== '' && this.password !== '');
+    return (this.$login !== '' && this.$password !== '');
   }
 
   public tryIdentify() {
     // Отправляем в сервис логин и пароль пользователя на проверку
-    const user = this.accountService.checkUser(this.login, this.password);
+    const user = this.accountService.checkUser(this.$login, this.$password);
     if (Utils.exists(user)) {
       // Запрос в сервис на юзера по логину
-      console.log(`Пользователь с логином ${this.login} существует и пароль введен верно`);
+      console.log(`Пользователь с логином ${this.$login} существует и пароль введен верно`);
       this.identify();
     } else {
-      console.log(`Пользователя с логином ${this.login} не существует или пароль введен неверно`);
-      this.deny = true;
-      this.user = null;
+      console.log(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
+      this.$deny = true;
+      this.$user = null;
     }
   }
 
   public identify() {
-    console.log(`${this.user.login} идентифицирован`);
+    console.log(`${this.$user.login} идентифицирован`);
   }
 
   public ngOnInit() {

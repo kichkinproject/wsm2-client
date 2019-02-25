@@ -8,7 +8,7 @@
       Пароль:
       <input type="password" [(ngModel)]="password" placeholder='*******'>
     </label>
-    <span *ngIf="deny">Не правильно введен логин или пароль</span>
+    <span *ngIf="$deny">Не правильно введен логин или пароль</span>
   </div>
   <button mat-raised-button [ngClass]="{'disabled: !enabledLogin();'}" [disabled]="!enabledLogin()" (click)="tryIdentify()">Войти</button>
 </div>

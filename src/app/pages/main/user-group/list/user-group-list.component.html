@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="collection">
+  <a class="collection-header">Группы пользователей</a>
+  <a class="collection-item" *ngFor="let uGroup of uGroups">
+    <p class="item-name">{{uGroup.name}}</p>
+  </a>
+</div>

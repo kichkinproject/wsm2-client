@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="collection">
+  <a class="collection-header">Сценарии</a>
+  <a class="collection-item" *ngFor="let scenario of scenarios">
+    <p class="item-name">{{scenario.name}}</p>
+    <p class="item-description">{{scenario.description}}</p>
+  </a>
+</div>

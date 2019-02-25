@@ -8,22 +8,22 @@ import {Utils} from '../../../utils/utils';
   styleUrls: ['./user-group-editor.component.scss']
 })
 export class UserGroupEditorComponent extends EditorComponent implements AfterViewInit, OnDestroy {
-  private name: string;
-  private parent: number;
+  private $name: string;
+  private $parent: number;
 
   public get name() {
-    return this.name;
+    return this.$name;
   }
 
   public set name(value: string) {
     if (Utils.exists(value)) {
-      this.name = value;
+      this.$name = value;
     }
   }
 
   public get parent() {
-    if (this.parent !== -1) {
-      return this.parent; // TODO: заменить ид на элемент
+    if (this.$parent !== -1) {
+      return this.$parent; // TODO: заменить ид на элемент
     }
   }
 
@@ -36,6 +36,6 @@ export class UserGroupEditorComponent extends EditorComponent implements AfterVi
   }
 
   public checkName() {
-    return Utils.exists(this.name);
+    return Utils.exists(this.$name);
   }
 }

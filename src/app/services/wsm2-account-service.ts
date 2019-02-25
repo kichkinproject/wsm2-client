@@ -33,42 +33,42 @@ export class Wsm2AccountService extends ApiService {
       login: 'main_1',
       password: '123qwewq321',
       name: 'First Main',
-      info: 'Some info about first user',
+      info: 'Some info about first $user',
       role: Roles.MAIN_ADMIN
     },
     {
       login: 'integrator_1',
       password: '12345',
       name: 'First Integrator',
-      info: 'Some info about first user',
+      info: 'Some info about first $user',
       role: Roles.INTEGRATOR
     },
     {
       login: 'integrator_2',
       password: '67890',
       name: 'Second Integrator',
-      info: 'Some info about first user',
+      info: 'Some info about first $user',
       role: Roles.INTEGRATOR
     },
     {
       login: 'user_1',
       password: 'qwe',
       name: 'First User',
-      info: 'Some info about first user',
+      info: 'Some info about first $user',
       role: Roles.SIMPLE
     },
     {
       login: 'user_2',
       password: 'asd',
       name: 'Second User',
-      info: 'Some info about first user',
+      info: 'Some info about first $user',
       role: Roles.SIMPLE
     },
     {
       login: 'user_3',
       password: 'zxc',
       name: 'Third User',
-      info: 'Some info about first user',
+      info: 'Some info about first $user',
       role: Roles.SIMPLE
     },
   ];
@@ -94,6 +94,10 @@ export class Wsm2AccountService extends ApiService {
 
   public setUserSettings(body?: any): Observable<any> {
     return this.post<any>(`${this.url}/SaveUserConfig`, body);
+  }
+
+  public currentUserInfo() {
+    return this.post<any>(`${this.url}/GetUserInfo`);
   }
 
   private userInfo(user: User) {
