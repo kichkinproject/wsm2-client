@@ -47,7 +47,9 @@ export class Wsm2DataService extends ApiService {
   private $controllerData: Controller[] = [
 
   ];
-  private $userGroupData: UserGroup[] = [];
+  private $userGroupData: UserGroup[] = [
+
+  ];
 
   public getIntegrator(login: string): User {
     return this.$integratorData.filter((integ) => integ.login === login).length !== 0 ? this.$integratorData.find((integ) => integ.login === login) : null;
@@ -297,5 +299,81 @@ export class Wsm2DataService extends ApiService {
     } else {
       console.log(`Такой контроллер в системе не найден`);
     }
+  }
+
+  public getUserGroup(id: number) {
+    return this.$userGroupData.filter((uGr) => uGr.id === id).length !== 0 ? this.$userGroupData.find((uGr) => uGr.id === id) : null;
+  }
+
+  public getUserGroups() {
+    return this.$userGroupData;
+  }
+
+  public addUserGroup(name: string, parent: number) {
+    let newId = this.findMaxIndex(this.$userGroupData) + 1;
+    while (Utils.exists(this.getUserGroup(newId))) {
+      newId++;
+    }
+    const user_group = new UserGroup(newId, name, parent);
+    this.$userGroupData.push(user_group);
+    return user_group;
+  }
+
+  public updateUserGroup(id: number, name: string, parent: number) {
+    const user_group = this.getUserGroup(id);
+    user_group.name = name;
+    user_group.parentId = parent;
+  }
+
+  public deleteUserGroup(id: number) {
+    if (Utils.exists(this.getUserGroup(id))) {
+      this.$userGroupData.remove((uGr) => uGr.id === id);
+    } else {
+      console.log(`Такая группа пользователей в системе не найдена`);
+    }
+  }
+
+  public getChildrenUserGroup(id: number) {
+    return this.$userGroupData.filter((uGr) => uGr.parentId === id);
+  }
+
+  public getAllChildrenUserGroup(id: number) {
+    const children = this.getChildrenUserGroup(id);
+    if (children.length === 0) {
+      return [];
+    }
+    children.forEach((ch) => {
+      const newChildren = this.getChildrenUserGroup(ch.id);
+      if (newChildren.length !== 0) {
+        children.pushAll(newChildren);
+      }
+    });
+    return children;
+  }
+
+  public getUsersByGroup(id: number) {
+    return this.$userData.filter((us) => us.group === id);
+  }
+
+  public getUsersByChildrenGroup(id: number) {
+    const users = this.getUsersByGroup(id);
+    const groups = this.getAllChildrenUserGroup(id);
+    groups.forEach((gr) => {
+      users.pushAll(this.getUsersByGroup(gr.id));
+    });
+    return users;
+  }
+
+  public getIntegratorsByGroup(id: number) {
+    return this.$integratorData.filter((integr) => integr.group === id);
+  }
+
+  public getIntegratorsByChildrenGroup(id: number) {
+    const integrators = this.getIntegratorsByGroup(id);
+    const groups = this.getAllChildrenUserGroup(id);
+    groups.forEach((gr) => {
+      integrators.pushAll(this.getUsersByGroup(gr.id));
+    });
+    return integrators;
   }
 }
