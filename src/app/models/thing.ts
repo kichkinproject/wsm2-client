@@ -5,9 +5,9 @@ export class Thing {
   name: string;
   description: string;
   type: ThingType;
-  master: login;
+  master: number;
 
-  constructor(id: number, name: string, description: string, type: ThingType, master: string = '') {
+  constructor(id: number, name: string, description: string, type: ThingType, master: number = -1) {
     this.id = id;
     this.name = name;
     this.description = description;

@@ -1,13 +1,13 @@
-import { ControllerType, ScenarioType, SensorType } from "./entity-type";
+import { ControllerType } from "./entity-type";
 
 export class Controller {
   id: number;
   name: string;
   description: string;
   type: ControllerType;
-  master: string;
+  master: number;
 
-  constructor(id: number, name: string, description: string, type: ControllerType, master: string = '') {
+  constructor(id: number, name: string, description: string, type: ControllerType, master: number = -1) {
     this.id = id;
     this.name = name;
     this.description = description;
