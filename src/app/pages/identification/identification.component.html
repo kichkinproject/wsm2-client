@@ -10,5 +10,5 @@
     </label>
     <span *ngIf="$deny">Не правильно введен логин или пароль</span>
   </div>
-  <button mat-raised-button [ngClass]="{'disabled: !enabledLogin();'}" [disabled]="!enabledLogin()" (click)="tryIdentify()">Войти</button>
+  <button mat-raised-button [ngClass]="{'disabled: !enabledLogin()'}" [disabled]="!enabledLogin()" (click)="tryIdentify()">Войти</button>
 </div>

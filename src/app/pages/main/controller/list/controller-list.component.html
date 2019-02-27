@@ -1,7 +1,31 @@
-<div class="collection">
-  <a class="collection-header">Контроллеры</a>
-  <a class="collection-item" *ngFor="let controller of controllers">
-    <p class="item-name">{{controller.name}}</p>
-    <p class="item-description">{{controller.description}}</p>
-  </a>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Список контроллеров</h2>
+  <div class="block-container">
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Контроллеры</h4>
+        <button mat-icon-button (click)="findNewController()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button mat-icon-button (click)="createReportOnControllers()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </li>
+      <li class="collection-item" *ngFor="let controller of controllers">
+        <div>
+          <p class="item-name">{{controller.name}}</p>
+          <p class="item-description">{{controller.description}}</p>
+          <button mat-icon-button (click)="viewController(controller.id)">
+            <mat-icon>details</mat-icon>
+          </button>
+          <button mat-icon-button (click)="removeController(controller.id)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="anyShown" *ngIf="!anyShown">Контроллеры отсутствуют</div>
+    <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список контроллеров"</div>
+  </div>
 </div>

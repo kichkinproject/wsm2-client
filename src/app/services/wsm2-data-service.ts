@@ -26,7 +26,7 @@ export class Wsm2DataService extends ApiService {
     super(http, appState, config);
   }
 
-  private $scenarioData: Scenario[] = [
+  private $scenarioData: Array<Scenario> = [
     {
       id: 1,
       name: 'Сценарий - Электроэнергия ночь',
@@ -173,7 +173,7 @@ export class Wsm2DataService extends ApiService {
     },
   ];
 
-  private $sensorData: Sensor[] = [
+  private $sensorData: Array<Sensor> = [
     {
       id: 1,
       name: 'Датчик влажности',
@@ -407,7 +407,7 @@ export class Wsm2DataService extends ApiService {
     },
   ];
 
-  private $thingData: Thing[] = [
+  private $thingData: Array<Thing> = [
     {
     id: 1,
     name: 'Прибор учета электроэнергии',
@@ -588,7 +588,7 @@ export class Wsm2DataService extends ApiService {
       name: 'Осветительный прибор 1',
       description: 'Осветительный прибор 1 кафе',
       type: ThingType.THING_TYPE_4,
-      master: '19',
+      master: 19,
     },
     {
       id: 26,
@@ -602,7 +602,7 @@ export class Wsm2DataService extends ApiService {
       name: 'Осветительный прибор 3',
       description: 'Осветительный прибор 3 кафе',
       type: ThingType.THING_TYPE_4,
-      master: '20',
+      master: 20,
     },
     {
       id: 29,
@@ -639,11 +639,9 @@ export class Wsm2DataService extends ApiService {
       type: ThingType.THING_TYPE_4,
       master: 24,
     }
-    ];
-    ,
   ];
 
-  private $userData: User[] = [
+  private $userData: Array<User> = [
     {
       login: 'user_papa_Sidorov',
       password: 'zxc',
@@ -710,7 +708,7 @@ export class Wsm2DataService extends ApiService {
     },
   ];
 
-  private $integratorData: User[] = [
+  private $integratorData: Array<User> = [
     {
       login: 'integrator_Valentin',
       password: '12345',
@@ -761,7 +759,7 @@ export class Wsm2DataService extends ApiService {
     },
   ];
 
-  private $adminData: User[] = [
+  private $adminData: Array<User> = [
     {
       login: 'admin_Ivan',
       password: 'qwe123',
@@ -788,7 +786,7 @@ export class Wsm2DataService extends ApiService {
     },
   ];
 
-  private $controllerData: Controller[] = [
+  private $controllerData: Array<Controller> = [
     {
       id: 1,
       name: 'Контроллер 1',
@@ -864,14 +862,14 @@ export class Wsm2DataService extends ApiService {
       name: 'Контроллер 11',
       description: 'Описание контроллера 11',
       type: ControllerType.CONTROLLER_TYPE_3,
-      master: '3',
+      master: 3,
     },
     {
       id: 12,
       name: 'Контроллер 12',
       description: 'Описание контроллера 12',
       type: ControllerType.CONTROLLER_TYPE_4,
-      master: '3',
+      master: 3,
     },
     {
       id: 13,
@@ -959,7 +957,7 @@ export class Wsm2DataService extends ApiService {
     },
   ];
 
-  private $userGroupData: UserGroup[] = [
+  private $userGroupData: Array<UserGroup> = [
     {
       id: 1,
       name: 'Ул.Мира, дом 15, этаж 3',
@@ -993,10 +991,12 @@ export class Wsm2DataService extends ApiService {
   ];
 
   public getIntegrator(login: string): User {
-    return this.$integratorData.filter((integ) => integ.login === login).length !== 0 ? this.$integratorData.find((integ) => integ.login === login) : null;
+    return this.$integratorData.filter((integ) => integ.login === login).length !== 0
+      ? this.$integratorData.find((integ) => integ.login === login)
+      : null;
   }
 
-  public getIntegrators(): User[] {
+  public getIntegrators(): Array<User> {
     return this.$integratorData;
   }
 
@@ -1037,7 +1037,7 @@ export class Wsm2DataService extends ApiService {
     return this.$adminData.filter((adm) => adm.login === login).length !== 0 ? this.$adminData.find((adm) => adm.login === login) : null;
   }
 
-  public getAdmins(): User[] {
+  public getAdmins(): Array<User> {
     return this.$adminData;
   }
 
@@ -1078,7 +1078,7 @@ export class Wsm2DataService extends ApiService {
     return this.$userData.filter((us) => us.login === login).length !== 0 ? this.$userData.find((us) => us.login === login) : null;
   }
 
-  public getUsers(): User[] {
+  public getUsers(): Array<User> {
     return this.$userData;
   }
 
@@ -1119,7 +1119,7 @@ export class Wsm2DataService extends ApiService {
     return this.$scenarioData.filter((scen) => scen.id === id).length !== 0 ? this.$scenarioData.find((scen) => scen.id === id) : null;
   }
 
-  public getScenarios(): Scenario[] {
+  public getScenarios(): Array<Scenario> {
     return this.$scenarioData;
   }
 
@@ -1156,6 +1156,10 @@ export class Wsm2DataService extends ApiService {
     return this.addScenario(scenario.name, scenario.description, scenario.script, scenario.type, scenario.publicity, creator);
   }
 
+  public getScenarioByCreator(login: string) {
+    return this.$scenarioData.filter((scen) => scen.creator === login);
+  }
+
   public deleteScenario(id: number) {
     if (Utils.exists(this.getScenario(id))) {
       this.$scenarioData.remove((scen) => scen.id === id);
@@ -1168,8 +1172,12 @@ export class Wsm2DataService extends ApiService {
       return this.$sensorData.filter((sens) => sens.id === id).length !== 0 ? this.$sensorData.find((sens) => sens.id === id) : null;
   }
 
-  public getSensors(): Sensor[] {
+  public getSensors(): Array<Sensor> {
     return this.$sensorData;
+  }
+
+  public getSensorsByGroup(id: number): Array<Sensor> {
+    return this.$sensorData.filter((sens) => sens.master === id);
   }
 
   public addSensor(name: string, description: string, type: SensorType, master: string): Sensor {
@@ -1194,8 +1202,12 @@ export class Wsm2DataService extends ApiService {
       return this.$thingData.filter((thing) => thing.id === id).length !== 0 ? this.$thingData.find((thing) => thing.id === id) : null;
   }
 
-  public getThings(): Sensor[] {
+  public getThings(): Array<Thing> {
     return this.$thingData;
+  }
+
+  public getThingsByGroup(id: number): Array<Thing> {
+    return this.$thingData.filter((th) => th.master = id);
   }
 
   public addThing(name: string, description: string, type: ThingType, master: string): Thing {
@@ -1220,8 +1232,13 @@ export class Wsm2DataService extends ApiService {
     return this.$controllerData.filter((contr) => contr.id === id).length !== 0 ? this.$controllerData.find((contr) => contr.id === id) : null;
   }
 
-  public getControllers(): Controller[] {
+  public getControllers(): Array<Controller> {
     return this.$controllerData;
+  }
+
+
+  public getControllersByGroup(id: number) {
+    return this.$controllerData.filter((cnt) => cnt.master === id);
   }
 
   public addController(name: string, description: string, type: ControllerType, master: string): Controller {
@@ -1246,7 +1263,7 @@ export class Wsm2DataService extends ApiService {
     return this.$userGroupData.filter((uGr) => uGr.id === id).length !== 0 ? this.$userGroupData.find((uGr) => uGr.id === id) : null;
   }
 
-  public getUserGroups() {
+  public getUserGroups(): Array<UserGroup> {
     return this.$userGroupData;
   }
 
@@ -1301,7 +1318,7 @@ export class Wsm2DataService extends ApiService {
     const groups = this.getAllChildrenUserGroup(id);
     groups.forEach((gr) => {
       users.pushAll(this.getUsersByGroup(gr.id));
-    }),
+    });
     return users;
   }
 
@@ -1314,7 +1331,7 @@ export class Wsm2DataService extends ApiService {
     const groups = this.getAllChildrenUserGroup(id);
     groups.forEach((gr) => {
       integrators.pushAll(this.getUsersByGroup(gr.id));
-    }),
+    });
     return integrators;
   }
 }

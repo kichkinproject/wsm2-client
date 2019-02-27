@@ -11,6 +11,7 @@ const routes: Routes = [
       { path: 'thing-find', loadChildren: './find/thing-find.module#ThingFindModule' },
       { path: 'thing-list', loadChildren: './list/thing-list.module#ThingListModule' },
       { path: 'thing-view', loadChildren: './view/thing-view.module#ThingViewModule' },
+      { path: 'thing-report', loadChildren: './report/thing-report.module#ThingReportModule' },
       { path: '**', redirectTo: 'thing-list' },
     ],
   },

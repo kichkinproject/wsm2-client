@@ -23,8 +23,8 @@ const routes: Routes = [
       { path: 'scenario', loadChildren: './scenario/scenario.module#ScenarioModule' },
       { path: 'sensor', loadChildren: './sensor/sensor.module#SensorModule' },
       { path: 'thing', loadChildren: './thing/thing.module#ThingModule' },
-      { path: '$user', loadChildren: './$user/$user.module#UserModule' },
-      { path: '$user-group', loadChildren: './$user-group/$user-group.module#UserGroupModule' },
+      { path: 'user', loadChildren: './user/user.module#UserModule' },
+      { path: 'user-group', loadChildren: './user-group/user-group.module#UserGroupModule' },
       { path: '**', redirectTo: 'about' }
     ]
   }

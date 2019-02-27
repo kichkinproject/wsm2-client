@@ -37,5 +37,6 @@ export const getParamsState = createFeatureSelector<ReportParams>('params');
 
 export const GetConfig = createSelector(getLayoutState, fromLayout.GetConfig);
 export const GetLoaded = createSelector(getLayoutState, fromLayout.GetLoaded);
+export const GetPageLoaded = createSelector(getLayoutState, fromLayout.GetPageLoaded);
 export const GetCurrentUser = createSelector(getLayoutState, fromLayout.GetCurrentUser);
 export const GetHeader = createSelector(getLayoutState, fromLayout.GetHeader);

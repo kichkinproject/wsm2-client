@@ -1,6 +1,34 @@
-<div class="collection">
-  <a class="collection-header">Группы пользователей</a>
-  <a class="collection-item" *ngFor="let uGroup of uGroups">
-    <p class="item-name">{{uGroup.name}}</p>
-  </a>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Список групп пользователей</h2>
+  <div class="block-container">
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Группы пользователей</h4>
+        <button mat-icon-button (click)="addNewUserGroup()">
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button mat-icon-button (click)="createReportOnUserGroups()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </li>
+      <li class="collection-item" *ngFor="let userGroup of userGroups">
+        <div>
+          <p class="item-name">{{userGroup.name}}</p>
+          <p class="item-description">{{userGroup.description}}</p>
+          <button mat-icon-button (click)="editUserGroup(userGroup.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewUserGroup(userGroup.id)">
+            <mat-icon>details</mat-icon>
+          </button>
+          <button mat-icon-button (click)="removeUserGroup(userGroup.id)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="anyShown" *ngIf="!anyShown">Группы пользователей отсутствуют</div>
+    <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список групп пользователей"</div>
+  </div>
 </div>

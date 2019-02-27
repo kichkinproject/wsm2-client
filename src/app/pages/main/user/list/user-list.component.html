@@ -1,7 +1,34 @@
-<div class="collection">
-  <a class="collection-header">Пользователи</a>
-  <a class="collection-item" *ngFor="let user of users">
-    <p class="item-name">{{user.name}}</p>
-    <p class="item-description">{{user.info}}</p>
-  </a>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Список пользователей</h2>
+  <div class="block-container">
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Пользователи</h4>
+        <button mat-icon-button (click)="addNewUser()">
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button mat-icon-button (click)="createReportOnUsers()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </li>
+      <li class="collection-item" *ngFor="let user of users">
+        <div>
+          <p class="item-name">{{user.name}}</p>
+          <p class="item-description">{{user.login}}: {{user.info}}</p>
+          <button mat-icon-button (click)="editUser(user.login)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewUser(user.login)">
+            <mat-icon>details</mat-icon>
+          </button>
+          <button mat-icon-button (click)="removeUser(user.login)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="anyShown" *ngIf="!anyShown">Пользователи отсутствуют</div>
+    <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список пользователей"</div>
+  </div>
 </div>

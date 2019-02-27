@@ -1,16 +1,34 @@
-<ul class="collection with-header">
-  <li class="collection-header">
-    <h4>Администраторы</h4>
-    <a href="#!" class="secondary-content"><i class="material-icons">add_box</i></a>
-    <a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
-  </li>
-  <li class="collection-item" *ngFor="let admin of admins">
-    <div>
-      <p class="item-name">{{admin.name}}</p>
-      <p class="item-description">{{admin.info}}</p>
-      <a href="#!" class="secondary-content">
-        <i class="material-icons"></i>
-      </a>
-    </div>
-  </li>
-</ul>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Список адмнистраторов</h2>
+  <div class="block-container">
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Администраторы</h4>
+        <button mat-icon-button (click)="addNewAdmin()">
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button mat-icon-button (click)="createReportOnAdmins()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </li>
+      <li class="collection-item" *ngFor="let admin of admins">
+        <div>
+          <p class="item-name">{{admin.name}}</p>
+          <p class="item-description">{{admin.login}}: {{admin.info}}</p>
+          <button mat-icon-button (click)="editAdmin(admin.login)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewAdmin(admin.login)">
+            <mat-icon>details</mat-icon>
+          </button>
+          <button mat-icon-button (click)="removeAdmin(admin.login)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="anyShown" *ngIf="!anyShown">Администраторы отсутствуют</div>
+    <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список адинистраторов"</div>
+  </div>
+</div>

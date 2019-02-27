@@ -12,6 +12,7 @@ const routes: Routes = [
       { path: 'scenario-edit', loadChildren: './edit/scenario-edit.module#ScenarioEditModule' },
       { path: 'scenario-list', loadChildren: './list/scenario-list.module#ScenarioListModule' },
       { path: 'scenario-view', loadChildren: './view/scenario-view.module#ScenarioViewModule' },
+      { path: 'scenario-report', loadChildren: './report/scenario-report.module#ScenarioReportModule' },
       { path: '**', redirectTo: 'scenario-list' },
     ],
   },

@@ -5,6 +5,7 @@ export enum LayoutActionTypes {
   LayoutAction = '[Layout] Action',
   LayoutSetConfig = '[Layout] Set Config',
   LayoutSetHeader = '[Layout] Set Header',
+  LayoutSetPageLoaded = '[Layout] Page Loaded',
   LayoutSetUser = '[Layout] Set User',
   LayoutLoaded = '[Layout] Data Loaded',
 }
@@ -24,6 +25,13 @@ export class LayoutSetHeader implements Action {
   readonly type = LayoutActionTypes.LayoutSetHeader;
 
   constructor(public payload: string) {
+  }
+}
+
+export class LayoutSetPageLoaded implements Action {
+  readonly type = LayoutActionTypes.LayoutSetPageLoaded;
+
+  constructor(public payload: boolean) {
   }
 }
 
@@ -47,5 +55,6 @@ export type LayoutActions =
   | LayoutSetHeader
   | LayoutSetUser
   | LayoutLoaded
+  | LayoutSetPageLoaded
 ;
 

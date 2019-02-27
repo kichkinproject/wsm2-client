@@ -8,11 +8,12 @@ const routes: Routes = [
     path: '',
     component: UserComponent,
     children: [
-      { path: '$user-create', loadChildren: './create/$user-create.module#ScenarioCreateModule' },
-      { path: '$user-edit', loadChildren: './edit/$user-edit.module#ScenarioEditModule' },
-      { path: '$user-list', loadChildren: './list/$user-list.module#ScenarioListModule' },
-      { path: '$user-view', loadChildren: './view/$user-view.module#ScenarioViewModule' },
-      { path: '**', redirectTo: '$user-list' },
+      { path: 'user-create', loadChildren: './create/user-create.module#ScenarioCreateModule' },
+      { path: 'user-edit', loadChildren: './edit/user-edit.module#ScenarioEditModule' },
+      { path: 'user-list', loadChildren: './list/user-list.module#ScenarioListModule' },
+      { path: 'user-view', loadChildren: './view/user-view.module#ScenarioViewModule' },
+      { path: 'user-report', loadChildren: './report/user-report.module#ScenarioReportModule' },
+      { path: '**', redirectTo: 'user-list' },
     ],
   },
 ];

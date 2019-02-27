@@ -12,6 +12,7 @@ const routes: Routes = [
       { path: 'admin-edit', loadChildren: './edit/admin-edit.module#AdminEditModule' },
       { path: 'admin-list', loadChildren: './list/admin-list.module#AdminListModule' },
       { path: 'admin-view', loadChildren: './view/admin-view.module#AdminViewModule' },
+      { path: 'admin-report', loadChildren: './report/admin-report.module#AdminReportModule' },
       { path: '**', redirectTo: 'admin-list' },
     ],
   },

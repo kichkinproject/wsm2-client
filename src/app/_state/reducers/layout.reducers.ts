@@ -4,6 +4,7 @@ import { Role } from '../../models/role';
 export interface State {
   layoutLoaded: boolean;
   config: any;
+  pageLoaded: boolean;
   header: string;
   current_user: Role;
 }
@@ -11,6 +12,7 @@ export interface State {
 export const initialState: State = {
   layoutLoaded: false,
   config: null,
+  pageLoaded: true,
   header: 'Менеджер сценариев',
   current_user: null,
 };
@@ -33,6 +35,10 @@ export function reducer(state = initialState, action: LayoutActions): State {
       return { ...state, header: action.payload };
     }
 
+    case LayoutActionTypes.LayoutSetPageLoaded: {
+      return { ...state, pageLoaded: action.payload };
+    }
+
     case LayoutActionTypes.LayoutSetUser: {
       return { ...state, current_user: action.payload };
     }
@@ -47,3 +53,4 @@ export const GetConfig = (state: State) => state.config;
 export const GetLoaded = (state: State) => state.layoutLoaded;
 export const GetCurrentUser = (state: State) => state.current_user;
 export const GetHeader = (state: State) => state.header;
+export const GetPageLoaded = (state: State) => state.pageLoaded;

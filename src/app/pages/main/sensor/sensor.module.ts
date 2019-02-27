@@ -11,6 +11,7 @@ const routes: Routes = [
       { path: 'sensor-find', loadChildren: './find/sensor-find.module#SensorFindModule' },
       { path: 'sensor-list', loadChildren: './list/sensor-list.module#SensorListModule' },
       { path: 'sensor-view', loadChildren: './view/sensor-view.module#SensorViewModule' },
+      { path: 'sensor-report', loadChildren: './report/sensor-report.module#SensorReportModule' },
       { path: '**', redirectTo: 'sensor-list' },
     ],
   },

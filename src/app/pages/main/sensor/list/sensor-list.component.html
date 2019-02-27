@@ -1,7 +1,31 @@
-<div class="collection">
-  <a class="collection-header">Датчики</a>
-  <a class="collection-item" *ngFor="let sensor of sensors">
-    <p class="item-name">{{sensor.name}}</p>
-    <p class="item-description">{{sensor.description}}</p>
-  </a>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Список датчиков</h2>
+  <div class="block-container">
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Датчики</h4>
+        <button mat-icon-button (click)="findNewSensor()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button mat-icon-button (click)="createReportOnSensors()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </li>
+      <li class="collection-item" *ngFor="let sensor of sensors">
+        <div>
+          <p class="item-name">{{sensor.name}}</p>
+          <p class="item-description">{{sensor.description}}</p>
+          <button mat-icon-button (click)="viewSensor(sensor.id)">
+            <mat-icon>details</mat-icon>
+          </button>
+          <button mat-icon-button (click)="removeSensor(sensor.id)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="anyShown" *ngIf="!anyShown">Датчики отсутствуют</div>
+    <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список датчиков"</div>
+  </div>
 </div>

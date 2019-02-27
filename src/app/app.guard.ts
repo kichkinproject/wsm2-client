@@ -36,7 +36,7 @@ export class AppGuard implements CanActivate {
     const role = new Role(user);
     return this.accountService.getUserSettings().pipe(
       flatMap((settings: string) => {
-        role.settings = Utils.exists(settings) ? JSON.parse(settings) : {};
+        // role.settings = Utils.exists(settings) ? JSON.parse(settings) : {};
         this.store.dispatch(new LayoutSetUser(role));
         return of(true);
       }),

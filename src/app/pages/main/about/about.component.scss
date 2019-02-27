@@ -1,0 +1,30 @@
+@import "../../../../styles/mixins";
+
+:host {
+  @include fill;
+  z-index: 100;
+  padding-top: 72px;
+}
+
+:host h2 {
+  display: flex;
+  width: rem(1700px);
+  max-width: rem(1700px);
+  flex-basis: rem(1700px);
+  margin: rem(16px) auto;
+  color: $mainBlack;
+}
+
+
+:host div.app-description {
+
+}
+
+:host div.short-description {
+
+}
+
+
+:host div.team-description {
+
+}

@@ -13,8 +13,8 @@ export class Role {
   public settings: any;
 
   constructor(model: any) {
-    this.user_login = model.Login;
-    this.user_name = model.Name;
-    this.user_role = model.Role;
+    this.user_login = model.login;
+    this.user_name = model.name;
+    this.user_role = model.role;
   }
 }

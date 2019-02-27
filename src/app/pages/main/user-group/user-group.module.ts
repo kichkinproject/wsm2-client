@@ -8,11 +8,12 @@ const routes: Routes = [
     path: '',
     component: UserGroupComponent,
     children: [
-      { path: '$user-group-create', loadChildren: './create/$user-group-create.module#UserGroupCreateModule' },
-      { path: '$user-group-edit', loadChildren: './edit/$user-group-edit.module#UserGroupEditModule' },
-      { path: '$user-group-list', loadChildren: './list/$user-group-list.module#UserGroupListModule' },
-      { path: '$user-group-view', loadChildren: './view/$user-group-view.module#UserGroupViewModule' },
-      { path: '**', redirectTo: '$user-group-list' },
+      { path: 'user-group-create', loadChildren: './create/user-group-create.module#UserGroupCreateModule' },
+      { path: 'user-group-edit', loadChildren: './edit/user-group-edit.module#UserGroupEditModule' },
+      { path: 'user-group-list', loadChildren: './list/user-group-list.module#UserGroupListModule' },
+      { path: 'user-group-view', loadChildren: './view/user-group-view.module#UserGroupViewModule' },
+      { path: 'user-group-report', loadChildren: './report/user-group-report.module#UserGroupReportModule' },
+      { path: '**', redirectTo: 'user-group-list' },
     ],
   },
 ];
