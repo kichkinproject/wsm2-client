@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Просмотр интегратора</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="login">
+        <label>
+          Логин:
+          <p>{{login}}</p>
+        </label>
+      </div>
+      <div class="name">
+        <label>
+          ФИО:
+          <p>{{name}}</p>
+        </label>
+      </div>
+      <div class="info">
+        <label>
+          Информация об интеграторе:
+          <p>{{info}}</p>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр интегратора"</div>
+</div>

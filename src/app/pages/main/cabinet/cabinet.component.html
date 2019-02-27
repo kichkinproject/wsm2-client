@@ -1,13 +1,13 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Создание интегратора</h2>
+  <h2>Кабинет {{currentRole}}а</h2>
   <div class="block-container" *ngIf="accessed">
-  <div class="entity-block">
+    <div class="entity-block">
       <div class="login">
         <label>
           Логин:
           <input [(ngModel)]="login" placeholder='user'>
-          <span *ngIf="checkExistingLogin()">Такой интегратор уже зарегистрирован в системе</span>
+          <span *ngIf="checkExistingLogin()">Такой {{currentRole}} уже зарегистрирован в системе</span>
           <span *ngIf="!checkRightLogin()">Не правильный формат ввода логина</span>
         </label>
       </div>
@@ -28,20 +28,20 @@
         <label>
           ФИО:
           <input [(ngModel)]="name" placeholder='ФИО'>
-          <span *ngIf="!checkName()">Не правильный формат ввода ФИО интегратора</span>
+          <span *ngIf="!checkName()">Не правильный формат ввода ФИО {{currentRole}}а</span>
         </label>
       </div>
       <div class="info">
         <label>
-          Информация об интеграторе:
-          <input [(ngModel)]="info" placeholder='Информация об интеграторе ФИО'>
-          <span *ngIf="!checkInfo()">Не правильный формат ввода информации об интеграторе</span>
+          Информация об {{currentRole}}е:
+          <input [(ngModel)]="info" placeholder='Информация'>
+          <span *ngIf="!checkInfo()">Не правильный формат ввода информации об {{currentRole}}е</span>
         </label>
       </div>
     </div>
-    <button mat-icon-button (click)="createIntegrator()" [disabled]="!enabledToAdd()">
+    <button mat-icon-button (click)="saveCurrentSettings()" [disabled]="!enabledToSave()">
       <mat-icon>save</mat-icon>
     </button>
   </div>
-  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Создание интегратора"</div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Кабинет {{currentRole}}а"</div>
 </div>

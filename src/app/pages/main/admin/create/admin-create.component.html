@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Создание администратора</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="login">
+        <label>
+          Логин:
+          <input [(ngModel)]="login" placeholder='user'>
+          <span *ngIf="checkExistingLogin()">Такой администратор уже зарегистрирован в системе</span>
+          <span *ngIf="!checkRightLogin()">Не правильный формат ввода логина</span>
+        </label>
+      </div>
+      <div class="password">
+        <label>
+          Пароль:
+          <input type="password" [(ngModel)]="password" placeholder='*******'>
+          <span *ngIf="!checkFirstPassword()">Неверный формат для пароля</span>
+        </label>
+        <label *ngIf="!blocked()">
+          Повторите пароль:
+          <input type="password" [(ngModel)]="repeatPassword" placeholder='*******'>
+          <span *ngIf="!checkSecondPassword()">Неверный формат для пароля</span>
+        </label>
+        <span *ngIf="!checkPasswords()">Пароли не совпадают</span>
+      </div>
+      <div class="name">
+        <label>
+          ФИО:
+          <input [(ngModel)]="name" placeholder='ФИО'>
+          <span *ngIf="!checkName()">Не правильный формат ввода ФИО администратора</span>
+        </label>
+      </div>
+      <div class="info">
+        <label>
+          Информация об адинистраторе:
+          <input [(ngModel)]="info" placeholder='Информация об администраторе ФИО'>
+          <span *ngIf="!checkInfo()">Не правильный формат ввода информации об администраторе</span>
+        </label>
+      </div>
+    </div>
+    <button mat-icon-button (click)="createAdmin()" [disabled]="!enabledToAdd()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Создание администратора"</div>
+</div>

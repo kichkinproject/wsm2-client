@@ -16,6 +16,9 @@
         <div>
           <p class="item-name">{{scenario.name}}</p>
           <p class="item-description">{{scenario.description}}</p>
+          <button mat-icon-button (click)="duplicateScenario(scenario.id)">
+            <mat-icon>call_split</mat-icon>
+          </button>
           <button mat-icon-button (click)="editScenario(scenario.id)">
             <mat-icon>edit</mat-icon>
           </button>
@@ -23,7 +26,10 @@
             <mat-icon>details</mat-icon>
           </button>
           <button mat-icon-button (click)="removeScenario(scenario.id)">
-            <mat-icon>remove_circle</mat-icon>
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button (click)="compareScenario(scenario.id)">
+            <mat-icon>compare</mat-icon>
           </button>
         </div>
       </li>

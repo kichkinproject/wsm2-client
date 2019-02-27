@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Просмотр группы пользователей</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="name">
+        <label>
+          Название группы пользователей:
+          <p>{{name}}</p>
+        </label>
+      </div>
+      <div class="desc">
+        <label>
+          Описание группы пользователей:
+          <p>{{description}}</p>
+        </label>
+      </div>
+      <div class="parents">
+        <label>
+          Родительская группа:
+          <p>{{parentGroup}}</p>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр группы пользователей"</div>
+</div>

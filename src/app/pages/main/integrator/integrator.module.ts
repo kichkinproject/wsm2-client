@@ -12,7 +12,7 @@ const routes: Routes = [
       { path: 'integrator-edit', loadChildren: './edit/integrator-edit.module#IntegratorEditModule' },
       { path: 'integrator-list', loadChildren: './list/integrator-list.module#IntegratorListModule' },
       { path: 'integrator-view', loadChildren: './view/integrator-view.module#IntegratorViewModule' },
-      { path: 'integrator-report', loadChildren: './view/integrator-report.module#IntegratorReportModule' },
+      { path: 'integrator-report', loadChildren: './report/integrator-report.module#IntegratorReportModule' },
       { path: '**', redirectTo: 'integrator-list' },
     ],
   },

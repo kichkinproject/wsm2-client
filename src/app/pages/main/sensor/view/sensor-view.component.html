@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Просмотр датчика</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="name">
+        <label>
+          Название датчика:
+          <p>{{name}}</p>
+        </label>
+      </div>
+      <div class="desc">
+        <label>
+          Описание датчика:
+          <p>{{description}}</p>
+        </label>
+      </div>
+      <div class="sensor-types">
+        <label>
+          Тип датчика:
+          <p>{{typeSensor}}</p>
+        </label>
+      </div>
+      <div class="sensor-master">
+        <label>
+          Владелец:
+          <p>{{masterSensor}}</p>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр датчика"</div>
+</div>

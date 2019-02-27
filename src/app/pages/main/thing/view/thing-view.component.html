@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Просмотр устройства</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="name">
+        <label>
+          Название устройства:
+          <p>{{name}}</p>
+        </label>
+      </div>
+      <div class="desc">
+        <label>
+          Описание устройства:
+          <p>{{description}}</p>
+        </label>
+      </div>
+      <div class="thing-types">
+        <label>
+          Тип устройства:
+          <p>{{typeThing}}</p>
+        </label>
+      </div>
+      <div class="thing-master">
+        <label>
+          Владелец:
+          <p>{{masterThing}}</p>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр устройства"</div>
+</div>

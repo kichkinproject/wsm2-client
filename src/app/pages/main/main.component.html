@@ -22,7 +22,7 @@
           <span class="general-item-name">Группы пользователей</span>
         </a>
         <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
-          <mat-icon>assignment</mat-icon>
+          <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>
       </mat-nav-list>
@@ -48,7 +48,7 @@
             <span class="general-item-name">Интеграторы</span>
           </a>
           <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
-            <mat-icon>assignment</mat-icon>
+            <mat-icon>code</mat-icon>
             <span class="general-item-name">Сценарии</span>
           </a>
         </ng-container>
@@ -74,7 +74,7 @@
           <span class="general-item-name">Пользователи</span>
         </a>
         <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
-          <mat-icon>assignment</mat-icon>
+          <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
           <!--</a>-->
           <!--<a mat-list-item class="general-item-link" [routerLink]="'/controller/controller-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
@@ -99,7 +99,7 @@
           <span class="general-item-name">Главная страница</span>
         </a>
         <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
-          <mat-icon>assignment</mat-icon>
+          <mat-icon><code></code></mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>
       </mat-nav-list>
@@ -141,6 +141,21 @@
         <div class="toolbar-center"></div>
       </mat-toolbar-row>
     </mat-toolbar>
+    <selection-panel>
+      <div class="left-part-of-selection-panel">
+        <button mat-icon-button (click)="goToPrevious()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div class="right-part-of-selection-panel">
+        <button mat-icon-button (click)="goToCabinet()">
+          <mat-icon>account_box</mat-icon>
+        </button>>
+        <button mat-icon-button (click)="unautentificateUser()">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </div>
+    </selection-panel>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

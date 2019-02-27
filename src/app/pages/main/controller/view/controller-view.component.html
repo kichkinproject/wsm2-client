@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Просмотр контроллера</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="name">
+        <label>
+          Название контроллера:
+          <p>{{name}}</p>
+        </label>
+      </div>
+      <div class="desc">
+        <label>
+          Описание контроллера:
+          <p>{{description}}</p>
+        </label>
+      </div>
+      <div class="controller-types">
+        <label>
+          Тип контроллера:
+          <p>{{typeContr}}</p>
+        </label>
+      </div>
+      <div class="controller-master">
+        <label>
+          Владелец:
+          <p>{{masterContr}}</p>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр контроллера"</div>
+</div>

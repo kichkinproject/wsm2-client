@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Редактирование пользователя</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="login">
+        <label>
+          Логин:
+          <input [(ngModel)]="login" placeholder='user' [disabled]="false">
+        </label>
+      </div>
+      <div class="name">
+        <label>
+          ФИО:
+          <input [(ngModel)]="name" placeholder='ФИО'>
+          <span *ngIf="!checkName()">Не правильный формат ввода ФИО пользователя</span>
+        </label>
+      </div>
+      <div class="info">
+        <label>
+          Информация о пользователе:
+          <input [(ngModel)]="info" placeholder='Информация об пользователе ФИО'>
+          <span *ngIf="!checkInfo()">Не правильный формат ввода информации о пользователе</span>
+        </label>
+      </div>
+    </div>
+    <button mat-icon-button (click)="saveUser()" [disabled]="!enabledToSave()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Редактирование пользователя"</div>
+</div>

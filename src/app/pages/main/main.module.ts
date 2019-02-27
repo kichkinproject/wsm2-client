@@ -18,6 +18,7 @@ const routes: Routes = [
     children: [
       { path: 'about', loadChildren: './about/about.module#AboutModule' },
       { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
+      { path: 'cabinet', loadChildren: './cabinet/cabinet.module#CabinetModule' },
       { path: 'controller', loadChildren: './controller/controller.module#ControllerModule' },
       { path: 'integrator', loadChildren: './integrator/integrator.module#IntegratorModule' },
       { path: 'scenario', loadChildren: './scenario/scenario.module#ScenarioModule' },

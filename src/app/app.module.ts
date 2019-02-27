@@ -12,6 +12,8 @@ import { Wsm2AccountService } from './services/wsm2-account-service';
 import { AppState, AppStateToken } from './models/app-state';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { CustomRouterStateSerializer } from './_state/utils';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './_state';
 
 export function appInit(config: AppConfig) {
   return () => config.load();

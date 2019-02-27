@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Поиск устройств</h2>
+  <div class="block-container">
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Устройства</h4>
+        <button mat-icon-button (click)="findNewThings()">
+          <mat-icon>cached</mat-icon>
+        </button>
+      </li>
+      <li class="collection-item" *ngFor="let thing of things">
+        <div>
+          <p class="item-name">{{thing.name}}</p>
+          <p class="item-description">{{thing.description}}</p>
+          <button mat-icon-button (click)="confirmThing(thing.id)">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-icon-button (click)="denyThing(thing.id)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <div class="anyShown" *ngIf="!anyShown">Устройства отсутствуют</div>
+    <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Поиск устройств"</div>
+  </div>
+</div>

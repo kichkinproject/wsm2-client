@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Просмотр сценария</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="name">
+        <label>
+          Название сценария:
+          <p>{{name}}</p>
+        </label>
+      </div>
+      <div class="desc">
+        <label>
+          Описание сценария:
+          <p>{{description}}</p>
+        </label>
+      </div>
+      <div class="scenario-types">
+        <label>
+          Тип сценария:
+          <p>{{typeScen}}</p>
+        </label>
+      </div>
+      <div class="scenario-publicity">
+        <label>
+          Доступность сценария:
+          <mat-radio-button [(ngModel)]="publicity" [disabled]="false"></mat-radio-button>
+        </label>
+      </div>
+      <div class="script">
+        <label>
+          Код сценария:
+          <p>{{script}}</p>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр сценариев"</div>
+</div>

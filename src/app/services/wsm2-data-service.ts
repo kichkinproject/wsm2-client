@@ -1026,8 +1026,10 @@ export class Wsm2DataService extends ApiService {
   }
 
   public deleteIntegrator(login: string) {
-    if (Utils.exists(this.getIntegrator(login))) {
-      this.$integratorData.remove((integ) => integ.login === login);
+    const integrator = this.getIntegrator(login);
+    if (Utils.exists(integrator)) {
+      const index = this.$integratorData.indexOf(integrator);
+      this.$integratorData.slice(index, 1);
     } else {
       console.log(`Пользователя ${login} в системе не существует`);
     }
@@ -1067,8 +1069,10 @@ export class Wsm2DataService extends ApiService {
   }
 
   public deleteAdmin(login: string) {
-    if (Utils.exists(this.getAdmin(login))) {
-      this.$adminData.remove((adm) => adm.login === login);
+    const admin = this.getAdmin(login);
+    if (Utils.exists(admin)) {
+      const index = this.$adminData.indexOf(admin);
+      this.$adminData.slice(index, 1);
     } else {
       console.log(`Пользователя ${login} в системе не существует`);
     }
@@ -1108,8 +1112,10 @@ export class Wsm2DataService extends ApiService {
   }
 
   public deleteUser(login: string) {
-    if (Utils.exists(this.getUser(login))) {
-      this.$userData.remove((us) => us.login === login);
+    const user = this.getUser(login);
+    if (Utils.exists(user)) {
+      const index = this.$userData.indexOf(user);
+      this.$userData.slice(index, 1);
     } else {
       console.log(`Пользователя ${login} в системе не существует`);
     }
@@ -1161,8 +1167,10 @@ export class Wsm2DataService extends ApiService {
   }
 
   public deleteScenario(id: number) {
-    if (Utils.exists(this.getScenario(id))) {
-      this.$scenarioData.remove((scen) => scen.id === id);
+    const scenario = this.getScenario(id);
+    if (Utils.exists(scenario)) {
+      const index = this.$scenarioData.indexOf(scenario);
+      this.$scenarioData.slice(index, 1);
     } else {
       console.log(`Такой сценарий в системе не найден`);
     }
@@ -1180,19 +1188,21 @@ export class Wsm2DataService extends ApiService {
     return this.$sensorData.filter((sens) => sens.master === id);
   }
 
-  public addSensor(name: string, description: string, type: SensorType, master: string): Sensor {
+  public addSensor(name: string, description: string, type: SensorType, master: number): Sensor {
     let newId = this.findMaxIndex(this.$sensorData) + 1;
     while (Utils.exists(this.getScenario(newId))) {
       newId++;
     }
     const sensor = new Sensor(newId, name, description, type, master);
-    this.$sensorData.push(sensor),;
+    this.$sensorData.push(sensor);
     return sensor;
   }
 
   public deleteSensor(id: number) {
-    if (Utils.exists(this.getSensor(id))) {
-      this.$sensorData.remove((sens) => sens.id === id);
+    const sensor = this.getSensor(id);
+    if (Utils.exists(sensor)) {
+      const index = this.$sensorData.indexOf(sensor);
+      this.$sensorData.slice(index, 1);
     } else {
       console.log(`Такой датчик в системе не найден`);
     }
@@ -1210,7 +1220,7 @@ export class Wsm2DataService extends ApiService {
     return this.$thingData.filter((th) => th.master = id);
   }
 
-  public addThing(name: string, description: string, type: ThingType, master: string): Thing {
+  public addThing(name: string, description: string, type: ThingType, master: number): Thing {
     let newId = this.findMaxIndex(this.$thingData) + 1;
     while (Utils.exists(this.getThing(newId))) {
       newId++;
@@ -1221,15 +1231,19 @@ export class Wsm2DataService extends ApiService {
   }
 
   public deleteThing(id: number) {
-    if (Utils.exists(this.getThing(id))) {
-      this.$thingData.remove((th) => th.id === id);
+    const thing = this.getThing(id);
+    if (Utils.exists(thing)) {
+      const index = this.$thingData.indexOf(thing);
+      this.$thingData.slice(index, 1);
     } else {
-      console.log(`Такая умная вещь в системе не найдена`);
+      console.log(`Такое устройство в системе не найдено`);
     }
   }
 
   public getController(id: number): Controller {
-    return this.$controllerData.filter((contr) => contr.id === id).length !== 0 ? this.$controllerData.find((contr) => contr.id === id) : null;
+    return this.$controllerData.filter((contr) => contr.id === id).length !== 0
+      ? this.$controllerData.find((contr) => contr.id === id)
+      : null;
   }
 
   public getControllers(): Array<Controller> {
@@ -1241,7 +1255,7 @@ export class Wsm2DataService extends ApiService {
     return this.$controllerData.filter((cnt) => cnt.master === id);
   }
 
-  public addController(name: string, description: string, type: ControllerType, master: string): Controller {
+  public addController(name: string, description: string, type: ControllerType, master: number): Controller {
     let newId = this.findMaxIndex(this.$controllerData) + 1;
     while (Utils.exists(this.getController(newId))) {
       newId++;
@@ -1252,8 +1266,10 @@ export class Wsm2DataService extends ApiService {
   }
 
   public deleteController(id: number) {
-    if (Utils.exists(this.getSensor(id))) {
-      this.$controllerData.remove((contr) => contr.id === id);
+    const controller = this.getController(id);
+    if (Utils.exists(controller)) {
+      const index = this.$controllerData.indexOf(controller);
+      this.$controllerData.slice(index, 1);
     } else {
       console.log(`Такой контроллер в системе не найден`);
     }
@@ -1272,20 +1288,22 @@ export class Wsm2DataService extends ApiService {
     while (Utils.exists(this.getUserGroup(newId))) {
       newId++;
     }
-    const user_group = new UserGroup(newId, name, parent);
-    this.$userGroupData.push(user_group);
-    return user_group;
+    const userGroup = new UserGroup(newId, name, parent);
+    this.$userGroupData.push(userGroup);
+    return userGroup;
   }
 
   public updateUserGroup(id: number, name: string, parent: number) {
-    const user_group = this.getUserGroup(id);
-    user_group.name = name;
-    user_group.parentId = parent;
+    const userGroup = this.getUserGroup(id);
+    userGroup.name = name;
+    userGroup.parentId = parent;
   }
 
   public deleteUserGroup(id: number) {
-    if (Utils.exists(this.getUserGroup(id))) {
-      this.$userGroupData.remove((uGr) => uGr.id === id);
+    const userGroup = this.getUserGroup(id);
+    if (Utils.exists(userGroup)) {
+      const index = this.$userGroupData.indexOf(userGroup);
+      this.$userGroupData.slice(index, 1);
     } else {
       console.log(`Такая группа пользователей в системе не найдена`);
     }
@@ -1303,7 +1321,7 @@ export class Wsm2DataService extends ApiService {
     children.forEach((ch) => {
       const newChildren = this.getChildrenUserGroup(ch.id);
       if (newChildren.length !== 0) {
-        children.pushAll(newChildren);
+        Utils.pushAll(children, newChildren);
       }
     });
     return children;
@@ -1317,7 +1335,7 @@ export class Wsm2DataService extends ApiService {
     const users = this.getUsersByGroup(id);
     const groups = this.getAllChildrenUserGroup(id);
     groups.forEach((gr) => {
-      users.pushAll(this.getUsersByGroup(gr.id));
+      Utils.pushAll(users, this.getUsersByGroup(gr.id));
     });
     return users;
   }
@@ -1330,7 +1348,7 @@ export class Wsm2DataService extends ApiService {
     const integrators = this.getIntegratorsByGroup(id);
     const groups = this.getAllChildrenUserGroup(id);
     groups.forEach((gr) => {
-      integrators.pushAll(this.getUsersByGroup(gr.id));
+      Utils.pushAll(integrators, this.getUsersByGroup(gr.id));
     });
     return integrators;
   }
