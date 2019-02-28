@@ -1,0 +1,46 @@
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Список сценариев</h2>
+  <div class="block-container">
+    <div class="buttons-block">
+      <button mat-icon-button *ngIf="role() !== Roles.SIMPLE" (click)="addNewScenario()">
+        <mat-icon>add_box</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="role() === Roles.MAIN_ADMIN || role() === Roles.ADMIN" (click)="createReportOnScenarios()">
+        <mat-icon>send</mat-icon>
+      </button>
+      <button mat-icon-button (click)="updateScenarioList()">
+        <mat-icon>cached</mat-icon>
+      </button>
+    </div>
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>Сценарии</h4>
+      </li>
+      <li class="collection-item" *ngFor="let scenario of scenarios">
+        <div>
+          <p class="item-name">{{scenario.name}}</p>
+          <p class="item-description">{{scenario.description}}</p>
+          <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.INTEGRATOR" (click)="doubleScenario(scenario.id)">
+            <mat-icon>call_split</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.INTEGRATOR" (click)="editScenario(scenario.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="viewScenario(scenario.id)">
+            <mat-icon>details</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="role() !== Roles.SIMPLE" (click)="removeScenario(scenario.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="role() !== Roles.INTEGRATOR" (click)="compareScenario(scenario.id)">
+            <mat-icon>compare</mat-icon>
+          </button>
+          <mat-button-toggle *ngIf="role() === Roles.SIMPLE || role() === Roles.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></mat-button-toggle>
+        </div>
+      </li>
+    </ul>
+    <div class="anyShown" *ngIf="!anyShown">Сценарии отсутствуют</div>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список сценариев"</div>
+</div>

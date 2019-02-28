@@ -29,7 +29,7 @@
     @return list-separator($list);
   }
 
-  // list-separator polyfill by Hugo Giraudel (https://sass-compatibility.github.io/#list_separator_function)
+  // admin-scenario-list-separator polyfill by Hugo Giraudel (https://sass-compatibility.github.io/#list_separator_function)
   $test-list: ();
   @each $item in $list {
     $test-list: append($test-list, $item, space);

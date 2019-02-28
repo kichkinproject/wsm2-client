@@ -1,0 +1,47 @@
+<loader [complete]="completed|async" text="Загрузка"></loader>
+<div class="wsm-data-container">
+  <h2>Создание сценария</h2>
+  <div class="block-container" *ngIf="accessed">
+    <div class="entity-block">
+      <div class="name">
+        <label>
+          Название сценария:
+          <input [(ngModel)]="name" placeholder='Название сценария'>
+          <span *ngIf="!checkName()">Не правильный формат ввода названия сценария</span>
+        </label>
+      </div>
+      <div class="desc">
+        <label>
+          Описание сценария:
+          <input [(ngModel)]="description" placeholder='Описание сценария'>
+          <span *ngIf="!checkDesc()">Не правильный формат ввода описания сценария</span>
+        </label>
+      </div>
+      <div class="scenario-types">
+        <label>
+          Тип сценария:
+          <select [(ngModel)]="selectedType">
+            <option [(ngRepeat)]="t in scTypes" value="{{t.value}}">{{t.value}}</option>
+          </select>
+        </label>
+      </div>
+      <div class="scenario-publicity">
+        <label>
+          Доступность сценария:
+          <mat-radio-button [(ngModel)]="publicity"></mat-radio-button>
+        </label>
+      </div>
+      <div class="script">
+        <label>
+          Код сценария:
+          <input [(ngModel)]="script" placeholder='Код сценария'>
+          <span *ngIf="!checkScript()">Не правильный формат ввода кода сценария</span>
+        </label>
+      </div>
+    </div>
+    <button mat-icon-button (click)="createScenario()" [disabled]="!enabledToAdd()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+  <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Создание сценариев"</div>
+</div>

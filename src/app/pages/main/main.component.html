@@ -77,15 +77,15 @@
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
           <!--</a>-->
-          <!--<a mat-list-item class="general-item-link" [routerLink]="'/controller/controller-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
+          <!--<a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/controller/controller-admin-scenario-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
           <!--<mat-icon>cast_connected</mat-icon>-->
           <!--<span class="general-item-name">Контроллеры</span>-->
           <!--</a>-->
-          <!--<a mat-list-item class="general-item-link" [routerLink]="'/thing/thing-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
+          <!--<a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/thing/thing-admin-scenario-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
           <!--<mat-icon>speaker_group</mat-icon>-->
           <!--<span class="general-item-name">Умные вещи</span>-->
           <!--</a>-->
-          <!--<a mat-list-item class="general-item-link" [routerLink]="'/sensor/sensor-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
+          <!--<a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/sensor/sensor-admin-scenario-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
           <!--<mat-icon>wb_iridescent</mat-icon>-->
           <!--<span class="general-item-name">Датчики</span>-->
         </a>
@@ -143,7 +143,7 @@
     </mat-toolbar>
     <selection-panel>
       <div class="left-part-of-selection-panel">
-        <button mat-icon-button (click)="goToPrevious()">
+        <button mat-icon-button *ngIf="needToGoBack()" (click)="goToPrevious()">
           <mat-icon>arrow_back</mat-icon>
         </button>
       </div>

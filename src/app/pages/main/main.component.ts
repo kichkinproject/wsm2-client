@@ -4,7 +4,7 @@ import { Role, Roles } from "../../models/role";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { GetCurrentUser, State } from "../../_state";
 import { select, Store } from "@ngrx/store";
-import { Router } from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'wsm-main',
@@ -16,7 +16,8 @@ export class MainComponent implements OnDestroy {
   private subscriptions: Array<Subscription> = [];
 
   constructor(private router: Router,
-              private store: Store<State>) {
+              private store: Store<State>,
+              private activatedRoute: ActivatedRoute) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -44,6 +45,37 @@ export class MainComponent implements OnDestroy {
 
   public ngOnDestroy(): void {
     this.unsubscribeEvents();
+  }
+
+  public needToGoBack(): void {
+    return this.router.url.indexOf('about') === -1;
+  }
+
+  public goToPrevious() {
+    if (this.router.url.indexOf('list') !== -1) {
+      this.router.navigate(['/admin-list'], {
+        queryParams: {}
+      });
+    } else {
+      this.router.navigate(['/about'], {
+        queryParams: {}
+      });
+    }
+  }
+
+  public goToCabinet() {
+    this.router.navigate(['/cabinet'], {
+      queryParams: {}
+    });
+  }
+
+  public unautentificateUser() {
+    this.subscriptions.push(
+      this.store.pipe(select(GetCurrentUser)).subscribe(() => this.$user.next(null))
+    );
+    this.router.navigate(['./identification'], {
+      queryParams: {}
+    });
   }
 
 }

@@ -14,6 +14,7 @@ import { RouterStateSerializer } from '@ngrx/router-store';
 import { CustomRouterStateSerializer } from './_state/utils';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './_state';
+import {SelectionPanelComponent, SelectionPanelModule} from './components/selection-panel/selection-panel.component';
 
 export function appInit(config: AppConfig) {
   return () => config.load();
@@ -32,6 +33,7 @@ export function appInit(config: AppConfig) {
     ReactiveFormsModule,
     OverlayModule,
     AppRoutingModule,
+    SelectionPanelModule
   ],
   bootstrap: [AppComponent],
   providers: [
