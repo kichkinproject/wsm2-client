@@ -67,7 +67,7 @@ export class ThingListComponent  implements AfterViewInit {
     });
   }
 
-  public createReportOnSensors() {
+  public createReportOnThing() {
     console.log('Блок отчетности по устройствам недоступен');
   }
 

@@ -1,2 +1,82 @@
+$rem-baseline: 16px !default;
+$rem-fallback: false !default;
+$rem-px-only: false !default;
+
+$black: hsl(0, 0%, 0%);
+$white: hsl(0, 0%, 100%);
+$white-two: hsl(0, 0%, 95%);
+$blueberry: hsl(249, 46%, 43%);
+$pale-red: hsl(1, 67%, 51%);
+$warm-purple: hsl(299, 47%, 32%);
+$rouge: hsl(336, 72%, 37%);
+$darkish-purple: hsl(323, 61%, 34%);
+$blueberry-two: hsl(271, 47%, 38%);
+$faded-red: hsl(348, 64%, 45%);
+$pale-red-two: hsl(10, 72%, 53%);
+$dull-orange: hsl(29, 75%, 53%);
+$sickly-yellow: hsl(67, 76%, 48%);
+$mango: hsl(31, 99%, 60%);
+$turtle-green: hsl(101, 50%, 54%);
+$mango-two: hsl(39, 100%, 60%);
+$sun-yellow: hsl(45, 100%, 60%);
+$green-blue: hsl(160, 93%, 35%);
+$water-blue: hsl(201, 87%, 47%);
+$azure: hsl(197, 88%, 52%);
+$nice-blue: hsl(210, 81%, 41%);
+$dusk-blue: hsl(222, 53%, 42%);
+$blueberry-three: hsl(234, 46%, 44%);
+$bluish-grey: hsl(202, 15%, 53%);
+$charcoal-grey: hsl(203, 13%, 27%);
+$light-cyan: hsl(180, 100%, 84%);
+$cerulean: hsl(202, 100%, 38%);
+$dark: hsl(227, 32%, 20%);
+$dark-grey-blue: hsl(216, 32%, 32%);
+$dark-grey-blue-two: hsl(231, 33%, 23%);
+$dark-grey-blue-three: hsl(229, 25%, 25%);
+$slate: hsl(228, 20%, 30%);
+
+$mainWhite: $white;
+$mainBlack: $black;
+
 $defaultColor: $azure;
 
+$dataDefaultColor: $azure;
+$dataGoodColor: $green-blue;
+$dataNormalColor: $mango-two;
+$dataBadColor: $faded-red;
+
+$dataFactColor: $azure;
+$dataPlanColor: $nice-blue;
+
+$mainColorLight: $white-two;
+$altColorLight: change_color($white, $alpha: 0.5);
+$mainHeaderBackgroundLight: $white;
+$mainHeaderIconColorLight: $bluish-grey;
+$mainBackgroundLight: change_color($mainColorLight, $alpha: 1);
+$loaderLight: change_color($mainColorLight, $alpha: 0.8);
+$mapGridLinesLight:
+  linear-gradient(change_color($dark-grey-blue, $alpha: 0.05), transparent 2px),
+  linear-gradient(90deg, change_color($dark-grey-blue, $alpha: 0.05), transparent 2px);
+$mapGridDotsLight: radial-gradient(change_color($dark-grey-blue, $alpha: 0.2) 3%, transparent 0);
+
+$mainColorNewLight: $white-two;
+$altColorNewLight: change_color($white, $alpha: 0.5);
+$mainHeaderBackgroundNewLight: $cerulean;
+$mainHeaderIconColorNewLight: $white;
+$mainBackgroundNewLight: change_color($mainColorNewLight, $alpha: 1);
+$loaderNewLight: change_color($mainColorNewLight, $alpha: 0.8);
+$mapGridLinesNewLight:
+  linear-gradient(change_color($dark-grey-blue, $alpha: 0.05), transparent 2px),
+  linear-gradient(90deg, change_color($dark-grey-blue, $alpha: 0.05), transparent 2px);
+$mapGridDotsNewLight: radial-gradient(change_color($dark-grey-blue, $alpha: 0.2) 3%, transparent 0);
+
+$mainColorDark: $dark-grey-blue-two;
+$altColorDark: $white-two;
+$mainHeaderBackgroundDark: $dark;
+$mainHeaderIconColorDark: $white;
+$mainBackgroundDark: change_color($mainColorDark, $alpha: 1);
+$loaderDark: change_color($mainColorDark, $alpha: 0.8);
+$mapGridLinesDark:
+  linear-gradient(change_color($light-cyan, $alpha: 0.05), transparent 2px),
+  linear-gradient(90deg, change_color($light-cyan, $alpha: 0.05), transparent 2px);
+$mapGridDotsDark: radial-gradient(change_color($light-cyan, $alpha: 0.2) 3%, transparent 0);

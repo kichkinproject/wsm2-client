@@ -5,24 +5,27 @@
     <ul class="collection with-header">
       <li class="collection-header">
         <h4>Администраторы</h4>
-        <button mat-icon-button (click)="addNewAdmin()">
+        <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.MAIN_ADMIN" (click)="addNewAdmin()">
           <mat-icon>add_box</mat-icon>
         </button>
-        <button mat-icon-button (click)="createReportOnAdmins()">
+        <button mat-icon-button *ngIf="role() === Roles.MAIN_ADMIN" (click)="createReportOnAdmins()">
           <mat-icon>send</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.MAIN_ADMIN" (click)="updateAdminList()">
+          <mat-icon>cached</mat-icon>
         </button>
       </li>
       <li class="collection-item" *ngFor="let admin of admins">
         <div>
           <p class="item-name">{{admin.name}}</p>
           <p class="item-description">{{admin.login}}: {{admin.info}}</p>
-          <button mat-icon-button (click)="editAdmin(admin.login)">
+          <button mat-icon-button *ngIf="role() === Roles.MAIN_ADMIN" (click)="editAdmin(admin.login)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="viewAdmin(admin.login)">
+          <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.MAIN_ADMIN" (click)="viewAdmin(admin.login)">
             <mat-icon>details</mat-icon>
           </button>
-          <button mat-icon-button (click)="removeAdmin(admin.login)">
+          <button mat-icon-button *ngIf="role() === Roles.MAIN_ADMIN" (click)="removeAdmin(admin.login)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>

@@ -47,7 +47,7 @@ export class MainComponent implements OnDestroy {
     this.unsubscribeEvents();
   }
 
-  public needToGoBack(): void {
+  public needToGoBack(): boolean {
     return this.router.url.indexOf('about') === -1;
   }
 

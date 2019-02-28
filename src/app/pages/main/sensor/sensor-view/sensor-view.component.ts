@@ -7,6 +7,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {Utils} from '../../../../utils/utils';
+import {UserGroup} from '../../../../models/user-group';
 
 @Component({
   selector: 'wsm-sensor-view',
@@ -20,6 +21,7 @@ export class SensorViewComponent  implements AfterViewInit {
   private $name: string;
   private $description: string;
   private $type: SensorType;
+  private $master: number;
   public scTypes: Map<SensorType, string> = new Map<SensorType, string>( [
     [
       SensorType.SENSOR_TYPE_1,
@@ -56,12 +58,9 @@ export class SensorViewComponent  implements AfterViewInit {
     const sensor = this.dataService.getSensor(this.sensorId);
     this.name = sensor.name;
     this.description = sensor.description;
-    this.selectedType = this.scTypes.get(sensor.type);
+    this.typeSensor = this.scTypes.get(sensor.type);
+    this.masterSensor = this.dataService.getUserGroup(sensor.master);
     this.isCompleted$.next(true);
-  }
-
-  public defaultSelect() {
-    this.selectedType = 'Выполнение по расписанию';
   }
 
   public get completed(): Observable<boolean> {
@@ -88,7 +87,7 @@ export class SensorViewComponent  implements AfterViewInit {
     }
   }
 
-  public set selectedType(str: string) {
+  public set typeSensor(str: string) {
     if (Utils.exists(str)) {
       let okey: SensorType = null;
       this.scTypes.forEach((value, key) => {
@@ -102,8 +101,19 @@ export class SensorViewComponent  implements AfterViewInit {
     }
   }
 
-  public get selectedType() {
+  public get typeSensor() {
     return this.scTypes.get(this.$type);
+  }
+
+  public set masterSensor(uGr: UserGroup) {
+    if (Utils.exists(uGr)) {
+      this.$master = uGr.id;
+
+    }
+  }
+
+  public get masterSensor() {
+    return this.dataService.getUserGroup(this.$master);
   }
 
 }

@@ -11,6 +11,9 @@
         <button mat-icon-button (click)="createReportOnIntegrators()">
           <mat-icon>send</mat-icon>
         </button>
+        <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.MAIN_ADMIN" (click)="updateAdminList()">
+          <mat-icon>cached</mat-icon>
+        </button>
       </li>
       <li class="collection-item" *ngFor="let integrator of integrators">
         <div>

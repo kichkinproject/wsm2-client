@@ -7,6 +7,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {Utils} from '../../../../utils/utils';
+import {UserGroup} from '../../../../models/user-group';
 
 @Component({
   selector: 'wsm-thing-view',
@@ -19,6 +20,7 @@ export class ThingViewComponent implements AfterViewInit {
   private subscriptions: Array<Subscription> = [];
   private $name: string;
   private $description: string;
+  private $master: number;
   private $type: ThingType;
   public scTypes: Map<ThingType, string> = new Map<ThingType, string>( [
     [
@@ -39,7 +41,7 @@ export class ThingViewComponent implements AfterViewInit {
     ]
   ]);
 
-  private sensorId: number;
+  private thingId: number;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
@@ -52,16 +54,17 @@ export class ThingViewComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.sensorId = this.activatedRoute.params['id'];
-    const sensor = this.dataService.getSensor(this.sensorId);
-    this.name = sensor.name;
-    this.description = sensor.description;
-    this.selectedType = this.scTypes.get(sensor.type);
+    this.thingId = this.activatedRoute.params['id'];
+    const thing = this.dataService.getThing(this.thingId);
+    this.name = thing.name;
+    this.description = thing.description;
+    this.typeThing = this.scTypes.get(thing.type);
+    this.masterThing = this.dataService.getUserGroup(thing.master);
     this.isCompleted$.next(true);
   }
 
   public defaultSelect() {
-    this.selectedType = 'Выполнение по расписанию';
+    this.typeThing = 'Выполнение по расписанию';
   }
 
   public get completed(): Observable<boolean> {
@@ -88,7 +91,7 @@ export class ThingViewComponent implements AfterViewInit {
     }
   }
 
-  public set selectedType(str: string) {
+  public set typeThing(str: string) {
     if (Utils.exists(str)) {
       let okey: ThingType = null;
       this.scTypes.forEach((value, key) => {
@@ -102,8 +105,19 @@ export class ThingViewComponent implements AfterViewInit {
     }
   }
 
-  public get selectedType() {
+  public get typeThing() {
     return this.scTypes.get(this.$type);
+  }
+
+  public set masterThing(uGr: UserGroup) {
+    if (Utils.exists(uGr)) {
+      this.$master = uGr.id;
+
+    }
+  }
+
+  public get masterThing() {
+    return this.dataService.getUserGroup(this.$master);
   }
 
 
