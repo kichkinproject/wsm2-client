@@ -4,7 +4,8 @@ import { Router } from "@angular/router";
 import { Wsm2AccountService } from "./services/wsm2-account-service";
 import { select, Store } from "@ngrx/store";
 import { State } from "./_state";
-import { AppConfigToken, IAppConfig } from "./app.config";
+import { IAppConfig } from "./app.config";
+import { AppConfigToken } from "./models/token";
 import { environment } from "../environments/environment";
 import { Subscription } from "rxjs";
 import { GetLoaded } from "./_state";
@@ -24,7 +25,8 @@ export class AppComponent implements OnDestroy {
               private router: Router,
               private accountService: Wsm2AccountService,
               private store: Store<State>,
-              @Inject(AppConfigToken) private config: IAppConfig) {
+              @Inject(AppConfigToken) private config: IAppConfig
+  ) {
     this.meta.addTag({ name: 'version', content: environment.version });
     this.subscriptions.push(
       this.store.pipe(select(GetLoaded)).subscribe(stat => this.toggleApp(stat)),

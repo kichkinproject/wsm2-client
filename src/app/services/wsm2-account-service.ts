@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { IAppConfig, AppConfigToken } from '../app.config';
+import { IAppConfig } from '../app.config';
+import { AppConfigToken } from "../models/token";
 import { Observable } from 'rxjs';
 import { AppState } from '../models/app-state';
 import {ApiService} from './api.service';

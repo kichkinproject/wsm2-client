@@ -29,8 +29,8 @@ const routes: Routes = [
   exports: [
     RouterModule,
   ],
-  providers: [
-    AppGuard,
-  ],
+  // providers: [
+  //   AppGuard,
+  // ],
 })
 export class AppRoutingModule { }

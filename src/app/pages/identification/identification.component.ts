@@ -8,6 +8,7 @@ import { GetCurrentUser, State } from "../../_state";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { Role } from "../../models/role";
 import * as _ from "lodash";
+import { LayoutSetUser } from "../../_state/actions/layout.actions";
 
 @Component({
   selector: 'wsm-identification',
@@ -59,9 +60,10 @@ export class IdentificationComponent implements OnInit {
     // Отправляем в сервис логин и пароль пользователя на проверку
     const user = this.accountService.checkUser(this.$login, this.$password);
     if (Utils.exists(user)) {
+
       // Запрос в сервис на юзера по логину
       console.log(`Пользователь с логином ${this.$login} существует и пароль введен верно`);
-      this.identify();
+      this.identify(user);
     } else {
       console.log(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
       this.$deny = true;
@@ -69,8 +71,11 @@ export class IdentificationComponent implements OnInit {
     }
   }
 
-  public identify() {
+  private identify(user: User) {
+    const role = new Role(user);
+    this.store.dispatch(new LayoutSetUser(role));
     console.log(`${this.$user.getValue().user_login} идентифицирован`);
+    this.router.navigate(['/main']);
   }
 
   public ngOnInit() {

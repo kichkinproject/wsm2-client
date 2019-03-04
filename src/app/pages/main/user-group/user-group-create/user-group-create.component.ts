@@ -4,23 +4,22 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Wsm2DataService } from "../../../../services/wsm2-data-service";
 import { GetCurrentUser, State } from "../../../../_state";
-import { UserGroup } from "../../../../models/user-group";
 import { Utils } from "../../../../utils/utils";
 import { select, Store } from "@ngrx/store";
+import { UserGroup } from "../../../../models/user-group";
 
 @Component({
-  selector: 'wsm-user-group-edit',
-  templateUrl: './user-group-edit.component.html',
-  styleUrls: ['./user-group-edit.component.scss']
+  selector: 'wsm-user-group-create',
+  templateUrl: './user-group-create.component.html',
+  styleUrls: ['./user-group-create.component.scss']
 })
-export class UserGroupEditComponent  implements AfterViewInit {
+export class UserGroupCreateComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private $name: string;
   private $description: string;
   private $group: UserGroup;
-  private groupId: number;
   private groups: Array<UserGroup> = [];
   private noGroup: UserGroup = new UserGroup(0, 'Нет родителя', '');
 
@@ -35,12 +34,8 @@ export class UserGroupEditComponent  implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.groupId = this.activatedRoute.params['id'];
-    const userGroup = this.dataService.getUserGroup(this.groupId);
-    this.name = userGroup.name;
-    this.description = userGroup.description;
     this.updateList();
-    this.selectedGroup = userGroup.parentId !== -1 ? this.dataService.getUserGroup(userGroup.parentId).name : this.noGroup.name;
+    this.selectedGroup = this.groups[0].name;
     // this.defaultSelect();
 
     this.isCompleted$.next(true);
@@ -50,7 +45,7 @@ export class UserGroupEditComponent  implements AfterViewInit {
     this.groups.splice(0, this.groups.length);
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
-      Utils.pushAll(this.groups, this.dataService.getUserGroups().filter((gr) => gr.id !== this.groupId));
+      Utils.pushAll(this.groups, this.dataService.getUserGroups());
     }
     if (this.role() === Roles.INTEGRATOR) {
       this.groups.push(this.noGroup);
@@ -83,6 +78,8 @@ export class UserGroupEditComponent  implements AfterViewInit {
     }
   }
 
+
+
   public get selectedGroup() {
     return this.$group.name;
   }
@@ -114,15 +111,15 @@ export class UserGroupEditComponent  implements AfterViewInit {
     return Utils.exists(this.$description);
   }
 
-  public saveUserGroup() {
-    this.dataService.updateUserGroup(this.groupId, this.$name, this.$description, this.$group.id);
+  public createUserGroup() {
+    this.dataService.addUserGroup(this.$name, this.$description, this.$group.id);
     this.router.navigate(['/user-group-list'], {
       queryParams: {}
     });
   }
 
   public enabledToAdd() {
-    return Utils.exists(this.$name)
+      return Utils.exists(this.$name)
       && Utils.exists(this.$description);
   }
 }

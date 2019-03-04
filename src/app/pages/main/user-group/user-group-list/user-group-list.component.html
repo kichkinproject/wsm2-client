@@ -11,6 +11,9 @@
         <button mat-icon-button (click)="createReportOnUserGroups()">
           <mat-icon>send</mat-icon>
         </button>
+        <button mat-icon-button (click)="updateUserGroupList()">
+          <mat-icon>cached</mat-icon>
+        </button>
       </li>
       <li class="collection-item" *ngFor="let userGroup of userGroups">
         <div>

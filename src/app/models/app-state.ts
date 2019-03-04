@@ -7,9 +7,6 @@ export interface IAppState {
   clientguid: string;
 }
 
-export declare const AppStateToken: InjectionToken<IAppState>;
-
-
 @Injectable()
 export class AppState {
   private _clientguid: GUID;

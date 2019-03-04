@@ -20,7 +20,7 @@
       <div class="scenario-types">
         <label>
           Тип сценария:
-          <select [(ngModel)]="selectedType" (select)="findType">
+          <select [(ngModel)]="selectedType">
             <option [(ngRepeat)]="t in scTypes" value="{{t.name}}">{{t.name}}</option>
           </select>
         </label>

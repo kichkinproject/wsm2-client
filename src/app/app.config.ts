@@ -14,7 +14,6 @@ export interface IAppConfig {
   WebSocketUrl: string;
 }
 
-export declare const AppConfigToken: InjectionToken<IAppConfig>;
 
 @Injectable()
 export class AppConfig implements IAppConfig {

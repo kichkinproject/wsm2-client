@@ -7,9 +7,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { AppConfig, AppConfigToken } from './app.config';
+import { AppConfig } from './app.config';
 import { Wsm2AccountService } from './services/wsm2-account-service';
-import { AppState, AppStateToken } from './models/app-state';
+import { AppState } from './models/app-state';
+import {AppConfigToken, AppStateToken} from './models/token'
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { CustomRouterStateSerializer } from './_state/utils';
 import {StoreModule} from '@ngrx/store';

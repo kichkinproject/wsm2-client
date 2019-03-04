@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { IAppConfig, AppConfigToken } from '../app.config';
+import { IAppConfig } from '../app.config';
+import { AppConfigToken } from "../models/token";
 import { Observable } from 'rxjs';
 import { AppState } from '../models/app-state';
 import {ApiService} from './api.service';
@@ -22,7 +23,8 @@ import {WsmData} from '../models/data';
 export class Wsm2DataService extends ApiService {
   constructor(protected http: HttpClient,
               protected appState: AppState,
-              @Inject(AppConfigToken) protected config: IAppConfig) {
+              @Inject(AppConfigToken) protected config: IAppConfig
+  ) {
     // super(http, appState, aclService, alertsService, config),
     super(http, appState, config);
   }
@@ -350,19 +352,20 @@ export class Wsm2DataService extends ApiService {
     return this.$userGroupData;
   }
 
-  public addUserGroup(name: string, parent: number) {
+  public addUserGroup(name: string, description: string, parent: number) {
     let newId = this.findMaxIndex(this.$userGroupData) + 1;
     while (Utils.exists(this.getUserGroup(newId))) {
       newId++;
     }
-    const userGroup = new UserGroup(newId, name, parent);
+    const userGroup = new UserGroup(newId, name, description, parent);
     this.$userGroupData.push(userGroup);
     return userGroup;
   }
 
-  public updateUserGroup(id: number, name: string, parent: number) {
+  public updateUserGroup(id: number, name: string, desc: string, parent: number) {
     const userGroup = this.getUserGroup(id);
     userGroup.name = name;
+    userGroup.description = desc;
     userGroup.parentId = parent;
   }
 

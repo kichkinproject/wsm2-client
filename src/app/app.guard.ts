@@ -3,7 +3,8 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import {Role} from './models/role';
-import {AppConfig, IAppConfig, AppConfigToken} from './app.config';
+import {AppConfig, IAppConfig } from './app.config';
+import { AppConfigToken } from "./models/token";
 import { LayoutSetUser } from './_state/actions/layout.actions';
 import { GetCurrentUser, State } from './_state';
 import { select, Store } from '@ngrx/store';
@@ -22,14 +23,21 @@ export class AppGuard implements CanActivate {
   }
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    if (!this.$user.getValue()) {
-      return this.accountService.currentUserInfo().pipe(
-        flatMap(user => {
-          return this.setUser(user);
-        }));
-    } else {
-      return of(true);
-    }
+    return of(true);
+    //
+    // if (!this.$user.getValue()) {
+    //   this.router.navigate(['/identification']);
+    // } else {
+    //   return of(true);
+    // }
+    // if (!this.$user.getValue()) {
+    //   return this.accountService.currentUserInfo().pipe(
+    //     flatMap(user => {
+    //       return this.setUser(user);
+    //     }));
+    // } else {
+    //   return of(true);
+    // }
   }
 
   private setUser(user: any): Observable<boolean> {

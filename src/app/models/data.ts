@@ -945,31 +945,37 @@ export class WsmData {
     {
       id: 1,
       name: 'Ул.Мира, дом 15, этаж 3',
+      description: '',
       parentId: -1
     },
     {
       id: 2,
       name: 'Ул.Мира, дом 15, этаж 3, квартира 14',
+      description: '',
       parentId: 1
     },
     {
       id: 3,
       name: 'Ул.Мира, дом 15, этаж 3, квартира 16',
+      description: '',
       parentId: 1
     },
     {
       id: 4,
       name: 'Ул.Мира, дом 15, этаж 1',
+      description: '',
       parentId: -1
     },
     {
       id: 5,
       name: 'Ул.Мира, дом 12, этаж 1',
+      description: '',
       parentId: -1
     },
     {
       id: 6,
       name: 'Ул.Мира, дом 17А, этаж 1',
+      description: '',
       parentId: -1
     },
   ];
