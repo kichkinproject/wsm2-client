@@ -12,6 +12,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
 import {Wsm2AccountService} from '../../services/wsm2-account-service';
 import {Wsm2DataService} from '../../services/wsm2-data-service';
+import {MainGuard} from './main.guard';
 
 const routes: Routes = [
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
       { path: 'thing', loadChildren: './thing/thing.module#ThingModule' },
       { path: 'user', loadChildren: './user/user.module#UserModule' },
       { path: 'user-group', loadChildren: './user-group/user-group.module#UserGroupModule' },
-      { path: '**', redirectTo: 'about' }
+      { path: '**', canActivate: [MainGuard] }
     ]
   }
 ];
@@ -50,9 +51,9 @@ const routes: Routes = [
   exports: [
     MainComponent
   ],
-  // providers: [
-  //   MainGuard
-  // ],
+  providers: [
+    MainGuard
+  ],
   declarations: [
     MainComponent
   ]

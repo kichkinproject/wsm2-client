@@ -1,0 +1,31 @@
+@import "../../../styles/mixins";
+
+:host {
+  @include fill;
+  z-index: 100;
+  padding-top: 72px;
+}
+
+:host div.identify {
+
+}
+
+:host label.id-label {
+
+}
+
+:host label.login-input {
+
+}
+
+:host label.password-input {
+
+}
+
+:host span.id-span {
+  color: #850000;
+}
+
+:host button {
+  background-color: $turtle-green;
+}

@@ -13,14 +13,17 @@ import {WsmData} from '../models/data';
 @Injectable({
   providedIn: 'root'
 })
-export class Wsm2AccountService extends ApiService {
-  private accountUrl = `${this.url}/Account`;
+export class Wsm2AccountService /*extends ApiService*/ {
+  // private accountUrl = `${this.url}/Account`;
 
   constructor(protected http: HttpClient,
               protected appState: AppState,
-              @Inject(AppConfigToken) protected config: IAppConfig) {
+              // @Inject(AppConfigToken) protected config: IAppConfig
+  ) {
     // super(http, appState, aclService, alertsService, config);
-    super(http, appState, config);
+    // super(http, appState
+    //     //   // , config
+    //     // );
   }
 
   private source: WsmData = new WsmData();
@@ -41,17 +44,17 @@ export class Wsm2AccountService extends ApiService {
   //   // return this.
   // }
 
-  public getUserSettings(): Observable<any> {
-    return this.post<any>(`${this.url}/LoadUserConfig`, {});
-  }
-
-  public setUserSettings(body?: any): Observable<any> {
-    return this.post<any>(`${this.url}/SaveUserConfig`, body);
-  }
-
-  public currentUserInfo() {
-    return this.post<any>(`${this.url}/GetUserInfo`);
-  }
+  // public getUserSettings(): Observable<any> {
+  //   return this.post<any>(`${this.url}/LoadUserConfig`, {});
+  // }
+  //
+  // public setUserSettings(body?: any): Observable<any> {
+  //   return this.post<any>(`${this.url}/SaveUserConfig`, body);
+  // }
+  //
+  // public currentUserInfo() {
+  //   return this.post<any>(`${this.url}/GetUserInfo`);
+  // }
 
   private userInfo(user: User) {
     return user.info;

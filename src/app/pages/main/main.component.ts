@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { Utils } from "../../utils/utils";
 import { Role, Roles } from "../../models/role";
 import { BehaviorSubject, Subscription } from "rxjs";
@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnDestroy {
+export class MainComponent implements OnInit, OnDestroy {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
   private subscriptions: Array<Subscription> = [];
 
@@ -41,6 +41,14 @@ export class MainComponent implements OnDestroy {
 
   private unsubscribeEvents(): void {
     this.subscriptions.forEach((s: Subscription) => s.unsubscribe());
+  }
+
+  public ngOnInit(): void {
+    if (Utils.missing(this.$user.getValue())) {
+      this.router.navigate(['/identification'], {
+        queryParams: {}
+      });
+    }
   }
 
   public ngOnDestroy(): void {
@@ -73,7 +81,7 @@ export class MainComponent implements OnDestroy {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(() => this.$user.next(null))
     );
-    this.router.navigate(['./identification'], {
+    this.router.navigate(['/identification'], {
       queryParams: {}
     });
   }

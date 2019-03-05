@@ -8,7 +8,7 @@ import { GetCurrentUser, State } from "../../_state";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { Role } from "../../models/role";
 import * as _ from "lodash";
-import { LayoutSetUser } from "../../_state/actions/layout.actions";
+import {LayoutLoaded, LayoutSetUser} from '../../_state/actions/layout.actions';
 
 @Component({
   selector: 'wsm-identification',
@@ -33,23 +33,33 @@ export class IdentificationComponent implements OnInit {
   public set login(log: string) {
     if (Utils.exists(log)) {
       this.$login = _.escape(log);
-      this.$deny = false;
+      this.deny = false;
     }
   }
 
   public set password(pass: string) {
     if (Utils.exists(pass)) {
       this.$password = _.escape(pass);
-      this.$deny = false;
+      this.deny = false;
     }
+  }
+
+  public get deny() {
+    return this.$deny;
+  }
+
+  public set deny(res: boolean) {
+    this.$deny = res;
   }
 
   constructor(private router: Router,
               private store: Store<State>,
               private accountService: Wsm2AccountService) {
-    this.subscriptions.push(
-      this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
-    );
+    this.store.pipe(select(GetCurrentUser)).subscribe(() => this.$user.next(null));
+    this.store.dispatch(new LayoutLoaded(true));
+    // this.subscriptions.push(
+    // this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
+    // );
   }
 
   public enabledLogin(): boolean {
@@ -66,7 +76,7 @@ export class IdentificationComponent implements OnInit {
       this.identify(user);
     } else {
       console.log(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
-      this.$deny = true;
+      this.deny = true;
       this.$user = null;
     }
   }

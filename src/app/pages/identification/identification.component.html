@@ -1,14 +1,14 @@
-<div class="identify">
+<div class="identify-container">
   <div>
-    <label>
+    <label class="id-label">
       Логин:
-      <input [(ngModel)]="login" placeholder='user'>
+      <input [(ngModel)]="login" placeholder='user' class="login-input">
     </label>
-    <label>
+    <label class="id-label">
       Пароль:
-      <input type="password" [(ngModel)]="password" placeholder='*******'>
+      <input type="password" [(ngModel)]="password" placeholder='*******'  class="password-input">
     </label>
-    <span *ngIf="$deny">Не правильно введен логин или пароль</span>
+    <span class="id-span" *ngIf="$deny">Не правильно введен логин или пароль</span>
   </div>
   <button mat-raised-button [ngClass]="{'disabled: !enabledLogin()'}" [disabled]="!enabledLogin()" (click)="tryIdentify()">Войти</button>
 </div>

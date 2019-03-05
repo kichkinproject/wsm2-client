@@ -9,6 +9,7 @@ import { AppConfigToken } from "./models/token";
 import { environment } from "../environments/environment";
 import { Subscription } from "rxjs";
 import { GetLoaded } from "./_state";
+import {LayoutLoaded} from './_state/actions/layout.actions';
 
 @Component({
   selector: 'wsm-app',
@@ -17,15 +18,15 @@ import { GetLoaded } from "./_state";
 })
 export class AppComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
-
+  private sTimeout;
 
   constructor(private meta: Meta,
               private renderer: Renderer2,
               private elementRef: ElementRef,
               private router: Router,
               private accountService: Wsm2AccountService,
-              private store: Store<State>,
-              @Inject(AppConfigToken) private config: IAppConfig
+              private store: Store<State>
+              // , @Inject(AppConfigToken) private config: IAppConfig
   ) {
     this.meta.addTag({ name: 'version', content: environment.version });
     this.subscriptions.push(
@@ -37,8 +38,13 @@ export class AppComponent implements OnDestroy {
     this.subscriptions.forEach((s: Subscription) => s.unsubscribe());
   }
 
+  private showDelay() {}
+
   private toggleApp(status: boolean): void {
     document.getElementById('app-loading').style.display = (status) ? 'none' : 'flex';
     this.elementRef.nativeElement.style.display = (status) ? 'flex' : 'none';
+    this.sTimeout = setTimeout(() => this.showDelay(), 1250);
+    this.store.dispatch(new LayoutLoaded(true));
+
   }
 }

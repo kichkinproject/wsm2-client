@@ -1,0 +1,156 @@
+@import "variables";
+
+$dataColor: (
+  good: $dataGoodColor,
+  normal: $dataNormalColor,
+  bad: $dataBadColor,
+);
+
+$lightTheme: (
+  // Основные цвета
+  main: (
+    backgroundColor: $mainBackgroundLight,
+    color: $mainBlack,
+    loaderColor: $loaderLight
+  ),
+  // Цвета шапки
+  header: (
+    backgroundColor: $mainHeaderBackgroundLight,
+    boxShadow: 0 0 3px 3px change_color($black, $alpha: 0.3),
+    color: $altColorLight,
+    icon: (
+      color: change_color($mainHeaderIconColorLight, $alpha: 0.5),
+      hoverColor: $mainHeaderIconColorLight
+    )
+  ),
+  sidenav: (
+    backgroundColor: $mainHeaderBackgroundLight,
+    color: $altColorLight,
+  ),
+  text: (
+    header: $altColorLight,
+  ),
+  noData: (
+    color: $altColorLight,
+    altColor: $bluish-grey,
+  ),
+  // Цвета для карты
+  map: (
+    backgroundColor: $mainBackgroundNewLight,
+    network: (
+      lines: $mapGridLinesLight,
+      dots: $mapGridDotsLight
+    ),
+    point: (
+      backgroundColor: $mainBackgroundLight,
+      color: $bluish-grey,
+      circleColor: change_color($slate, $alpha: 0.3),
+      defaultBackgroundColor: $mainWhite,
+      status: (
+        good: (
+          backgroundColor: $mainWhite,
+          borderColor: $dataGoodColor,
+          color: $dataGoodColor
+        ),
+        normal: (
+          backgroundColor: $mainWhite,
+          borderColor: $dataNormalColor,
+          color: $dataNormalColor
+        ),
+        bad: (
+          backgroundColor: $mainWhite,
+          borderColor: $dataBadColor,
+          color: $dataBadColor
+        ),
+      )
+    ),
+    detail: (
+      backgroundColor: $white-two
+    )
+  ),
+  // Цвета блоков показателей
+  block: (
+    backgroundColor: $mainHeaderBackgroundLight,
+    color: $bluish-grey,
+    border: none,
+    borderRadius: 2px,
+  ),
+  // Цвета элементов управления
+  combobox: (
+    backgroundColor: $white-two,
+    color: $bluish-grey,
+    border: none,
+    borderColor: change_color($black, $alpha: 0.07),
+    labelColor: $bluish-grey,
+    defaultColor: $black,
+    collapsedGroup: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxwYXRoIGZpbGw9IiM3NjhDOTkiIGQ9Ik0xMCAxN2w1LTUtNS01djEweiIvPgogICAgPHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMjRWMGgyNHYyNEgweiIvPgo8L3N2Zz4K'),
+    expandedGroup: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxwYXRoIGZpbGw9IiM3NjhDOTkiIGQ9Ik03IDEwbDUgNSA1LTV6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPgo='),
+    menu: (
+      backgroundColor: $mainWhite
+    )
+  ),
+  table: (
+    borderColor: change_color($black, $alpha: 0.3),
+    color: change_color($black, $alpha: 0.5)
+  )
+);
+
+
+$themes: (
+  light: $lightTheme
+);
+
+
+@mixin defaultIcon {
+  @include themify($themes) {
+    color: themed('header', 'icon', 'color');
+
+    mat-icon {
+      color: themed('header', 'icon', 'color');
+    }
+  }
+  display: inline-flex;
+  width: rem(48px);
+  height: rem(48px);
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  transition: color ease-in-out 0.2s;
+  user-select: none;
+
+  &:hover,
+  &.active {
+    @include themify($themes) {
+      color: themed('header', 'icon', 'colorHover');
+
+      mat-icon {
+        color: themed('header', 'icon', 'colorHover');
+      }
+    }
+    background-color: change_color($defaultColor, $alpha: 0.07);
+  }
+}
+
+@mixin defaultSlider {
+  mat-slide-toggle {
+    &.mat-checked:not(.mat-disabled) {
+      & .mat-slide-toggle-thumb {
+        background-color: $defaultColor;
+      }
+
+      & .mat-slide-toggle-bar {
+        background-color: change_color($defaultColor, $alpha: 0.5);
+      }
+    }
+
+    &:not(.mat-disabled) {
+      & .mat-slide-toggle-bar {
+        background-color: hsla(0, 0, 0%, 0.5);
+      }
+    }
+  }
+}

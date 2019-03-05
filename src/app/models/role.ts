@@ -17,4 +17,11 @@ export class Role {
     this.user_name = model.name;
     this.user_role = model.role;
   }
+
+  public hasAccess() {
+    return (this.user_role === Roles.MAIN_ADMIN
+      || this.user_role === Roles.ADMIN
+      || this.user_role === Roles.INTEGRATOR
+      || this.user_role === Roles.SIMPLE);
+  }
 }

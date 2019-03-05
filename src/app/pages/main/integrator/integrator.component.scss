@@ -1,0 +1,7 @@
+@import "../../../../styles/mixins";
+
+:host {
+  @include fill;
+  z-index: 100;
+  padding-top: 72px;
+}

@@ -17,8 +17,9 @@ export class AppGuard implements CanActivate {
 
   constructor(private router: Router,
               private accountService: Wsm2AccountService,
-              private store: Store<State>,
-              @Inject(AppConfigToken) protected config: AppConfig) {
+              private store: Store<State>
+              // , @Inject(AppConfigToken) protected config: AppConfig
+  ) {
     this.store.pipe(select(GetCurrentUser)).subscribe(user => this.$user.next(user));
   }
 
@@ -40,14 +41,14 @@ export class AppGuard implements CanActivate {
     // }
   }
 
-  private setUser(user: any): Observable<boolean> {
-    const role = new Role(user);
-    return this.accountService.getUserSettings().pipe(
-      flatMap((settings: string) => {
-        // role.settings = Utils.exists(settings) ? JSON.parse(settings) : {};
-        this.store.dispatch(new LayoutSetUser(role));
-        return of(true);
-      }),
-    );
-  }
+  // private setUser(user: any): Observable<boolean> {
+  //   const role = new Role(user);
+  //   return this.accountService.getUserSettings().pipe(
+  //     flatMap((settings: string) => {
+  //       // role.settings = Utils.exists(settings) ? JSON.parse(settings) : {};
+  //       this.store.dispatch(new LayoutSetUser(role));
+  //       return of(true);
+  //     }),
+  //   );
+  // }
 }

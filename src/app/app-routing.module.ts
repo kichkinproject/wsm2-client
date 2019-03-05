@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import {Routes, RouterModule, PreloadAllModules} from '@angular/router';
-import { AppGuard } from './app.guard';
 import { environment } from '../environments/environment';
 
 const routes: Routes = [
@@ -11,7 +10,6 @@ const routes: Routes = [
   {
     path: 'main',
     loadChildren: './pages/main/main.module#MainModule',
-    canActivate: [AppGuard]
   },
   {
     path: '**',
@@ -23,14 +21,11 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       enableTracing: !environment.production,
-      preloadingStrategy: PreloadAllModules,
+      // preloadingStrategy: PreloadAllModules,
     }),
   ],
   exports: [
     RouterModule,
-  ],
-  // providers: [
-  //   AppGuard,
-  // ],
+  ]
 })
 export class AppRoutingModule { }
