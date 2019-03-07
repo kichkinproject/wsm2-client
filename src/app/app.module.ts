@@ -14,8 +14,10 @@ import {AppConfigToken, AppStateToken} from './models/token'
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { CustomRouterStateSerializer } from './_state/utils';
 import {StoreModule} from '@ngrx/store';
-import {reducers} from './_state';
+import {reducers, metaReducers} from './_state';
 import {SelectionPanelComponent, SelectionPanelModule} from './components/selection-panel/selection-panel.component';
+import {environment} from '../environments/environment';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 export function appInit(config: AppConfig) {
   return () => config.load();
@@ -34,25 +36,28 @@ export function appInit(config: AppConfig) {
     ReactiveFormsModule,
     OverlayModule,
     AppRoutingModule,
-    SelectionPanelModule
+    StoreModule.forRoot(reducers, { metaReducers }),
+    (!environment.production) ? StoreDevtoolsModule.instrument({
+      logOnly: environment.production,
+    }) : [],
   ],
   bootstrap: [AppComponent],
   providers: [
     Wsm2AccountService,
-    {
-      provide: AppConfigToken,
-      useClass: AppConfig,
-    },
-    {
-      provide: AppStateToken,
-      useClass: AppState,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInit,
-      deps: [AppConfig],
-      multi: true,
-    },
+    // {
+    //   provide: AppConfigToken,
+    //   useClass: AppConfig,
+    // },
+    // {
+    //   provide: AppStateToken,
+    //   useClass: AppState,
+    // },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: appInit,
+    //   deps: [AppConfig],
+    //   multi: true,
+    // },
     {
       provide: RouterStateSerializer,
       useClass: CustomRouterStateSerializer,

@@ -19,7 +19,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    Wsm2AccountService,
+    // Wsm2AccountService,
     MatListModule,
     MatSidenavModule,
     MatIconModule,

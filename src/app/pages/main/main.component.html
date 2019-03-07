@@ -13,15 +13,15 @@
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/admin/admin-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>local_library</mat-icon>
           <span class="general-item-name">Администраторы</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/user-group/user-group-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>group</mat-icon>
           <span class="general-item-name">Группы пользователей</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>
@@ -35,19 +35,19 @@
             <mat-icon>home</mat-icon>
             <span class="general-item-name">Главная страница</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/admin/admin-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
             <mat-icon>local_library</mat-icon>
             <span class="general-item-name">Администраторы</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/user-group/user-group-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
             <mat-icon>group</mat-icon>
             <span class="general-item-name">Группы пользователей</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/integrator/integrator-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
             <mat-icon>airline_seat_recline_normal</mat-icon>
             <span class="general-item-name">Интеграторы</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
             <mat-icon>code</mat-icon>
             <span class="general-item-name">Сценарии</span>
           </a>
@@ -61,33 +61,33 @@
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/integrator/integrator-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>airline_seat_recline_normal</mat-icon>
           <span class="general-item-name">Интеграторы</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/user-group/user-group-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>group</mat-icon>
           <span class="general-item-name">Группы пользователей</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/user/user-list'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/user'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>mood</mat-icon>
           <span class="general-item-name">Пользователи</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
-          <!--</a>-->
-          <!--<a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/controller/controller-admin-scenario-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
-          <!--<mat-icon>cast_connected</mat-icon>-->
-          <!--<span class="general-item-name">Контроллеры</span>-->
-          <!--</a>-->
-          <!--<a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/thing/thing-admin-scenario-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
-          <!--<mat-icon>speaker_group</mat-icon>-->
-          <!--<span class="general-item-name">Умные вещи</span>-->
-          <!--</a>-->
-          <!--<a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/sensor/sensor-admin-scenario-list'" [queryParams]="defaultState" (click)="drawer.toggle()">-->
-          <!--<mat-icon>wb_iridescent</mat-icon>-->
-          <!--<span class="general-item-name">Датчики</span>-->
+          </a>
+          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/controller'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>cast_connected</mat-icon>
+          <span class="general-item-name">Контроллеры</span>
+          </a>
+          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/thing'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>speaker_group</mat-icon>
+          <span class="general-item-name">Умные вещи</span>
+          </a>
+          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/sensor'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <mat-icon>wb_iridescent</mat-icon>
+          <span class="general-item-name">Датчики</span>
         </a>
       </mat-nav-list>
     </ng-container>
@@ -98,7 +98,7 @@
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/scenario/scenario-list'" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
           <mat-icon><code></code></mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>

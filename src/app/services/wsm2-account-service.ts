@@ -17,7 +17,7 @@ export class Wsm2AccountService /*extends ApiService*/ {
   // private accountUrl = `${this.url}/Account`;
 
   constructor(protected http: HttpClient,
-              protected appState: AppState,
+              // protected appState: AppState,
               // @Inject(AppConfigToken) protected config: IAppConfig
   ) {
     // super(http, appState, aclService, alertsService, config);

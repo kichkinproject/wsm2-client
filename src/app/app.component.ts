@@ -38,13 +38,13 @@ export class AppComponent implements OnDestroy {
     this.subscriptions.forEach((s: Subscription) => s.unsubscribe());
   }
 
-  private showDelay() {}
+  private showDelay() {
+    this.store.dispatch(new LayoutLoaded(true));
+  }
 
   private toggleApp(status: boolean): void {
     document.getElementById('app-loading').style.display = (status) ? 'none' : 'flex';
     this.elementRef.nativeElement.style.display = (status) ? 'flex' : 'none';
-    this.sTimeout = setTimeout(() => this.showDelay(), 1250);
-    this.store.dispatch(new LayoutLoaded(true));
-
+    this.sTimeout = setTimeout(() => this.showDelay(), 30000);
   }
 }

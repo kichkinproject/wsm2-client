@@ -11,7 +11,7 @@ export class WsmData {
   private userData: User[] = [
     {
       login: 'system_author',
-      password: '123qwewq321',
+      password: '123qwewq32',
       name: 'First Main',
       info: 'Some info about first main admin',
       role: Roles.MAIN_ADMIN,

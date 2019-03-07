@@ -84,8 +84,8 @@ export class IdentificationComponent implements OnInit {
   private identify(user: User) {
     const role = new Role(user);
     this.store.dispatch(new LayoutSetUser(role));
-    console.log(`${this.$user.getValue().user_login} идентифицирован`);
-    this.router.navigate(['/main']);
+    console.log(`${this.$login} идентифицирован`);
+    this.router.navigate(['/main/about']);
   }
 
   public ngOnInit() {
