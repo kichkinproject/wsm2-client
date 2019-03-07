@@ -22,7 +22,7 @@ import {WsmData} from '../models/data';
 })
 export class Wsm2DataService /*extends ApiService*/ {
   constructor(protected http: HttpClient,
-              protected appState: AppState
+              // protected appState: AppState
               // @Inject(AppConfigToken) protected config: IAppConfig
   ) {
     // super(http, appState, aclService, alertsService, config),

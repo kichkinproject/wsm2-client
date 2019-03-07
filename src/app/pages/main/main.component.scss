@@ -48,6 +48,13 @@
   align-items: center;
 }
 
+:host .toolbar-right {
+  flex: 1;
+  flex-direction: column;
+  justify-content: right;
+  margin-left: rem(-28px);
+}
+
 :host .toolbar-center {
   flex: 1;
   flex-direction: column;

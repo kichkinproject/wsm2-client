@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/theming";
+@import "styles/fonts";
+@import "styles/mixins";
+@include mat-core();
+//@include angular-material-theme($candy-app-theme);
+
+*{
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+html,
+ body {
+   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+   font-size: rem(16px);
+ }
+
+wsm-app {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  vertical-align: middle;
+}
+
+a {
+  text-decoration: none;
+}

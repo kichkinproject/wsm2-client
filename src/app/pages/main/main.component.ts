@@ -60,19 +60,19 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   public goToPrevious() {
-    if (this.router.url.indexOf('list') !== -1) {
-      this.router.navigate(['/admin-list'], {
+    if (this.router.url.indexOf('list') === -1) {
+      this.router.navigate(['/main/admin-list'], {
         queryParams: {}
       });
     } else {
-      this.router.navigate(['/about'], {
+      this.router.navigate(['/main/about'], {
         queryParams: {}
       });
     }
   }
 
   public goToCabinet() {
-    this.router.navigate(['/cabinet'], {
+    this.router.navigate(['/main/cabinet'], {
       queryParams: {}
     });
   }

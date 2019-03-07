@@ -6,6 +6,7 @@ import { ScenarioCompareComponent } from './scenario-compare.component';
 import {Wsm2AccountService} from '../../../../services/wsm2-account-service';
 import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {MatIconModule, MatListModule, MatSidenavModule, MatSlideToggleModule, MatToolbarModule} from '@angular/material';
+import { LoaderModule } from "../../../../components/loader/loader.component";
 
 const routes: Routes = [
   {
@@ -20,13 +21,12 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    Wsm2AccountService,
-    Wsm2DataService,
     MatListModule,
     MatSidenavModule,
     MatIconModule,
     MatSlideToggleModule,
     MatToolbarModule,
+    LoaderModule,
   ],
   exports: [
     ScenarioCompareComponent,

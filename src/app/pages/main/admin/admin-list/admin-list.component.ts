@@ -19,12 +19,12 @@ export class AdminListComponent implements AfterViewInit {
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private admins: Array<User> = [];
-
+  private baseRole = Roles;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              public dataService: Wsm2DataService) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -55,7 +55,7 @@ export class AdminListComponent implements AfterViewInit {
   }
 
   public addNewAdmin() {
-    this.router.navigate(['/admin-create'], {
+    this.router.navigate(['main/admin/admin-create'], {
       queryParams: {}
     });
   }

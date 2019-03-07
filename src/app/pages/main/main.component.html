@@ -9,19 +9,19 @@
     <ng-container *ngIf="isMainAdmin">
       <mat-nav-list>
         <h4 class="menu-group">Главный администратор</h4>
-        <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>local_library</mat-icon>
           <span class="general-item-name">Администраторы</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>group</mat-icon>
           <span class="general-item-name">Группы пользователей</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/scenario'" (click)="drawer.toggle()">
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>
@@ -31,23 +31,23 @@
       <mat-nav-list>
         <ng-container>
           <h4 class="menu-group">Администратор</h4>
-          <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
             <mat-icon>home</mat-icon>
             <span class="general-item-name">Главная страница</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
             <mat-icon>local_library</mat-icon>
             <span class="general-item-name">Администраторы</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
             <mat-icon>group</mat-icon>
             <span class="general-item-name">Группы пользователей</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
             <mat-icon>airline_seat_recline_normal</mat-icon>
             <span class="general-item-name">Интеграторы</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/scenario'" (click)="drawer.toggle()">
             <mat-icon>code</mat-icon>
             <span class="general-item-name">Сценарии</span>
           </a>
@@ -57,35 +57,35 @@
     <ng-container *ngIf="isIntegrator">
       <mat-nav-list>
         <h4 class="menu-group">Интегратор</h4>
-        <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>airline_seat_recline_normal</mat-icon>
           <span class="general-item-name">Интеграторы</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>group</mat-icon>
           <span class="general-item-name">Группы пользователей</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/user'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/user'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>mood</mat-icon>
           <span class="general-item-name">Пользователи</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/scenario'" (click)="drawer.toggle()">
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
           </a>
-          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/controller'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/main/controller'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>cast_connected</mat-icon>
           <span class="general-item-name">Контроллеры</span>
           </a>
-          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/thing'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/main/thing'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>speaker_group</mat-icon>
           <span class="general-item-name">Умные вещи</span>
           </a>
-          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/sensor'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/main/sensor'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>wb_iridescent</mat-icon>
           <span class="general-item-name">Датчики</span>
         </a>
@@ -94,11 +94,11 @@
     <ng-container *ngIf="isUser">
       <mat-nav-list>
         <h4 class="menu-group">Пользователь</h4>
-        <a mat-list-item class="general-item-link" [routerLink]="'/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/scenario'" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/scenario'" (click)="drawer.toggle()">
           <mat-icon><code></code></mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>
@@ -138,24 +138,25 @@
             <!--<mat-icon>arrow_back</mat-icon>-->
           <!--</a>-->
         <!--</div>-->
-        <div class="toolbar-center"></div>
+
+        <selection-panel>
+          <div class="toolbar-left">
+            <button mat-icon-button *ngIf="needToGoBack()" (click)="goToPrevious()">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+          </div>
+          <div class="toolbar-center"></div>
+          <div class="toolbar-right">
+            <button mat-icon-button (click)="goToCabinet()">
+              <mat-icon>account_box</mat-icon>
+            </button>
+            <button mat-icon-button (click)="unautentificateUser()">
+              <mat-icon>exit_to_app</mat-icon>
+            </button>
+          </div>
+        </selection-panel>
       </mat-toolbar-row>
     </mat-toolbar>
-    <selection-panel>
-      <div class="left-part-of-selection-panel">
-        <button mat-icon-button *ngIf="needToGoBack()" (click)="goToPrevious()">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </div>
-      <div class="right-part-of-selection-panel">
-        <button mat-icon-button (click)="goToCabinet()">
-          <mat-icon>account_box</mat-icon>
-        </button>>
-        <button mat-icon-button (click)="unautentificateUser()">
-          <mat-icon>exit_to_app</mat-icon>
-        </button>
-      </div>
-    </selection-panel>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

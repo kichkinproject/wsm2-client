@@ -14,6 +14,7 @@ import {Wsm2AccountService} from '../../services/wsm2-account-service';
 import {Wsm2DataService} from '../../services/wsm2-data-service';
 import {MainGuard} from './main.guard';
 import {SelectionPanelComponent, SelectionPanelModule} from '../../components/selection-panel/selection-panel.component';
+import { LoaderModule } from "../../components/loader/loader.component";
 
 const routes: Routes = [
   {
