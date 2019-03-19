@@ -1,0 +1,28 @@
+{
+    "extends": [
+        "stylelint-config-standard",
+        "stylelint-config-recommended-scss",
+        "stylelint-config-idiomatic-order"
+    ],
+    "rules": {
+        "indentation": 4,
+        "color-hex-length": "long",
+        "selector-type-no-unknown": null,
+        "at-rule-empty-line-before": [
+            "always",
+            {
+                "ignore": [
+                    "after-comment",
+                    "first-nested",
+                    "inside-block",
+                    "blockless-after-same-name-blockless",
+                    "blockless-after-blockless"
+                ]
+            }
+        ],
+        "declaration-empty-line-before": "never",
+        "font-family-no-missing-generic-family-keyword": false,
+        "comment-empty-line-before": "never",
+        "no-descending-specificity": null
+    }
+}

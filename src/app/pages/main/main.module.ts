@@ -10,11 +10,9 @@ import {
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
-import {Wsm2AccountService} from '../../services/wsm2-account-service';
-import {Wsm2DataService} from '../../services/wsm2-data-service';
 import {MainGuard} from './main.guard';
-import {SelectionPanelComponent, SelectionPanelModule} from '../../components/selection-panel/selection-panel.component';
-import { LoaderModule } from "../../components/loader/loader.component";
+import {SelectionPanelModule} from '../../components/selection-panel/selection-panel.component';
+import { LoaderModule } from '../../components/loader/loader.component';
 
 const routes: Routes = [
   {
@@ -42,13 +40,12 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    // Wsm2AccountService,
-    // Wsm2DataService,
     MatListModule,
     MatSidenavModule,
     MatIconModule,
     MatSlideToggleModule,
     MatToolbarModule,
+    LoaderModule,
     SelectionPanelModule
   ],
   exports: [

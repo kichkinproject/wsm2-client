@@ -7,24 +7,90 @@
 }
 
 :host h2 {
-  display: flex;
+  display: block;
   width: rem(1700px);
   max-width: rem(1700px);
   flex-basis: rem(1700px);
-  margin: rem(16px) auto;
+  //margin: rem(16px) auto;
   color: $mainBlack;
 }
 
 
-:host div.app-description {
+
+:host .app-description {
+  display: block;
+  width: rem(1400px);
+  max-width: rem(1600px);
+  flex-basis: rem(1600px);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+
+  & /deep/ span {
+    font-style: italic;
+    font-weight: bold;
+  }
+}
+
+:host .short-description {
+  padding: 10px;
+  background-color: change_color($bluish-grey, $alpha: 0.3);
+  border-radius: 5px;
+  border-width: 1px;
+  font-size: 150%;
+  font-family: 'Times New Roman';
+}
+
+
+//:host .team-description {
+//  padding: 20px 0;
+//}
+
+:host .team-info {
+  padding: 0 0 20px;
+  width: rem(1400px);
+}
+
+:host .system-developers {
+  padding: 20px;
+  font-size: 120%;
+  font-family: 'Times New Roman';
+  background-color: change_color($bluish-grey, $alpha: 0.3);
+  border-radius: 5px;
+  border-width: 1px;
+  width: 680px;
+  float: left;
+}
+
+:host .system-order-master {
+  padding: 20px;
+  font-size: 120%;
+  font-family: 'Times New Roman';
+  background-color: change_color($bluish-grey, $alpha: 0.3);
+  border-radius: 5px;
+  border-width: 1px;
+  width: 680px;
+  float: right;
+}
+
+:host .team-list {
+  padding: 20px;
+  font-size: 120%;
+  font-family: 'Times New Roman';
+  background-color: change_color($bluish-grey, $alpha: 0.3);
+  border-width: 1px;
+  border-radius: 5px;
+  width: rem(1400px);
+  float: left;
+  margin-bottom: 10px;
+}
+
+:host .big-li {
 
 }
 
-:host div.short-description {
+:host .small-li {
 
 }
 
 
-:host div.team-description {
-
-}

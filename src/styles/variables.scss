@@ -4,7 +4,7 @@ $rem-px-only: false !default;
 
 $black: hsl(0, 0%, 0%);
 $white: hsl(0, 0%, 100%);
-$white-two: hsl(0, 0%, 95%);
+$white-two: hsl(0, 0%, 98%);
 $blueberry: hsl(249, 46%, 43%);
 $pale-red: hsl(1, 67%, 51%);
 $warm-purple: hsl(299, 47%, 32%);
@@ -25,7 +25,7 @@ $azure: hsl(197, 88%, 52%);
 $nice-blue: hsl(210, 81%, 41%);
 $dusk-blue: hsl(222, 53%, 42%);
 $blueberry-three: hsl(234, 46%, 44%);
-$bluish-grey: hsl(202, 15%, 53%);
+$bluish-grey: hsl(199, 41%, 81%);
 $charcoal-grey: hsl(203, 13%, 27%);
 $light-cyan: hsl(180, 100%, 84%);
 $cerulean: hsl(202, 100%, 38%);
@@ -50,7 +50,7 @@ $dataPlanColor: $nice-blue;
 
 $mainColorLight: $white-two;
 $altColorLight: change_color($white, $alpha: 0.5);
-$mainHeaderBackgroundLight: $white;
+$mainHeaderBackgroundLight: $azure;
 $mainHeaderIconColorLight: $bluish-grey;
 $mainBackgroundLight: change_color($mainColorLight, $alpha: 1);
 $loaderLight: change_color($mainColorLight, $alpha: 0.8);
@@ -60,8 +60,8 @@ $mapGridLinesLight:
 $mapGridDotsLight: radial-gradient(change_color($dark-grey-blue, $alpha: 0.2) 3%, transparent 0);
 
 $mainColorNewLight: $white-two;
-$altColorNewLight: change_color($white, $alpha: 0.5);
-$mainHeaderBackgroundNewLight: $cerulean;
+$altColorNewLight: $white;
+$mainHeaderBackgroundNewLight: $azure;
 $mainHeaderIconColorNewLight: $white;
 $mainBackgroundNewLight: change_color($mainColorNewLight, $alpha: 1);
 $loaderNewLight: change_color($mainColorNewLight, $alpha: 0.8);

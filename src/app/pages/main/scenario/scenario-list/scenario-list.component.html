@@ -1,12 +1,12 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Список сценариев</h2>
+  <h2 align="center">Список сценариев</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button *ngIf="role() !== Roles.SIMPLE" (click)="addNewScenario()">
+      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE" (click)="addNewScenario()">
         <mat-icon>add_box</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() === Roles.MAIN_ADMIN || role() === Roles.ADMIN" (click)="createReportOnScenarios()">
+      <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN || role() === baseRole.ADMIN" (click)="createReportOnScenarios()">
         <mat-icon>send</mat-icon>
       </button>
       <button mat-icon-button (click)="updateScenarioList()">
@@ -21,22 +21,22 @@
         <div>
           <p class="item-name">{{scenario.name}}</p>
           <p class="item-description">{{scenario.description}}</p>
-          <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.INTEGRATOR" (click)="doubleScenario(scenario.id)">
+          <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="doubleScenario(scenario.id)">
             <mat-icon>call_split</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.INTEGRATOR" (click)="editScenario(scenario.id)">
+          <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="editScenario(scenario.id)">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button (click)="viewScenario(scenario.id)">
             <mat-icon>details</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="role() !== Roles.SIMPLE" (click)="removeScenario(scenario.id)">
+          <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE" (click)="removeScenario(scenario.id)">
             <mat-icon>delete</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="role() !== Roles.INTEGRATOR" (click)="compareScenario(scenario.id)">
+          <button mat-icon-button *ngIf="role() !== baseRole.INTEGRATOR" (click)="compareScenario(scenario.id)">
             <mat-icon>compare</mat-icon>
           </button>
-          <mat-button-toggle *ngIf="role() === Roles.SIMPLE || role() === Roles.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></mat-button-toggle>
+          <button mat-slide-toggle [(ngModel)]="isActivated" *ngIf="role() === baseRole.SIMPLE || role() === baseRole.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></button>
         </div>
       </li>
     </ul>

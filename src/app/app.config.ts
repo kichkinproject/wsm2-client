@@ -18,7 +18,7 @@ export interface IAppConfig {
 @Injectable()
 export class AppConfig implements IAppConfig {
   public get ServerName(): string {
-    return this.getConfig('apiServer');
+    return this.getConfig('api');
   }
 
   public get Protocol(): string {

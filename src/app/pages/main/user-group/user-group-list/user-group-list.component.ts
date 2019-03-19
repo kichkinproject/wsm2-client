@@ -36,10 +36,10 @@ export class UserGroupListComponent  implements AfterViewInit {
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        Utils.pushAll(this.groups, this.dataService.getUserGroups());
+        this.groups = Utils.pushAll([], this.dataService.getUserGroups());
         break;
       case Roles.INTEGRATOR:
-        Utils.pushAll(this.groups, this.dataService.getAllChildrenUserGroup(user.group));
+        this.groups = Utils.pushAll([], this.dataService.getAllChildrenUserGroup(user.group));
         break;
       case Roles.SIMPLE:
         this.groups.slice(0, this.groups.length);

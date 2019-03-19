@@ -1,6 +1,6 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Список групп пользователей</h2>
+  <h2 align="center">Список групп пользователей</h2>
   <div class="block-container">
     <ul class="collection with-header">
       <li class="collection-header">
@@ -15,7 +15,7 @@
           <mat-icon>cached</mat-icon>
         </button>
       </li>
-      <li class="collection-item" *ngFor="let userGroup of userGroups">
+      <li class="collection-item" *ngFor="let userGroup of groups">
         <div>
           <p class="item-name">{{userGroup.name}}</p>
           <p class="item-description">{{userGroup.description}}</p>

@@ -3,13 +3,12 @@ import { Meta } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { Wsm2AccountService } from "./services/wsm2-account-service";
 import { select, Store } from "@ngrx/store";
-import { State } from "./_state";
+import { State, GetLoaded, GetTheme  } from "./_state";
 import { IAppConfig } from "./app.config";
 import { AppConfigToken } from "./models/token";
 import { environment } from "../environments/environment";
 import { Subscription } from "rxjs";
-import { GetLoaded } from "./_state";
-import {LayoutLoaded} from './_state/actions/layout.actions';
+import { LayoutLoaded } from './_state/actions/layout.actions';
 
 @Component({
   selector: 'wsm-app',
@@ -19,6 +18,7 @@ import {LayoutLoaded} from './_state/actions/layout.actions';
 export class AppComponent implements OnDestroy {
   private subscriptions: Subscription[] = [];
   private sTimeout;
+  private theme: string;
 
   constructor(private meta: Meta,
               private renderer: Renderer2,
@@ -31,11 +31,20 @@ export class AppComponent implements OnDestroy {
     this.meta.addTag({ name: 'version', content: environment.version });
     this.subscriptions.push(
       this.store.pipe(select(GetLoaded)).subscribe(stat => this.toggleApp(stat)),
+      this.store.pipe(select(GetTheme)).subscribe(theme => this.toggleTheme(theme)),
     );
   }
 
   public ngOnDestroy(): void {
     this.subscriptions.forEach((s: Subscription) => s.unsubscribe());
+  }
+
+  private toggleTheme(theme: string): void {
+    if (this.theme !== theme) {
+      this.renderer.removeClass(document.body, `theme-${this.theme}`);
+      this.theme = theme;
+      this.renderer.addClass(document.body, `theme-${this.theme}`);
+    }
   }
 
   private showDelay() {

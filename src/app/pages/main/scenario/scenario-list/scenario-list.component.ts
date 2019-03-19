@@ -20,6 +20,7 @@ export class ScenarioListComponent implements AfterViewInit {
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private scenarios: Array<Scenario> = [];
+  private baseRole = Roles;
 
 
   constructor(public router: Router,
@@ -34,25 +35,25 @@ export class ScenarioListComponent implements AfterViewInit {
   private updateCollection() {
     const role = this.$user.getValue().user_role;
     const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
-    const integrators: Array<User> = [];
+    let integrators: Array<User> = [];
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
         this.dataService.getScenarios().forEach((scen) => this.scenarios.push(scen));
         break;
       case Roles.INTEGRATOR:
-        Utils.pushAll(integrators, this.dataService.getIntegratorsByChildrenGroup(user.group));
+        integrators = Utils.pushAll([], this.dataService.getIntegratorsByChildrenGroup(user.group));
         if (integrators.length !== 0) {
           integrators.forEach((integr) => {
-            Utils.pushAll(this.scenarios, this.dataService.getScenarioByCreator(integr.login));
+            this.scenarios = Utils.pushAll([], this.dataService.getScenarioByCreator(integr.login));
           });
         }
         break;
       case Roles.SIMPLE:
-        Utils.pushAll(integrators, this.dataService.getIntegratorsByGroup(user.group));
+        integrators = Utils.pushAll([], this.dataService.getIntegratorsByGroup(user.group));
         if (integrators.length !== 0) {
           integrators.forEach((integr) => {
-            Utils.pushAll(this.scenarios, this.dataService.getScenarioByCreator(integr.login));
+            this.scenarios = Utils.pushAll([], this.dataService.getScenarioByCreator(integr.login));
           });
         }
         break;
@@ -119,6 +120,10 @@ export class ScenarioListComponent implements AfterViewInit {
     this.dataService.deleteScenario(id);
     this.updateCollection();
     this.isCompleted$.next(true);
+  }
+
+  public isActivated(id: number) {
+    return false;
   }
 
   public compareScenario(id: number) {

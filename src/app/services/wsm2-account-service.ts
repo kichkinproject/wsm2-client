@@ -20,6 +20,7 @@ export class Wsm2AccountService /*extends ApiService*/ {
               // protected appState: AppState,
               // @Inject(AppConfigToken) protected config: IAppConfig
   ) {
+    console.log('man');
     // super(http, appState, aclService, alertsService, config);
     // super(http, appState
     //     //   // , config

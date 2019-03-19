@@ -29,9 +29,9 @@
 
 :host .primary {
   @include themify($themes) {
-    background-color: themed('header', 'backgroundColor');
-    box-shadow: themed('header', 'boxShadow');
-  }
+     background-color: themed('header', 'backgroundColor');
+     box-shadow: themed('header', 'boxShadow');
+   }
   z-index: 100;
   display: flex;
   height: rem(72px);
@@ -40,19 +40,48 @@
   padding: rem(0 12px);
 }
 
+:host button[mat-icon-button] {
+  font-size: rem(28px);
+}
+
+:host selection-panel {
+
+}
+
+:host .nav {
+  font-size: rem(16px);
+  font-weight: 500;
+  line-height: 1.63;
+}
+
+:host button[mat-icon-button],
+:host .nav {
+  @include defaultIcon;
+
+  &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
 .logo,
 .toolbar-left,
 .toolbar-center,
 .toolbar-right {
-  display: flex;
+  display: block;
   align-items: center;
+}
+
+:host .toolbar-left {
+  flex: 1;
+  align-items: left;
+  text-align: left;
 }
 
 :host .toolbar-right {
   flex: 1;
-  flex-direction: column;
-  justify-content: right;
-  margin-left: rem(-28px);
+  align-items: right;
+  text-align: right;
 }
 
 :host .toolbar-center {
@@ -67,7 +96,8 @@
     }
     display: inline-flex;
     margin: 0;
-    font-size: rem(18px);
+    font-family: 'Times New Roman';
+    font-size: rem(24px);
     font-weight: 500;
     line-height: 1.44;
     text-align: center;
@@ -85,20 +115,7 @@
   }
 }
 
-:host button[mat-icon-button] {
-  font-size: rem(28px);
-}
 
-:host .nav {
-  font-size: rem(16px);
-  font-weight: 500;
-  line-height: 1.63;
-}
-
-:host button[mat-icon-button],
-:host .nav {
-  @include defaultIcon;
-}
 
 /**
  * Боковая панель
@@ -121,6 +138,10 @@
 mat-nav-list {
   flex: 1 auto;
   flex-direction: column;
+
+  & /deep/ .mat-list-item-content {
+    flex: 1;
+  }
 }
 
 .main-bottom-row {
@@ -136,6 +157,14 @@ mat-nav-list {
   padding: rem(0 16px);
   font-size: rem(12px);
   opacity: 0.5;
+}
+
+:host .menu-group {
+  @include themify($themes) {
+    color: themed('sidenav', 'color');
+  }
+  padding: rem(8px 16px);
+  margin: 0;
 }
 
 :host .general-item-link {
@@ -156,7 +185,7 @@ mat-nav-list {
 
   & mat-icon {
     @include themify($themes) {
-      color: change_color(themed('sidenav', 'color'), $alpha: 0.3);
+      color: change_color(themed('sidenav', 'color'), $alpha: 0.7);
     }
     margin-right: rem(16px);
     transition: background-color 0.2s ease-in-out;
@@ -168,5 +197,21 @@ mat-nav-list {
 
   &:hover .general-item-icon {
     background-color: change_color($defaultColor, $alpha: 0.3);
+  }
+}
+
+:host mat-slide-toggle.mat-checked:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-thumb {
+    background-color: $defaultColor;
+  }
+
+  & .mat-slide-toggle-bar {
+    background-color: change_color($defaultColor, $alpha: 0.5);
+  }
+}
+
+:host mat-slide-toggle:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-bar {
+    background-color: hsla(0, 0, 0%, 0.5);
   }
 }

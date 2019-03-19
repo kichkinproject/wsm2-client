@@ -9,71 +9,39 @@ $dataColor: (
 $lightTheme: (
   // Основные цвета
   main: (
-    backgroundColor: $mainBackgroundLight,
+    backgroundColor: $white,
     color: $mainBlack,
-    loaderColor: $loaderLight
+    loaderColor: $loaderNewLight
   ),
   // Цвета шапки
   header: (
-    backgroundColor: $mainHeaderBackgroundLight,
+    backgroundColor: $mainHeaderBackgroundNewLight,
     boxShadow: 0 0 3px 3px change_color($black, $alpha: 0.3),
-    color: $altColorLight,
+    color: $altColorNewLight,
     icon: (
-      color: change_color($mainHeaderIconColorLight, $alpha: 0.5),
-      hoverColor: $mainHeaderIconColorLight
+      color: $mainHeaderIconColorNewLight,
+      hoverColor: $mainHeaderIconColorNewLight
     )
   ),
   sidenav: (
-    backgroundColor: $mainHeaderBackgroundLight,
-    color: $altColorLight,
+    backgroundColor: $mainHeaderBackgroundNewLight,
+    color: $mainColorNewLight,
   ),
   text: (
-    header: $altColorLight,
+    header: $altColorNewLight,
+    disabledText: $bluish-grey
   ),
   noData: (
-    color: $altColorLight,
+    color: $altColorNewLight,
     altColor: $bluish-grey,
   ),
-  // Цвета для карты
-  map: (
-    backgroundColor: $mainBackgroundNewLight,
-    network: (
-      lines: $mapGridLinesLight,
-      dots: $mapGridDotsLight
+  button: (
+    backgroundColor: $dataGoodColor,
+    boxShadow: change_color($dataGoodColor, $alpha: 0.3),
+    icon: (
+      color: $dataGoodColor,
+      hoverColor: change_color($dataGoodColor, $alpha: 0.3)
     ),
-    point: (
-      backgroundColor: $mainBackgroundLight,
-      color: $bluish-grey,
-      circleColor: change_color($slate, $alpha: 0.3),
-      defaultBackgroundColor: $mainWhite,
-      status: (
-        good: (
-          backgroundColor: $mainWhite,
-          borderColor: $dataGoodColor,
-          color: $dataGoodColor
-        ),
-        normal: (
-          backgroundColor: $mainWhite,
-          borderColor: $dataNormalColor,
-          color: $dataNormalColor
-        ),
-        bad: (
-          backgroundColor: $mainWhite,
-          borderColor: $dataBadColor,
-          color: $dataBadColor
-        ),
-      )
-    ),
-    detail: (
-      backgroundColor: $white-two
-    )
-  ),
-  // Цвета блоков показателей
-  block: (
-    backgroundColor: $mainHeaderBackgroundLight,
-    color: $bluish-grey,
-    border: none,
-    borderRadius: 2px,
   ),
   // Цвета элементов управления
   combobox: (

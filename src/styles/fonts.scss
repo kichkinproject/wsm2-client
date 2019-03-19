@@ -1,0 +1,81 @@
+@font-face {
+  font-display: auto;
+  font-family: 'Times New Roman';
+  font-style: normal;
+  font-weight: 300;
+  src:
+    local('Times New Roman'),
+    url(/assets/fonts/TimesNewRoman/Regular/TimesNewRomanRegular.woff2) format('woff2'),
+    url(/assets/fonts/TimesNewRoman/Regular/TimesNewRomanRegular.woff) format('woff'),
+    url(/assets/fonts/TimesNewRoman/Regular/TimesNewRomanRegular.ttf) format('truetype');
+}
+
+@font-face {
+  font-display: auto;
+  font-family: 'Times New Roman';
+  font-style: italic;
+  font-weight: 300;
+  src:
+    local('Times New Roman'),
+    url(/assets/fonts/TimesNewRoman/Italic/TimesNewRomanItalic.woff2) format('woff2'),
+    url(/assets/fonts/TimesNewRoman/Italic/TimesNewRomanItalic.woff) format('woff'),
+    url(/assets/fonts/TimesNewRoman/Italic/TimesNewRomanItalic.ttf) format('truetype');
+}
+
+@font-face {
+  font-display: auto;
+  font-family: 'Times New Roman';
+  font-style: normal;
+  font-weight: bold;
+  src:
+    local('Times New Roman'),
+    url(/assets/fonts/TimesNewRoman/Bold/TimesNewRomanBold.woff2) format('woff2'),
+    url(/assets/fonts/TimesNewRoman/Bold/TimesNewRomanBold.woff) format('woff'),
+    url(/assets/fonts/TimesNewRoman/Bold/TimesNewRomanBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-display: auto;
+  font-family: 'Times New Roman';
+  font-style: italic;
+  font-weight: bold;
+  src:
+    local('Times New Roman'),
+    url(/assets/fonts/TimesNewRoman/BoldItalic/TimesNewRomanBoldItalic.woff2) format('woff2'),
+    url(/assets/fonts/TimesNewRoman/BoldItalic/TimesNewRomanBoldItalic.woff) format('woff'),
+    url(/assets/fonts/TimesNewRoman/BoldItalic/TimesNewRomanBoldItalic.ttf) format('truetype');
+}
+
+@font-face {
+  font-display: auto;
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local('Material Icons'),
+    url(/assets/fonts/MaterialIcons/MaterialIcons3-Regular.woff2) format('woff2'),
+    url(/assets/fonts/MaterialIcons/MaterialIcons3-Regular.woff) format('woff'),
+    url(/assets/fonts/MaterialIcons/MaterialIcons3-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  display: inline-block;
+  direction: ltr;
+  font-family: 'Material Icons';
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+  font-size: 24px; /* Preferred icon size */
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+}

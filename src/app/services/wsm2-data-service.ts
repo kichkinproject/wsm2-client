@@ -86,7 +86,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const integrator = this.getIntegrator(login);
     if (Utils.exists(integrator)) {
       const index = this.$integratorData.indexOf(integrator);
-      this.$integratorData.slice(index, 1);
+      this.$integratorData.splice(index, 1);
     } else {
       console.log(`Пользователя ${login} в системе не существует`);
     }
@@ -129,7 +129,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const admin = this.getAdmin(login);
     if (Utils.exists(admin)) {
       const index = this.$adminData.indexOf(admin);
-      this.$adminData.slice(index, 1);
+      this.$adminData.splice(index, 1);
     } else {
       console.log(`Пользователя ${login} в системе не существует`);
     }
@@ -184,7 +184,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const user = this.getUser(login);
     if (Utils.exists(user)) {
       const index = this.$userData.indexOf(user);
-      this.$userData.slice(index, 1);
+      this.$userData.splice(index, 1);
     } else {
       console.log(`Пользователя ${login} в системе не существует`);
     }
@@ -239,7 +239,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const scenario = this.getScenario(id);
     if (Utils.exists(scenario)) {
       const index = this.$scenarioData.indexOf(scenario);
-      this.$scenarioData.slice(index, 1);
+      this.$scenarioData.splice(index, 1);
     } else {
       console.log(`Такой сценарий в системе не найден`);
     }
@@ -271,7 +271,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const sensor = this.getSensor(id);
     if (Utils.exists(sensor)) {
       const index = this.$sensorData.indexOf(sensor);
-      this.$sensorData.slice(index, 1);
+      this.$sensorData.splice(index, 1);
     } else {
       console.log(`Такой датчик в системе не найден`);
     }
@@ -303,7 +303,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const thing = this.getThing(id);
     if (Utils.exists(thing)) {
       const index = this.$thingData.indexOf(thing);
-      this.$thingData.slice(index, 1);
+      this.$thingData.splice(index, 1);
     } else {
       console.log(`Такое устройство в системе не найдено`);
     }
@@ -338,7 +338,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const controller = this.getController(id);
     if (Utils.exists(controller)) {
       const index = this.$controllerData.indexOf(controller);
-      this.$controllerData.slice(index, 1);
+      this.$controllerData.splice(index, 1);
     } else {
       console.log(`Такой контроллер в системе не найден`);
     }
@@ -373,7 +373,7 @@ export class Wsm2DataService /*extends ApiService*/ {
     const userGroup = this.getUserGroup(id);
     if (Utils.exists(userGroup)) {
       const index = this.$userGroupData.indexOf(userGroup);
-      this.$userGroupData.slice(index, 1);
+      this.$userGroupData.splice(index, 1);
     } else {
       console.log(`Такая группа пользователей в системе не найдена`);
     }

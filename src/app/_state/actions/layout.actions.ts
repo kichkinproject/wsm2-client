@@ -7,6 +7,7 @@ export enum LayoutActionTypes {
   LayoutSetHeader = '[Layout] Set Header',
   LayoutSetPageLoaded = '[Layout] Page Loaded',
   LayoutSetUser = '[Layout] Set User',
+  LayoutSetTheme = '[Layout] Set Theme',
   LayoutLoaded = '[Layout] Data Loaded',
 }
 
@@ -42,6 +43,13 @@ export class LayoutSetUser implements Action {
   }
 }
 
+export class LayoutSetTheme implements Action {
+  readonly type = LayoutActionTypes.LayoutSetTheme;
+
+  constructor(public payload: string) {
+  }
+}
+
 export class LayoutLoaded implements Action {
   readonly type = LayoutActionTypes.LayoutLoaded;
 
@@ -54,6 +62,7 @@ export type LayoutActions =
   | LayoutSetConfig
   | LayoutSetHeader
   | LayoutSetUser
+  | LayoutSetTheme
   | LayoutLoaded
   | LayoutSetPageLoaded
 ;

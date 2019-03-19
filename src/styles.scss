@@ -5,6 +5,13 @@
 @include mat-core();
 //@include angular-material-theme($candy-app-theme);
 
+$hse-app-primary: mat-palette($mat-indigo);
+$hse-app-accent: mat-palette($mat-purple, A200, A100, A400);
+$hse-app-warn: mat-palette($mat-blue-gray);
+$hse-app-theme: mat-light-theme($hse-app-primary, $hse-app-accent, $hse-app-warn);
+
+@include angular-material-theme($hse-app-theme);
+
 *{
   box-sizing: border-box;
 }
@@ -33,4 +40,37 @@ img {
 
 a {
   text-decoration: none;
+}
+
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+.mat-menu-panel {
+  @include themify($themes) {
+    border: themed('combobox', 'menu', 'border');
+    background: themed('combobox', 'backgroundColor');
+    color: themed('combobox', 'color');
+  }
+  max-width: 100% !important;
+
+}
+
+.dimmer {
+  @include themify($themes) {
+    background-color: themed('main', 'loaderColor') !important;
+
+    & .loader {
+      color: themed('main', 'color') !important;
+
+      &::before {
+        border-color: change_color(themed('main', 'color'), $alpha: 0.15) !important;
+      }
+
+      &::after {
+        border-color: themed('main', 'color') transparent transparent !important;
+      }
+    }
+  }
 }

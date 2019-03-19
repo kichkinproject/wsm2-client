@@ -76,16 +76,16 @@
         <a mat-list-item class="general-item-link" [routerLink]="'/main/scenario'" (click)="drawer.toggle()">
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
-          </a>
-          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/main/controller'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/controller'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>cast_connected</mat-icon>
           <span class="general-item-name">Контроллеры</span>
-          </a>
-          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/main/thing'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/thing'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>speaker_group</mat-icon>
           <span class="general-item-name">Умные вещи</span>
-          </a>
-          <a mat-admin-scenario-list-item class="general-item-link" [routerLink]="'/main/sensor'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/sensor'" [queryParams]="defaultState" (click)="drawer.toggle()">
           <mat-icon>wb_iridescent</mat-icon>
           <span class="general-item-name">Датчики</span>
         </a>
@@ -99,11 +99,11 @@
           <span class="general-item-name">Главная страница</span>
         </a>
         <a mat-list-item class="general-item-link" [routerLink]="'/main/scenario'" (click)="drawer.toggle()">
-          <mat-icon><code></code></mat-icon>
+          <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>
       </mat-nav-list>
-    </ng-container>>
+    </ng-container>
     <div class="main-bottom-row">
       <!--<div class="precision-picker">-->
       <!--<label>Целые</label>-->
@@ -145,7 +145,9 @@
               <mat-icon>arrow_back</mat-icon>
             </button>
           </div>
-          <div class="toolbar-center"></div>
+          <div class="toolbar-center">
+            <h2 align="center">Умный дом: Менеджер сценариев</h2>
+          </div>
           <div class="toolbar-right">
             <button mat-icon-button (click)="goToCabinet()">
               <mat-icon>account_box</mat-icon>

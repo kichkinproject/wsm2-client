@@ -36,10 +36,10 @@ export class AdminListComponent implements AfterViewInit {
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        Utils.pushAll(this.admins, this.dataService.getAdmins());
+        this.admins = Utils.pushAll([], this.dataService.getAdmins());
         break;
       default:
-        this.admins.slice(0, this.admins.length);
+        this.admins = [];
         break;
     }
   }

@@ -7,7 +7,6 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -17,14 +16,47 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
+            "progress": true,
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "favicon_hse.*",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "web.config",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "env.json",
+                "input": "src",
+                "output": "/"
+              }
             ],
             "styles": [
-              "src/styles.scss"
+              {
+                "input": "node_modules/normalize.css/normalize.css"
+              },
+              {
+                "input": "src/styles.scss"
+              },
+              {
+                "input": "node_modules/ag-grid-community/dist/styles/ag-grid.css"
+              },
+              {
+                "input": "node_modules/ag-grid-community/dist/styles/ag-theme-material.css"
+              }
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/moment/locale/ru.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -82,8 +114,16 @@
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "favicon_hse.*",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              }
             ]
           }
         },
