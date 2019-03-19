@@ -18,7 +18,7 @@ export class UserListComponent implements AfterViewInit {
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private users: Array<User> = [];
-
+  private baseRole = Roles;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
@@ -35,13 +35,13 @@ export class UserListComponent implements AfterViewInit {
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        Utils.pushAll(this.users, this.dataService.getUsers());
+        this.users = Utils.pushAll([], this.dataService.getUsers());
         break;
       case Roles.INTEGRATOR:
-        Utils.pushAll(this.users, this.dataService.getUsersByChildrenGroup(user.group));
+        this.users = Utils.pushAll([], this.dataService.getUsersByChildrenGroup(user.group));
         break;
       case Roles.SIMPLE:
-        Utils.pushAll(this.users, this.dataService.getUsersByGroup(user.group));
+        this.users = Utils.pushAll([], this.dataService.getUsersByGroup(user.group));
         break;
       default:
         this.users.slice(0, this.users.length);

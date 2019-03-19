@@ -18,6 +18,7 @@ export class ControllerListComponent implements AfterViewInit {
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private controllers: Array<Controller> = [];
+  private baseRole = Roles;
 
 
   constructor(public router: Router,
@@ -38,7 +39,7 @@ export class ControllerListComponent implements AfterViewInit {
         this.controllers.slice(0, this.controllers.length);
         break;
       case Roles.INTEGRATOR:
-        Utils.pushAll(this.controllers, this.dataService.getControllersByGroup(user.group));
+        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
         break;
       case Roles.SIMPLE:
         this.controllers.slice(0, this.controllers.length);

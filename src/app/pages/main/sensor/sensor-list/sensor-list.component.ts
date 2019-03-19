@@ -19,6 +19,7 @@ export class SensorListComponent implements AfterViewInit {
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private sensors: Array<Scenario> = [];
+  private baseRole = Roles;
 
 
   constructor(public router: Router,
@@ -40,7 +41,7 @@ export class SensorListComponent implements AfterViewInit {
         this.sensors.slice(0, this.sensors.length);
         break;
       case Roles.INTEGRATOR:
-        Utils.pushAll(this.sensors, this.dataService.getSensorsByGroup(user.group));
+        this.sensors = Utils.pushAll([], this.dataService.getSensorsByGroup(user.group));
         break;
       case Roles.SIMPLE:
         this.sensors.slice(0, this.sensors.length);

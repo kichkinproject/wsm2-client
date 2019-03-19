@@ -2,23 +2,27 @@
 <div class="wsm-data-container">
   <h2 align="center">Список устройств</h2>
   <div class="block-container">
-    <ul class="collection with-header">
+    <div class="buttons-block">
+      <button mat-icon-button (click)="findNewThing()">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-icon-button (click)="createReportOnThing()">
+        <mat-icon>send</mat-icon>
+      </button>
+      <button mat-icon-button (click)="updateThingsList()">
+        <mat-icon>cached</mat-icon>
+      </button>
+    </div>
+    <ul class="collection-with-header">
       <li class="collection-header">
         <h4>Устройства</h4>
-        <button mat-icon-button (click)="findNewThing()">
-          <mat-icon>search</mat-icon>
-        </button>
-        <button mat-icon-button (click)="createReportOnThing()">
-          <mat-icon>send</mat-icon>
-        </button>
-        <button mat-icon-button (click)="updateThingsList()">
-          <mat-icon>cached</mat-icon>
-        </button>
       </li>
       <li class="collection-item" *ngFor="let thing of things">
-        <div>
+        <div class="element-info">
           <p class="item-name">{{thing.name}}</p>
           <p class="item-description">{{thing.description}}</p>
+        </div>
+        <div class="element-buttons">
           <button mat-icon-button (click)="viewThing(thing.id)">
             <mat-icon>visibility</mat-icon>
           </button>
@@ -26,6 +30,7 @@
             <mat-icon>delete</mat-icon>
           </button>
         </div>
+
       </li>
     </ul>
     <div class="anyShown" *ngIf="!anyShown">Устройства отсутствуют</div>

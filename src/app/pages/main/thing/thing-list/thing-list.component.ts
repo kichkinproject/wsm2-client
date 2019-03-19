@@ -20,6 +20,7 @@ export class ThingListComponent  implements AfterViewInit {
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private things: Array<Thing> = [];
+  private baseRole = Roles;
 
 
   constructor(public router: Router,
@@ -40,7 +41,7 @@ export class ThingListComponent  implements AfterViewInit {
         this.things.slice(0, this.things.length);
         break;
       case Roles.INTEGRATOR:
-        Utils.pushAll(this.things, this.dataService.getThingsByGroup(user.group));
+        this.things = Utils.pushAll([], this.dataService.getThingsByGroup(user.group));
         break;
       case Roles.SIMPLE:
         this.things.slice(0, this.things.length);

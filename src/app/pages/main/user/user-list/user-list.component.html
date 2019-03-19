@@ -2,23 +2,27 @@
 <div class="wsm-data-container">
   <h2 align="center">Список пользователей</h2>
   <div class="block-container">
-    <ul class="collection with-header">
+    <div class="buttons-block">
+      <button mat-icon-button (click)="addNewUser()">
+        <mat-icon>add_box</mat-icon>
+      </button>
+      <button mat-icon-button (click)="createReportOnUsers()">
+        <mat-icon>send</mat-icon>
+      </button>
+      <button mat-icon-button (click)="updateUserList()">
+        <mat-icon>cached</mat-icon>
+      </button>
+    </div>
+    <ul class="collection-with-header">
       <li class="collection-header">
         <h4>Пользователи</h4>
-        <button mat-icon-button (click)="addNewUser()">
-          <mat-icon>add_box</mat-icon>
-        </button>
-        <button mat-icon-button (click)="createReportOnUsers()">
-          <mat-icon>send</mat-icon>
-        </button>
-        <button mat-icon-button (click)="updateUserList()">
-          <mat-icon>cached</mat-icon>
-        </button>
       </li>
       <li class="collection-item" *ngFor="let user of users">
-        <div>
+        <div class="element-info">
           <p class="item-name">{{user.name}}</p>
           <p class="item-description">{{user.login}}: {{user.info}}</p>
+        </div>
+        <div class="element-buttons">
           <button mat-icon-button (click)="editUser(user.login)">
             <mat-icon>edit</mat-icon>
           </button>
