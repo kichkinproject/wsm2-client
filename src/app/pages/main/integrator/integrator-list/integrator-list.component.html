@@ -2,18 +2,20 @@
 <div class="wsm-data-container">
   <h2 align="center">Список интеграторов</h2>
   <div class="block-container">
-    <ul class="collection with-header">
+    <div class="buttons-block">
+      <button mat-icon-button (click)="addNewIntegrator()">
+        <mat-icon>add_box</mat-icon>
+      </button>
+      <button mat-icon-button (click)="createReportOnIntegrators()">
+        <mat-icon>send</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.MAIN_ADMIN" (click)="updateAdminList()">
+        <mat-icon>cached</mat-icon>
+      </button>
+    </div>
+    <ul class="collection-with-header">
       <li class="collection-header">
-        <h4>Инеграторы</h4>
-        <button mat-icon-button (click)="addNewIntegrator()">
-          <mat-icon>add_box</mat-icon>
-        </button>
-        <button mat-icon-button (click)="createReportOnIntegrators()">
-          <mat-icon>send</mat-icon>
-        </button>
-        <button mat-icon-button *ngIf="role() === Roles.ADMIN || role() === Roles.MAIN_ADMIN" (click)="updateAdminList()">
-          <mat-icon>cached</mat-icon>
-        </button>
+        <h4>Интеграторы</h4>
       </li>
       <li class="collection-item" *ngFor="let integrator of integrators">
         <div>
@@ -23,7 +25,7 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button (click)="viewIntegrator(integrator.login)">
-            <mat-icon>details</mat-icon>
+            <mat-icon>visibility</mat-icon>
           </button>
           <button mat-icon-button (click)="removeIntegrator(integrator.login)">
             <mat-icon>delete</mat-icon>

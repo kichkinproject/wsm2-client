@@ -6,26 +6,46 @@
   padding-top: 72px;
 }
 
-:host div.identify {
-
+:host .identify-container {
+  font-family: 'Times New Roman';
+  display: inline-block;
+  width: rem(500px);
+  padding: 40px;
+  margin: auto;
+  border-radius: 5px;
+  background-color: change_color($azure, $alpha: 0.5);
 }
 
-:host label.id-label {
-
+:host .id-label {
+  font-size: 200%;
+  padding: 20px;
+  color: $white;
 }
 
-:host label.login-input {
-
+:host .login-input {
+  color: $black;
 }
 
-:host label.password-input {
-
+:host .password-input {
+  color: $black;
 }
 
-:host span.id-span {
+:host .id-span {
   color: #850000;
 }
 
-:host button {
-  background-color: $turtle-green;
+:host button[mat-icon-button] {
+  margin: 10px 0px;
+  float: right;
+  font-size: rem(28px);
+  @include defaultIcon;
+  font-size: rem(28px);
+
+  &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  @include themify($themes) {
+    background-color: themed('button', 'icon', 'color');
+  }
 }

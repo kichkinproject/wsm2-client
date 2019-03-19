@@ -1,6 +1,85 @@
 @import "../../../../../styles/mixins";
 
+:host .block-container {
+  font-family: 'Times New Roman';
+  display: block;
+  width: rem(1400px);
+  max-width: rem(1600px);
+  flex-basis: rem(1600px);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+}
 
 :host .buttons-block {
 
+}
+
+:host button {
+}
+
+:host button[mat-icon-button] {
+  margin: 0 5px 0;
+  @include defaultIcon;
+  font-size: rem(28px);
+
+  &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  @include themify($themes) {
+    background-color: themed('button', 'icon', 'color');
+  }
+}
+
+:host .collection-with-header {
+  margin: 5px 0;
+  padding: 0 5px;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+:host .collection-header {
+  background-color: change_color($bluish-grey, $alpha: 0.4);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 10px;
+  font-size: 160%;
+}
+
+:host .collection-item {
+  background-color: change_color($bluish-grey, $alpha: 0.2);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 10px;
+  align-items: center;
+}
+
+:host .element-info {
+  width: rem(800px);
+  max-width: rem(800px);
+  margin: 0;
+  display: inline-block;
+}
+
+:host .element-buttons {
+  width: rem(500px);
+  float: right;
+  align-items: inherit;
+  display: inline-block;
+  margin-right: 5px;
+  padding: 10px;
+  text-align: right;
+}
+
+:host .item-name {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 150%;
+}
+
+:host item-description {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 120%;
 }

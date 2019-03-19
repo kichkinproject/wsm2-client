@@ -19,7 +19,7 @@ export class UserGroupListComponent  implements AfterViewInit {
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
   private groups: Array<UserGroup> = [];
-
+  private baseRole = Roles;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,

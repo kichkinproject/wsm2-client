@@ -13,14 +13,16 @@
         <mat-icon>cached</mat-icon>
       </button>
     </div>
-    <ul class="collection with-header">
+    <ul class="collection-with-header">
       <li class="collection-header">
         <h4>Сценарии</h4>
       </li>
       <li class="collection-item" *ngFor="let scenario of scenarios">
-        <div>
+        <div class="element-info">
           <p class="item-name">{{scenario.name}}</p>
           <p class="item-description">{{scenario.description}}</p>
+        </div>
+        <div class="element-buttons">
           <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="doubleScenario(scenario.id)">
             <mat-icon>call_split</mat-icon>
           </button>
@@ -28,7 +30,7 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button (click)="viewScenario(scenario.id)">
-            <mat-icon>details</mat-icon>
+            <mat-icon>visibility</mat-icon>
           </button>
           <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE" (click)="removeScenario(scenario.id)">
             <mat-icon>delete</mat-icon>

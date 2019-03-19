@@ -18,21 +18,21 @@
         <h4>Администраторы</h4>
       </li>
       <li class="collection-item" *ngFor="let admin of admins">
-          <div class="element-info">
-            <p class="item-name">{{admin.name}}</p>
-            <p class="item-description">{{admin.login}}: {{admin.info}}</p>
-          </div>
-          <div class="element-buttons">
-            <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="editAdmin(admin.login)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="viewAdmin(admin.login)">
-              <mat-icon>details</mat-icon>
-            </button>
-            <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="removeAdmin(admin.login)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
+        <div class="element-info">
+          <p class="item-name">{{admin.name}}</p>
+          <p class="item-description">{{admin.login}}: {{admin.info}}</p>
+        </div>
+        <div class="element-buttons">
+          <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="editAdmin(admin.login)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="viewAdmin(admin.login)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="removeAdmin(admin.login)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </li>
     </ul>
     <div class="anyShown" *ngIf="!anyShown">Администраторы отсутствуют</div>
