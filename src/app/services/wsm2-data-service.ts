@@ -286,7 +286,7 @@ export class Wsm2DataService /*extends ApiService*/ {
   }
 
   public getThingsByGroup(id: number): Array<Thing> {
-    return this.$thingData.filter((th) => th.master = id);
+    return this.$thingData.filter((th) => th.master === id);
   }
 
   public addThing(name: string, description: string, type: ThingType, master: number): Thing {
@@ -384,14 +384,17 @@ export class Wsm2DataService /*extends ApiService*/ {
   }
 
   public getAllChildrenUserGroup(id: number) {
-    const children = this.getChildrenUserGroup(id);
+    let group = this.getUserGroup(id);
+    let children = Utils.pushAll([group], this.getChildrenUserGroup(id));
     if (children.length === 0) {
       return [];
     }
     children.forEach((ch) => {
-      const newChildren = this.getChildrenUserGroup(ch.id);
-      if (newChildren.length !== 0) {
-        Utils.pushAll(children, newChildren);
+      if (ch.id !== id) {
+        const newChildren = this.getChildrenUserGroup(ch.id);
+        if (newChildren.length !== 0) {
+          children = Utils.pushAll(children, newChildren);
+        }
       }
     });
     return children;
@@ -402,10 +405,10 @@ export class Wsm2DataService /*extends ApiService*/ {
   }
 
   public getUsersByChildrenGroup(id: number) {
-    const users = this.getUsersByGroup(id);
+    let users = [];
     const groups = this.getAllChildrenUserGroup(id);
     groups.forEach((gr) => {
-      Utils.pushAll(users, this.getUsersByGroup(gr.id));
+      users = Utils.pushAll(users, this.getUsersByGroup(gr.id));
     });
     return users;
   }
@@ -415,10 +418,10 @@ export class Wsm2DataService /*extends ApiService*/ {
   }
 
   public getIntegratorsByChildrenGroup(id: number) {
-    const integrators = this.getIntegratorsByGroup(id);
+    let integrators = [];
     const groups = this.getAllChildrenUserGroup(id);
     groups.forEach((gr) => {
-      Utils.pushAll(integrators, this.getIntegratorsByGroup(gr.id));
+      integrators = Utils.pushAll(integrators, this.getIntegratorsByGroup(gr.id));
     });
     return integrators;
   }

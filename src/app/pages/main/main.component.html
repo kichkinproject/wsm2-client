@@ -149,7 +149,7 @@
             <h2 align="center">Умный дом: Менеджер сценариев</h2>
           </div>
           <div class="toolbar-right">
-            <button mat-icon-button (click)="goToCabinet()">
+            <button mat-icon-button (click)="goToCabinet()" *ngIf="!isMainAdmin">
               <mat-icon>account_box</mat-icon>
             </button>
             <button mat-icon-button (click)="unautentificateUser()">
