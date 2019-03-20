@@ -48,7 +48,7 @@ export class AdminListComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
     this.cd.detectChanges();

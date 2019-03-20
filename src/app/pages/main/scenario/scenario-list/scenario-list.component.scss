@@ -11,6 +11,10 @@
   margin: auto;
 }
 
+:host .wsm-data-container {
+  font-family: 'Times New Roman';
+}
+
 :host .buttons-block {
 
 }
@@ -54,6 +58,22 @@
   }
   @include themify($themes) {
     background-color: themed('button', 'icon', 'color');
+  }
+}
+
+:host mat-slide-toggle.mat-checked:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-thumb {
+    background-color: $defaultColor;
+  }
+
+  & .mat-slide-toggle-bar {
+    background-color: change_color($defaultColor, $alpha: 0.5);
+  }
+}
+
+:host mat-slide-toggle:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-bar {
+    background-color: hsla(0, 0, 0%, 0.5);
   }
 }
 

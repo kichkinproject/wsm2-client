@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -10,7 +10,8 @@ import {Utils} from '../../../../utils/utils';
 @Component({
   selector: 'wsm-integrator-create',
   templateUrl: './integrator-create.component.html',
-  styleUrls: ['./integrator-create.component.scss']
+  styleUrls: ['./integrator-create.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class IntegratorCreateComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -25,7 +26,8 @@ export class IntegratorCreateComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role)),
     );
@@ -33,9 +35,11 @@ export class IntegratorCreateComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    // this.defaultSelect();
+    // this.cd.detectChanges();
+// this.defaultSelect();
 
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -133,7 +137,7 @@ export class IntegratorCreateComponent implements AfterViewInit {
 
   public createIntegrator() {
     this.dataService.addIntegrator(this.$login, this.$password, this.$name, this.$info);
-    this.router.navigate(['/integrator-list'], {
+    this.router.navigate(['main/integrator/integrator-list'], {
       queryParams: {}
     });
   }

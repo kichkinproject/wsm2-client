@@ -1,6 +1,6 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {Role} from '../../../../models/role';
+import { Role, Roles } from "../../../../models/role";
 import {ScenarioType, SensorType} from '../../../../models/entity-type';
 import {ActivatedRoute, Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
@@ -12,7 +12,8 @@ import {UserGroup} from '../../../../models/user-group';
 @Component({
   selector: 'wsm-sensor-view',
   templateUrl: './sensor-view.component.html',
-  styleUrls: ['./sensor-view.component.scss']
+  styleUrls: ['./sensor-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class SensorViewComponent  implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -46,7 +47,8 @@ export class SensorViewComponent  implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role)),
     );
@@ -54,13 +56,15 @@ export class SensorViewComponent  implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.sensorId = this.activatedRoute.params['id'];
+    // this.cd.detectChanges();
+    this.sensorId = +this.activatedRoute.params['_value']['id'];
     const sensor = this.dataService.getSensor(this.sensorId);
     this.name = sensor.name;
     this.description = sensor.description;
     this.typeSensor = this.scTypes.get(sensor.type);
     this.masterSensor = this.dataService.getUserGroup(sensor.master);
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -103,6 +107,15 @@ export class SensorViewComponent  implements AfterViewInit {
 
   public get typeSensor() {
     return this.scTypes.get(this.$type);
+  }
+
+  public accessed() {
+    const role = this.role();
+    return role !== Roles.NONE;
+  }
+
+  public role() {
+    return this.$user.getValue().user_role;
   }
 
   public set masterSensor(uGr: UserGroup) {

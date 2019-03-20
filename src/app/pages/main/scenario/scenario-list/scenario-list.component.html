@@ -40,7 +40,7 @@
                 <button mat-icon-button *ngIf="role() !== baseRole.INTEGRATOR" (click)="compareScenario(scenario.id)" title="Загрузка сценария в контроллер">
                   <mat-icon>compare</mat-icon>
                 </button>
-                <button mat-slide-toggle [(ngModel)]="isActivated" *ngIf="role() === baseRole.SIMPLE || role() === baseRole.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></button>
+                <!--<button mat-slide-toggle [(ngModel)]="isActivated" *ngIf="role() === baseRole.SIMPLE || role() === baseRole.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></button>-->
               </div>
             </li>
           </div>

@@ -40,7 +40,7 @@ export class CabinetComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
     this.simpleLogin = this.activatedRoute.params['_value']['login'];
     switch (this.role()) {
       case this.baseRole.ADMIN:

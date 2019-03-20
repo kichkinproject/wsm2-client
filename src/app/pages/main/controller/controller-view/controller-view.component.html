@@ -1,32 +1,42 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Просмотр контроллера</h2>
+  <h2 align="center">Просмотр контроллера</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="name">
-        <label>
-          Название контроллера:
-          <p>{{name}}</p>
-        </label>
-      </div>
-      <div class="desc">
-        <label>
-          Описание контроллера:
-          <p>{{description}}</p>
-        </label>
-      </div>
-      <div class="controller-types">
-        <label>
-          Тип контроллера:
-          <p>{{typeContr}}</p>
-        </label>
-      </div>
-      <div class="controller-master">
-        <label>
-          Владелец:
-          <p>{{masterContr.name}}</p>
-        </label>
-      </div>
+      <table>
+        <tr>
+          <td>
+            Название контроллера:
+          </td>
+          <td>
+            {{name}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Описание контроллера:
+          </td>
+          <td>
+            {{description}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Тип контроллера:
+          </td>
+          <td>
+            {{typeContr}}
+          </td>
+
+        <tr>
+          <td>
+            Владелец:
+          </td>
+          <td>
+            {{masterContr.name}}
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр контроллера"</div>

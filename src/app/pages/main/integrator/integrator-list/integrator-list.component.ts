@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -11,7 +11,8 @@ import {User} from '../../../../models/user';
 @Component({
   selector: 'wsm-integrator-list',
   templateUrl: './integrator-list.component.html',
-  styleUrls: ['./integrator-list.component.scss']
+  styleUrls: ['./integrator-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class IntegratorListComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -23,7 +24,8 @@ export class IntegratorListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -49,8 +51,10 @@ export class IntegratorListComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -58,24 +62,26 @@ export class IntegratorListComponent implements AfterViewInit {
   }
 
   public addNewIntegrator() {
-    this.router.navigate(['/integrator-create'], {
+    this.router.navigate(['main/integrator/integrator-create'], {
       queryParams: {}
     });
   }
 
   public createReportOnIntegrators() {
-    console.log('Блок отчетности по интеграторам недоступен');
+    alert('Блок отчетности по интеграторам недоступен');
   }
 
   public updateAdminList() {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public editIntegrator(login: string) {
     if (Utils.exists(this.dataService.getIntegrator(login))) {
-      this.router.navigate(['/integrator-edit', login], {
+      this.router.navigate(['main/integrator/integrator-edit', login], {
         queryParams: {}
       });
     } else {
@@ -84,7 +90,7 @@ export class IntegratorListComponent implements AfterViewInit {
   }
   public viewIntegrator(login: string) {
     if (Utils.exists(this.dataService.getIntegrator(login))) {
-      this.router.navigate(['/integrator-view', login], {
+      this.router.navigate(['main/integrator/integrator-view', login], {
         queryParams: {}
       });
     } else {
@@ -94,9 +100,11 @@ export class IntegratorListComponent implements AfterViewInit {
 
   public removeIntegrator(login: string) {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.dataService.deleteIntegrator(login);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

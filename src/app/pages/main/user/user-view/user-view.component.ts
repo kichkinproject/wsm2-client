@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -10,7 +10,8 @@ import {Utils} from '../../../../utils/utils';
 @Component({
   selector: 'wsm-user-view',
   templateUrl: './user-view.component.html',
-  styleUrls: ['./user-view.component.scss']
+  styleUrls: ['./user-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserViewComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -23,7 +24,8 @@ export class UserViewComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role)),
     );
@@ -33,12 +35,14 @@ export class UserViewComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.simpleLogin = this.activatedRoute.params['login'];
+    // this.cd.detectChanges();
+    this.simpleLogin = this.activatedRoute.params['_value']['login'];
     const simple = this.dataService.getUser(this.simpleLogin);
     this.login = simple.login;
     this.name = simple.name;
     this.info = simple.info;
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

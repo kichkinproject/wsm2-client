@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import { Role, Roles } from "../../../../models/role";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -12,7 +12,8 @@ import { select, Store } from "@ngrx/store";
 @Component({
   selector: 'wsm-user-group-list',
   templateUrl: './user-group-list.component.html',
-  styleUrls: ['./user-group-list.component.scss']
+  styleUrls: ['./user-group-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserGroupListComponent  implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -24,7 +25,8 @@ export class UserGroupListComponent  implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -49,8 +51,10 @@ export class UserGroupListComponent  implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -58,24 +62,26 @@ export class UserGroupListComponent  implements AfterViewInit {
   }
 
   public addNewUserGroup() {
-    this.router.navigate(['/user-group-create'], {
+    this.router.navigate(['main/user-group/user-group-create'], {
       queryParams: {}
     });
   }
 
   public createReportOnUserGroups() {
-    console.log('Блок отчетности по группам пользователям недоступен');
+    alert('Блок отчетности по группам пользователям недоступен');
   }
 
   public updateUserGroupList() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public editUserGroup(id: number) {
     if (Utils.exists(this.dataService.getUserGroup(id))) {
-      this.router.navigate(['/user-group-edit', id], {
+      this.router.navigate(['main/user-group/user-group-edit', id], {
         queryParams: {}
       });
     } else {
@@ -84,7 +90,7 @@ export class UserGroupListComponent  implements AfterViewInit {
   }
   public viewUserGroup(id: number) {
     if (Utils.exists(this.dataService.getUserGroup(id))) {
-      this.router.navigate(['/user-group-view', id], {
+      this.router.navigate(['main/user-group/user-group-view', id], {
         queryParams: {}
       });
     } else {
@@ -94,9 +100,11 @@ export class UserGroupListComponent  implements AfterViewInit {
 
   public removeUserGroup(id: number) {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.dataService.deleteUserGroup(id);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

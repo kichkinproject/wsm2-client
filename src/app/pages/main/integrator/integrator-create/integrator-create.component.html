@@ -1,6 +1,6 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Создание интегратора</h2>
+  <h2 align="center">Создание интегратора</h2>
   <div class="block-container" *ngIf="accessed">
   <div class="entity-block">
       <div class="login">
@@ -17,7 +17,7 @@
           <input type="password" [(ngModel)]="password" placeholder='*******'>
           <span *ngIf="!checkFirstPassword()">Неверный формат для пароля</span>
         </label>
-        <label *ngIf="!blocked()">
+        <label>
           Повторите пароль:
           <input type="password" [(ngModel)]="repeatPassword" placeholder='*******'>
           <span *ngIf="!checkSecondPassword()">Неверный формат для пароля</span>
@@ -39,7 +39,7 @@
         </label>
       </div>
     </div>
-    <button mat-icon-button (click)="createIntegrator()" [disabled]="!enabledToAdd()">
+    <button mat-icon-button (click)="createIntegrator()" [disabled]="!enabledToAdd()" title="Добавить интегратора">
       <mat-icon>save</mat-icon>
     </button>
   </div>

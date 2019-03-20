@@ -246,7 +246,9 @@ export class Wsm2DataService /*extends ApiService*/ {
   }
 
   public getSensor(id: number): Sensor {
-      return this.$sensorData.filter((sens) => sens.id === id).length !== 0 ? this.$sensorData.find((sens) => sens.id === id) : null;
+      return this.$sensorData.filter((sens) => sens.id === id).length !== 0
+        ? this.$sensorData.find((sens) => sens.id === id)
+        : null;
   }
 
   public getSensors(): Array<Sensor> {
@@ -278,7 +280,9 @@ export class Wsm2DataService /*extends ApiService*/ {
   }
 
   public getThing(id: number): Thing {
-      return this.$thingData.filter((thing) => thing.id === id).length !== 0 ? this.$thingData.find((thing) => thing.id === id) : null;
+      return this.$thingData.filter((thing) => thing.id === id).length !== 0
+        ? this.$thingData.find((thing) => thing.id === id)
+        : null;
   }
 
   public getThings(): Array<Thing> {

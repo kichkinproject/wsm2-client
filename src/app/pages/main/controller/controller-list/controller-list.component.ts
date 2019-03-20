@@ -54,7 +54,7 @@ export class ControllerListComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
     this.cd.detectChanges();
@@ -76,7 +76,7 @@ export class ControllerListComponent implements AfterViewInit {
 
   public updateControllersList() {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
     this.cd.detectChanges();
@@ -94,7 +94,7 @@ export class ControllerListComponent implements AfterViewInit {
 
   public removeController(id: number) {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
     this.dataService.deleteController(id);
     this.updateCollection();
     this.isCompleted$.next(true);

@@ -35,7 +35,7 @@ export class AdminCreateComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
     // this.defaultSelect();
     // setTimeout(1000);
     this.isCompleted$.next(true);

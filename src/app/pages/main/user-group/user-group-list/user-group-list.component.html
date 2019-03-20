@@ -3,13 +3,13 @@
   <h2 align="center">Список групп пользователей</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="addNewUserGroup()" title="Добавить группу пользователей">
+      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN || role() === baseRole.INTEGRATOR" (click)="addNewUserGroup()" title="Добавить группу пользователей">
         <mat-icon>add_box</mat-icon>
       </button>
       <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="createReportOnUserGroups()" title="Сгенерировать отчет">
         <mat-icon>send</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="updateUserGroupList()" title="Обновить список групп пользователей">
+      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN || role() === baseRole.INTEGRATOR" (click)="updateUserGroupList()" title="Обновить список групп пользователей">
         <mat-icon>cached</mat-icon>
       </button>
     </div>

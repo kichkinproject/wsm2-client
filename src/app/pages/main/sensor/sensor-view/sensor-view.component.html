@@ -1,32 +1,42 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Просмотр датчика</h2>
+  <h2 align="center">Просмотр датчика</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="name">
-        <label>
-          Название датчика:
-          <p>{{name}}</p>
-        </label>
-      </div>
-      <div class="desc">
-        <label>
-          Описание датчика:
-          <p>{{description}}</p>
-        </label>
-      </div>
-      <div class="sensor-types">
-        <label>
-          Тип датчика:
-          <p>{{typeSensor}}</p>
-        </label>
-      </div>
-      <div class="sensor-master">
-        <label>
-          Владелец:
-          <p>{{masterSensor.name}}</p>
-        </label>
-      </div>
+      <table>
+        <tr>
+          <td>
+            Название датчика:
+          </td>
+          <td>
+            {{name}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Описание датчика:
+          </td>
+          <td>
+            {{description}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Тип датчика:
+          </td>
+          <td>
+            {{typeSensor}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Владелец:
+          </td>
+          <td>
+            {{masterSensor.name}}
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр датчика"</div>

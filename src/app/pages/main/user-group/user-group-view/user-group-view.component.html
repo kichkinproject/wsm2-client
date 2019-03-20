@@ -1,26 +1,34 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Просмотр группы пользователей</h2>
+  <h2 align="center">Просмотр группы пользователей</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="name">
-        <label>
-          Название группы пользователей:
-          <p>{{name}}</p>
-        </label>
-      </div>
-      <div class="desc">
-        <label>
-          Описание группы пользователей:
-          <p>{{description}}</p>
-        </label>
-      </div>
-      <div class="parents">
-        <label>
-          Родительская группа:
-          <p>{{parentGroup}}</p>
-        </label>
-      </div>
+      <table>
+        <tr>
+          <td>
+            Название группы пользователей:
+          </td>
+          <td>
+            {{name}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Описание группы пользователей:
+          </td>
+          <td>
+            {{description}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Родительская группа:
+          </td>
+          <td>
+            {{parentGroup}}
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр группы пользователей"</div>

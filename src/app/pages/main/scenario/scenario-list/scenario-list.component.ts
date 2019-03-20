@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -13,7 +13,8 @@ import {ScenarioType} from '../../../../models/entity-type';
 @Component({
   selector: 'wsm-scenario-list',
   templateUrl: './scenario-list.component.html',
-  styleUrls: ['./scenario-list.component.scss']
+  styleUrls: ['./scenario-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ScenarioListComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -28,7 +29,8 @@ export class ScenarioListComponent implements AfterViewInit {
   constructor(public router: Router,
                public activatedRoute: ActivatedRoute,
                public store: Store<State>,
-               private dataService: Wsm2DataService) {
+               private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -65,14 +67,12 @@ export class ScenarioListComponent implements AfterViewInit {
     }
   }
 
-  public scrollList() {
-
-  }
-
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -80,24 +80,26 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public addNewScenario() {
-    this.router.navigate(['/scenario-create'], {
+    this.router.navigate(['main/scenario/scenario-create'], {
       queryParams: {}
     });
   }
 
   public createReportOnScenarios() {
-    console.log('Блок отчетности по сценариям недоступен');
+    alert('Блок отчетности по сценариям недоступен');
   }
 
   public updateScenarioList() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public editScenario(id: number) {
     if (Utils.exists(this.dataService.getScenario(id))) {
-      this.router.navigate(['/scenario-edit', id.toString()], {
+      this.router.navigate(['main/scenario/scenario-edit', id.toString()], {
         queryParams: {}
       });
     } else {
@@ -106,7 +108,7 @@ export class ScenarioListComponent implements AfterViewInit {
   }
   public viewScenario(id: number) {
     if (Utils.exists(this.dataService.getScenario(id))) {
-      this.router.navigate(['/scenario-view', id.toString()], {
+      this.router.navigate(['main/scenario/scenario-view', id.toString()], {
         queryParams: {}
       });
     } else {
@@ -116,9 +118,11 @@ export class ScenarioListComponent implements AfterViewInit {
 
   public doubleScenario(id: number) {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.dataService.duplicateScenario(id, this.$user.getValue().user_login);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public removeScenario(id: number) {
@@ -132,8 +136,12 @@ export class ScenarioListComponent implements AfterViewInit {
     return false;
   }
 
+  public scenarioOnOff(id: number) {
+    console.log('Тык');
+  }
+
   public compareScenario(id: number) {
-    console.log('Модуль сопоставления сценария недоступен');
+    alert('Модуль сопоставления сценария недоступен');
   }
 
   public accessed() {

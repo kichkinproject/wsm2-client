@@ -1,32 +1,42 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Просмотр устройства</h2>
+  <h2 align="center">Просмотр устройства</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="name">
-        <label>
-          Название устройства:
-          <p>{{name}}</p>
-        </label>
-      </div>
-      <div class="desc">
-        <label>
-          Описание устройства:
-          <p>{{description}}</p>
-        </label>
-      </div>
-      <div class="thing-types">
-        <label>
-          Тип устройства:
-          <p>{{typeThing}}</p>
-        </label>
-      </div>
-      <div class="thing-master">
-        <label>
-          Владелец:
-          <p>{{masterThing}}</p>
-        </label>
-      </div>
+      <table>
+        <tr>
+          <td>
+            Название устройства:
+          </td>
+          <td>
+            {{name}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Описание устройства:
+          </td>
+          <td>
+            {{description}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Тип устройства:
+          </td>
+          <td>
+            {{typeThing}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Владелец:
+          </td>
+          <td>
+            {{masterThing.name}}
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр устройства"</div>

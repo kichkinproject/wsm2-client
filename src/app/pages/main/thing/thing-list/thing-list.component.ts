@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {Scenario} from '../../../../models/scenario';
@@ -13,7 +13,8 @@ import {Thing} from '../../../../models/thing';
 @Component({
   selector: 'wsm-thing-list',
   templateUrl: './thing-list.component.html',
-  styleUrls: ['./thing-list.component.scss']
+  styleUrls: ['./thing-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ThingListComponent  implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -26,7 +27,8 @@ export class ThingListComponent  implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -54,8 +56,10 @@ export class ThingListComponent  implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -63,24 +67,26 @@ export class ThingListComponent  implements AfterViewInit {
   }
 
   public findNewThing() {
-    this.router.navigate(['/thing-find'], {
+    this.router.navigate(['main/thing/thing-find'], {
       queryParams: {}
     });
   }
 
   public createReportOnThing() {
-    console.log('Блок отчетности по устройствам недоступен');
+    alert('Блок отчетности по устройствам недоступен');
   }
 
   public updateThingsList() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public viewThing(id: number) {
     if (Utils.exists(this.dataService.getThing(id))) {
-      this.router.navigate(['/thing-view', id.toString()], {
+      this.router.navigate(['main/thing/thing-view', id.toString()], {
         queryParams: {}
       });
     } else {
@@ -90,9 +96,11 @@ export class ThingListComponent  implements AfterViewInit {
 
   public removeThing(id: number) {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.dataService.deleteThing(id);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

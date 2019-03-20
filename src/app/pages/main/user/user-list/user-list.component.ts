@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {User} from '../../../../models/user';
@@ -11,7 +11,8 @@ import {Utils} from '../../../../utils/utils';
 @Component({
   selector: 'wsm-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+  styleUrls: ['./user-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserListComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -23,7 +24,8 @@ export class UserListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -51,8 +53,10 @@ export class UserListComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -60,24 +64,26 @@ export class UserListComponent implements AfterViewInit {
   }
 
   public addNewUser() {
-    this.router.navigate(['/user-create'], {
+    this.router.navigate(['main/user/user-create'], {
       queryParams: {}
     });
   }
 
   public createReportOnUsers() {
-    console.log('Блок отчетности по пользователям недоступен');
+    alert('Блок отчетности по пользователям недоступен');
   }
 
   public updateUserList() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public editUser(login: string) {
-    if (Utils.exists(this.dataService.getIntegrator(login))) {
-      this.router.navigate(['/user-edit', login], {
+    if (Utils.exists(this.dataService.getUser(login))) {
+      this.router.navigate(['main/user/user-edit', login], {
         queryParams: {}
       });
     } else {
@@ -85,8 +91,8 @@ export class UserListComponent implements AfterViewInit {
     }
   }
   public viewUser(login: string) {
-    if (Utils.exists(this.dataService.getIntegrator(login))) {
-      this.router.navigate(['/user-view', login], {
+    if (Utils.exists(this.dataService.getUser(login))) {
+      this.router.navigate(['main/user/user-view', login], {
         queryParams: {}
       });
     } else {
@@ -96,9 +102,11 @@ export class UserListComponent implements AfterViewInit {
 
   public removeUser(login: string) {
     this.isCompleted$.next(false);
-    this.dataService.deleteIntegrator(login);
+    // this.cd.detectChanges();
+    this.dataService.deleteUser(login);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

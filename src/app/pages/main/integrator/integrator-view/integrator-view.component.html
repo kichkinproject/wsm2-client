@@ -1,26 +1,34 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Просмотр интегратора</h2>
+  <h2 align="center">Просмотр интегратора</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="login">
-        <label>
-          Логин:
-          <p>{{login}}</p>
-        </label>
-      </div>
-      <div class="name">
-        <label>
-          ФИО:
-          <p>{{name}}</p>
-        </label>
-      </div>
-      <div class="info">
-        <label>
-          Информация об интеграторе:
-          <p>{{info}}</p>
-        </label>
-      </div>
+      <table>
+        <tr>
+          <td>
+            Логин:
+          </td>
+          <td>
+            {{login}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ФИО:
+          </td>
+          <td>
+            {{name}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Информация об интеграторе:
+          </td>
+          <td>
+            {{info}}
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Просмотр интегратора"</div>

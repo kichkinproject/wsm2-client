@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {Scenario} from '../../../../models/scenario';
@@ -12,7 +12,8 @@ import {Utils} from '../../../../utils/utils';
 @Component({
   selector: 'wsm-sensor-list',
   templateUrl: './sensor-list.component.html',
-  styleUrls: ['./sensor-list.component.scss']
+  styleUrls: ['./sensor-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class SensorListComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -25,7 +26,8 @@ export class SensorListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -54,8 +56,10 @@ export class SensorListComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -63,24 +67,26 @@ export class SensorListComponent implements AfterViewInit {
   }
 
   public findNewSensor() {
-    this.router.navigate(['/sensor-find'], {
+    this.router.navigate(['main/sensor/sensor-find'], {
       queryParams: {}
     });
   }
 
   public createReportOnSensors() {
-    console.log('Блок отчетности по датчикам недоступен');
+    alert('Блок отчетности по датчикам недоступен');
   }
 
   public updateSensorList() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public viewSensor(id: number) {
     if (Utils.exists(this.dataService.getSensor(id))) {
-      this.router.navigate(['/sensor-view', id.toString()], {
+      this.router.navigate(['main/sensor/sensor-view', id.toString()], {
         queryParams: {}
       });
     } else {
@@ -90,9 +96,11 @@ export class SensorListComponent implements AfterViewInit {
 
   public removeSensor(id: number) {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.dataService.deleteSensor(id);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

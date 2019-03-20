@@ -57,9 +57,9 @@ export class ControllerViewComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
-    this.controllerId = this.activatedRoute.params['_value']['id'];
-    const controller = this.dataService.getController(+this.controllerId);
+    // this.cd.detectChanges();
+    this.controllerId = +this.activatedRoute.params['_value']['id'];
+    const controller = this.dataService.getController(this.controllerId);
     this.name = controller.name;
     this.description = controller.description;
     this.typeContr = this.scTypes.get(controller.type);

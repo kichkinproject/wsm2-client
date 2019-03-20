@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import { Role, Roles } from "../../../../models/role";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -11,7 +11,8 @@ import { UserGroup } from "../../../../models/user-group";
 @Component({
   selector: 'wsm-user-group-create',
   templateUrl: './user-group-create.component.html',
-  styleUrls: ['./user-group-create.component.scss']
+  styleUrls: ['./user-group-create.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UserGroupCreateComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -26,7 +27,8 @@ export class UserGroupCreateComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role)),
     );
@@ -34,11 +36,13 @@ export class UserGroupCreateComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    // this.cd.detectChanges();
     this.updateList();
     this.selectedGroup = this.groups[0].name;
     // this.defaultSelect();
 
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public updateList() {

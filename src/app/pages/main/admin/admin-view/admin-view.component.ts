@@ -36,7 +36,7 @@ export class AdminViewComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
     this.adminLogin = this.activatedRoute.params['_value']['login'];
     const admin = this.dataService.getAdmin(this.adminLogin);
     this.login = admin.login;
