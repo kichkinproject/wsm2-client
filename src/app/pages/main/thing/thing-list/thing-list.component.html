@@ -3,13 +3,13 @@
   <h2 align="center">Список устройств</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button (click)="findNewThing()">
+      <button mat-icon-button (click)="findNewThing()" title="Найти устройство">
         <mat-icon>search</mat-icon>
       </button>
-      <button mat-icon-button (click)="createReportOnThing()">
+      <button mat-icon-button (click)="createReportOnThing()" title="Сгенерировать отчет">
         <mat-icon>send</mat-icon>
       </button>
-      <button mat-icon-button (click)="updateThingsList()">
+      <button mat-icon-button (click)="updateThingsList()" title="Обновить список устройств">
         <mat-icon>cached</mat-icon>
       </button>
     </div>
@@ -17,21 +17,25 @@
       <li class="collection-header">
         <h4>Устройства</h4>
       </li>
-      <li class="collection-item" *ngFor="let thing of things">
-        <div class="element-info">
-          <p class="item-name">{{thing.name}}</p>
-          <p class="item-description">{{thing.description}}</p>
-        </div>
-        <div class="element-buttons">
-          <button mat-icon-button (click)="viewThing(thing.id)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button (click)="removeThing(thing.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
+      <div class="scrolling-container" >
+        <div class="scrolling-area" >
+          <li class="collection-item" *ngFor="let thing of things">
+            <div class="element-info">
+              <p class="item-name">{{thing.name}}</p>
+              <p class="item-description">{{thing.description}}</p>
+            </div>
+            <div class="element-buttons">
+              <button mat-icon-button (click)="viewThing(thing.id)" title="Просмотреть устройство">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="removeThing(thing.id)" title="Удалить устройство">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
 
-      </li>
+          </li>
+        </div>
+      </div>
     </ul>
     <div class="anyShown" *ngIf="!anyShown">Устройства отсутствуют</div>
     <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список устройств"</div>

@@ -40,7 +40,7 @@ $lightTheme: (
     boxShadow: change_color($dataGoodColor, $alpha: 0.3),
     icon: (
       color: $dataGoodColor,
-      hoverColor: change_color($dataGoodColor, $alpha: 0.3)
+      hoverColor: change_color($dataGoodColor, $alpha: 0.5)
     ),
   ),
   // Цвета элементов управления

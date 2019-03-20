@@ -7,6 +7,7 @@ import {Wsm2AccountService} from '../../../../services/wsm2-account-service';
 import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {MatIconModule, MatListModule, MatSidenavModule, MatSlideToggleModule, MatToolbarModule} from '@angular/material';
 import { LoaderModule } from "../../../../components/loader/loader.component";
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
+    ScrollingModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

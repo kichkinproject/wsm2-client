@@ -23,6 +23,8 @@ export class ScenarioListComponent implements AfterViewInit {
   private baseRole = Roles;
 
 
+
+
   constructor(public router: Router,
                public activatedRoute: ActivatedRoute,
                public store: Store<State>,
@@ -61,6 +63,10 @@ export class ScenarioListComponent implements AfterViewInit {
         this.scenarios.slice(0, this.scenarios.length);
         break;
     }
+  }
+
+  public scrollList() {
+
   }
 
   public ngAfterViewInit() {

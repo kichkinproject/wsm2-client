@@ -5,6 +5,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { GetCurrentUser, State } from "../../_state";
 import { select, Store } from "@ngrx/store";
 import {ActivatedRoute, Router} from '@angular/router';
+import { Wsm2DataService } from "../../services/wsm2-data-service";
 
 @Component({
   selector: 'wsm-main',
@@ -60,20 +61,65 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   public goToPrevious() {
-    if (this.router.url.indexOf('list') === -1) {
-      this.router.navigate(['/main/admin-list'], {
-        queryParams: {}
-      });
-    } else {
+    if (this.router.url.indexOf('cabinet') !== -1) {
       this.router.navigate(['/main/about'], {
         queryParams: {}
       });
+    } else {
+      if (this.router.url.indexOf('list') !== -1) {
+        this.router.navigate(['/main/about'], {
+          queryParams: {}
+        });
+      } else {
+        if (this.router.url.indexOf('admin/') !== -1) {
+          this.router.navigate(['/main/admin/admin-list'], {
+            queryParams: {}
+          });
+        }
+        if (this.router.url.indexOf('integrator/') !== -1) {
+          this.router.navigate(['/main/integrator/integrator-list'], {
+            queryParams: {}
+          });
+        }
+        if (this.router.url.indexOf('user/') !== -1) {
+          this.router.navigate(['/main/user/user-list'], {
+            queryParams: {}
+          });
+        }
+        if (this.router.url.indexOf('user-group/') !== -1) {
+          this.router.navigate(['/main/user-group/user-group-list'], {
+            queryParams: {}
+          });
+        }
+        if (this.router.url.indexOf('scenario/') !== -1) {
+          this.router.navigate(['/main/scenario/scenario-list'], {
+            queryParams: {}
+          });
+        }
+        if (this.router.url.indexOf('controller/') !== -1) {
+          this.router.navigate(['/main/controller/controller-list'], {
+            queryParams: {}
+          });
+        }
+        if (this.router.url.indexOf('sensor/') !== -1) {
+          this.router.navigate(['/main/sensor/sensor-list'], {
+            queryParams: {}
+          });
+        }
+        if (this.router.url.indexOf('thing/') !== -1) {
+          this.router.navigate(['/main/thing/thing-list'], {
+            queryParams: {}
+          });
+        }
+      }
     }
   }
 
   public goToCabinet() {
-    this.router.navigate(['/main/cabinet'], {
-      queryParams: {}
+    const simpleLogin = this.$user.getValue().user_login;
+    this.router.navigate(['/main/cabinet', simpleLogin], {
+      queryParams: {
+      }
     });
   }
 

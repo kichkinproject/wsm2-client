@@ -3,13 +3,13 @@
   <h2 align="center">Список интеграторов</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button (click)="addNewIntegrator()">
+      <button mat-icon-button (click)="addNewIntegrator()" title="Добавить интегратора">
         <mat-icon>add_box</mat-icon>
       </button>
-      <button mat-icon-button (click)="createReportOnIntegrators()">
+      <button mat-icon-button (click)="createReportOnIntegrators()" title="Сгенерировать отчет">
         <mat-icon>send</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="updateAdminList()">
+      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="updateAdminList()" title="Обновить список интеграторов">
         <mat-icon>cached</mat-icon>
       </button>
     </div>
@@ -17,23 +17,27 @@
       <li class="collection-header">
         <h4>Интеграторы</h4>
       </li>
-      <li class="collection-item" *ngFor="let integrator of integrators">
-        <div class="element-info">
-          <p class="item-name">{{integrator.name}}</p>
-          <p class="item-description">{{integrator.login}}: {{integrator.info}}</p>
+      <div class="scrolling-container" >
+        <div class="scrolling-area" >
+          <li class="collection-item" *ngFor="let integrator of integrators">
+            <div class="element-info">
+              <p class="item-name">{{integrator.name}}</p>
+              <p class="item-description">{{integrator.login}}: {{integrator.info}}</p>
+            </div>
+            <div class="element-buttons">
+              <button mat-icon-button (click)="editIntegrator(integrator.login)" title="Редактировать интегратора">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="viewIntegrator(integrator.login)" title="Просмотреть интегратора">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="removeIntegrator(integrator.login)" title="Удалить интегратора">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </li>
         </div>
-        <div class="element-buttons">
-          <button mat-icon-button (click)="editIntegrator(integrator.login)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="viewIntegrator(integrator.login)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button (click)="removeIntegrator(integrator.login)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </li>
+      </div>
     </ul>
     <div class="anyShown" *ngIf="!anyShown">Инеграторы отсутствуют</div>
     <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список интеграторов"</div>

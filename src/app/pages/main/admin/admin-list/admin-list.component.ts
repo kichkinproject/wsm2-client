@@ -72,7 +72,7 @@ export class AdminListComponent implements AfterViewInit {
 
   public editAdmin(login: string) {
     if (Utils.exists(this.dataService.getAdmin(login))) {
-      this.router.navigate(['/admin-edit', login], {
+      this.router.navigate(['main/admin/admin-edit', login], {
         queryParams: {}
       });
     } else {
@@ -81,7 +81,7 @@ export class AdminListComponent implements AfterViewInit {
   }
   public viewAdmin(login: string) {
     if (Utils.exists(this.dataService.getAdmin(login))) {
-      this.router.navigate(['/admin-view', login], {
+      this.router.navigate(['main/admin/admin-view', login], {
         queryParams: {}
       });
     } else {

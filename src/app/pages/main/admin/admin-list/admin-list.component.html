@@ -3,13 +3,13 @@
   <h2 align="center">Список администраторов</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="addNewAdmin()">
+      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="addNewAdmin()" title="Добавить администратора">
         <mat-icon>add_box</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="createReportOnAdmins()">
+      <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="createReportOnAdmins()" title="Сгенерировать отчет">
         <mat-icon>send</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="updateAdminList()">
+      <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="updateAdminList()" title="Обновить список администраторов">
         <mat-icon>cached</mat-icon>
       </button>
     </div>
@@ -17,23 +17,27 @@
       <li class="collection-header">
         <h4>Администраторы</h4>
       </li>
-      <li class="collection-item" *ngFor="let admin of admins">
-        <div class="element-info">
-          <p class="item-name">{{admin.name}}</p>
-          <p class="item-description">{{admin.login}}: {{admin.info}}</p>
+      <div class="scrolling-container" >
+        <div class="scrolling-area" >
+          <li class="collection-item" *ngFor="let admin of admins">
+            <div class="element-info">
+              <p class="item-name">{{admin.name}}</p>
+              <p class="item-description">{{admin.login}}: {{admin.info}}</p>
+            </div>
+            <div class="element-buttons">
+              <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="editAdmin(admin.login)" title="Редактировать администратора">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="viewAdmin(admin.login)" title="Просмотреть администратора">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="removeAdmin(admin.login)" title="Удалить администратора">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </li>
         </div>
-        <div class="element-buttons">
-          <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="editAdmin(admin.login)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="viewAdmin(admin.login)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="removeAdmin(admin.login)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </li>
+      </div>
     </ul>
     <div class="anyShown" *ngIf="!anyShown">Администраторы отсутствуют</div>
     <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Список адинистраторов"</div>

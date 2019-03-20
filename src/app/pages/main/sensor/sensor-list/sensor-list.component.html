@@ -3,13 +3,13 @@
   <h2 align="center">Список датчиков</h2>
   <div class="block-container" *ngIf="role() === baseRole.INTEGRATOR">
     <div class="buttons-block">
-      <button mat-icon-button (click)="findNewSensor()">
+      <button mat-icon-button (click)="findNewSensor()" title="Найти датчик">
         <mat-icon>search</mat-icon>
       </button>
-      <button mat-icon-button (click)="createReportOnSensors()">
+      <button mat-icon-button (click)="createReportOnSensors()" title="Сгенерировать отчет">
         <mat-icon>send</mat-icon>
       </button>
-      <button mat-icon-button (click)="updateSensorList()">
+      <button mat-icon-button (click)="updateSensorList()" title="Обновить список датчиков">
         <mat-icon>cached</mat-icon>
       </button>
     </div>
@@ -17,20 +17,24 @@
       <li class="collection-header">
         <h4>Датчики</h4>
       </li>
-      <li class="collection-item" *ngFor="let sensor of sensors">
-        <div class="element-info">
-          <p class="item-name">{{sensor.name}}</p>
-          <p class="item-description">{{sensor.description}}</p>
+      <div class="scrolling-container" >
+        <div class="scrolling-area" >
+          <li class="collection-item" *ngFor="let sensor of sensors">
+            <div class="element-info">
+              <p class="item-name">{{sensor.name}}</p>
+              <p class="item-description">{{sensor.description}}</p>
+            </div>
+            <div class="element-buttons">
+              <button mat-icon-button (click)="viewSensor(sensor.id)" title="Просмотреть датчик">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="removeSensor(sensor.id)" title="Удалить датчик">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </li>
         </div>
-        <div class="element-buttons">
-          <button mat-icon-button (click)="viewSensor(sensor.id)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button (click)="removeSensor(sensor.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </li>
+      </div>
     </ul>
   </div>
   <div class="anyShown" *ngIf="!anyShown">Датчики отсутствуют</div>

@@ -129,7 +129,8 @@
           aria-label="Toggle sidenav"
           mat-icon-button
           [ngClass]="{active: drawer.isOpen}"
-          (click)="drawer.toggle()">
+          (click)="drawer.toggle()"
+          title="Навигационное меню">
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
         <!--<div class="toolbar-left">-->
@@ -141,7 +142,7 @@
 
         <selection-panel>
           <div class="toolbar-left">
-            <button mat-icon-button *ngIf="needToGoBack()" (click)="goToPrevious()">
+            <button mat-icon-button *ngIf="needToGoBack()" (click)="goToPrevious()" title="Назад">
               <mat-icon>arrow_back</mat-icon>
             </button>
           </div>
@@ -149,10 +150,10 @@
             <h2 align="center">Умный дом: Менеджер сценариев</h2>
           </div>
           <div class="toolbar-right">
-            <button mat-icon-button (click)="goToCabinet()" *ngIf="!isMainAdmin">
+            <button mat-icon-button (click)="goToCabinet()" *ngIf="!isMainAdmin" title="Кабинет">
               <mat-icon>account_box</mat-icon>
             </button>
-            <button mat-icon-button (click)="unautentificateUser()">
+            <button mat-icon-button (click)="unautentificateUser()" title="Выйти">
               <mat-icon>exit_to_app</mat-icon>
             </button>
           </div>
