@@ -1,12 +1,12 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Редактирование администратора</h2>
+  <h2 align="center">Редактирование администратора</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
       <div class="login">
         <label>
           Логин:
-          <input [(ngModel)]="login" placeholder='user' [disabled]="false">
+          <input [(ngModel)]="login" placeholder='user' [disabled]="true">
         </label>
       </div>
       <div class="name">

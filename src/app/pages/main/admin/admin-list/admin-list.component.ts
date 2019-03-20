@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {Scenario} from '../../../../models/scenario';
@@ -12,7 +12,8 @@ import {Utils} from '../../../../utils/utils';
 @Component({
   selector: 'wsm-admin-list',
   templateUrl: './admin-list.component.html',
-  styleUrls: ['./admin-list.component.scss']
+  styleUrls: ['./admin-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AdminListComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -24,7 +25,8 @@ export class AdminListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              public dataService: Wsm2DataService) {
+              public dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -46,8 +48,10 @@ export class AdminListComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -61,13 +65,15 @@ export class AdminListComponent implements AfterViewInit {
   }
 
   public createReportOnAdmins() {
-    console.log('Блок отчетности по администраторам недоступен');
+    alert('Блок отчетности по администраторам недоступен');
   }
 
   public updateAdminList() {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public editAdmin(login: string) {
@@ -91,9 +97,11 @@ export class AdminListComponent implements AfterViewInit {
 
   public removeAdmin(login: string) {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.dataService.deleteAdmin(login);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -11,7 +11,8 @@ import {Controller} from '../../../../models/controller';
 @Component({
   selector: 'wsm-controller-list',
   templateUrl: './controller-list.component.html',
-  styleUrls: ['./controller-list.component.scss']
+  styleUrls: ['./controller-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ControllerListComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
@@ -24,7 +25,8 @@ export class ControllerListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
@@ -52,8 +54,10 @@ export class ControllerListComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -61,24 +65,26 @@ export class ControllerListComponent implements AfterViewInit {
   }
 
   public findNewController() {
-    this.router.navigate(['/controller-find'], {
+    this.router.navigate(['main/controller/controller-find'], {
       queryParams: {}
     });
   }
 
   public createReportOnControllers() {
-    console.log('Блок отчетности по контроллерам недоступен');
+    alert('Блок отчетности по контроллерам недоступен');
   }
 
   public updateControllersList() {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public viewController(id: number) {
     if (Utils.exists(this.dataService.getController(id))) {
-      this.router.navigate(['/controller-view', id.toString()], {
+      this.router.navigate(['main/controller/controller-view', id.toString()], {
         queryParams: {}
       });
     } else {
@@ -88,9 +94,11 @@ export class ControllerListComponent implements AfterViewInit {
 
   public removeController(id: number) {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.dataService.deleteController(id);
     this.updateCollection();
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public accessed() {

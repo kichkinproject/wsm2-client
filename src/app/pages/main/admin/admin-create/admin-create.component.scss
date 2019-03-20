@@ -1,0 +1,57 @@
+@import "../../../../../styles/mixins";
+
+:host {
+  @include fill;
+  z-index: 100;
+  padding-top: 72px;
+}
+
+:host .wsm-data-container {
+  font-family: 'Times New Roman';
+}
+
+:host .block-container {
+  font-family: 'Times New Roman';
+  display: block;
+  width: rem(900px);
+  padding: 40px;
+  margin: auto;
+  border-radius: 5px;
+  background-color: change_color($bluish-grey, $alpha: 0.2);
+}
+
+
+:host label {
+  display: block;
+  font-size: 120%;
+  padding: 5px;
+  white-space: pre;
+}
+
+:host input {
+  padding: 5px;
+  display: block;
+  width: 800px;
+
+}
+
+:host button[mat-icon-button] {
+  margin: 10px 0px;
+  display: block;
+  align-self: right;
+  font-size: rem(28px);
+  @include defaultIcon;
+  font-size: rem(28px);
+
+  &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    @include themify($themes) {
+      background-color: change_color($azure, $alpha: 0.2);
+    }
+  }
+  @include themify($themes) {
+    background-color: themed('button', 'icon', 'color');
+  }
+}
+

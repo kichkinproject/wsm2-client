@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import { Role, Roles } from "../../../models/role";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -11,7 +11,8 @@ import { User } from "../../../models/user";
 @Component({
   selector: 'wsm-cabinet',
   templateUrl: './cabinet.component.html',
-  styleUrls: ['./cabinet.component.scss']
+  styleUrls: ['./cabinet.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CabinetComponent implements AfterViewInit {
   private simpleLogin: string;
@@ -30,7 +31,8 @@ export class CabinetComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role)),
     );
@@ -38,6 +40,7 @@ export class CabinetComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    this.cd.detectChanges();
     this.simpleLogin = this.activatedRoute.params['_value']['login'];
     switch (this.role()) {
       case this.baseRole.ADMIN:
@@ -59,6 +62,7 @@ export class CabinetComponent implements AfterViewInit {
     this.name = this.currentUser.name;
     this.info = this.currentUser.info;
     this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
