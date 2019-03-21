@@ -16,7 +16,7 @@
   display: flex;
   width: rem(900px);
   padding: 40px;
-  margin: auto;
+  margin: 20px auto;
   border-radius: 5px;
   background-color: change_color($bluish-grey, $alpha: 0.2);
 }
@@ -29,6 +29,7 @@
   padding: 5px;
   margin: auto;
 }
+
 
 //:host p {
 //  padding: 5px;

@@ -14,37 +14,68 @@
       </button>
     </div>
     <ul class="collection-with-header" >
-      <li class="collection-header">
+      <li class="collection-header" *ngIf="this.role() !== baseRole.SIMPLE">
         <h4>Сценарии</h4>
       </li>
-        <div class="scrolling-container" >
-          <div class="scrolling-area" >
-            <li class="collection-item" *ngFor="let scenario of scenarios">
-              <div class="element-info">
-                <p class="item-name">{{scenario.name}}</p>
-                <p class="item-description">{{scenario.description}}</p>
-              </div>
-              <div class="element-buttons">
-                <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="doubleScenario(scenario.id)" title="Дублировать сценарий">
-                  <mat-icon>call_split</mat-icon>
-                </button>
-                <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="editScenario(scenario.id)" title="Редактировать сценарий">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button (click)="viewScenario(scenario.id)" title="Просмотреть сценарий">
-                  <mat-icon>visibility</mat-icon>
-                </button>
-                <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE" (click)="removeScenario(scenario.id)" title="Удалить сценарий">
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button *ngIf="role() !== baseRole.INTEGRATOR" (click)="compareScenario(scenario.id)" title="Загрузка сценария в контроллер">
-                  <mat-icon>compare</mat-icon>
-                </button>
-                <!--<button mat-slide-toggle [(ngModel)]="isActivated" *ngIf="role() === baseRole.SIMPLE || role() === baseRole.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></button>-->
-              </div>
-            </li>
-          </div>
+      <div class="scrolling-container" *ngIf="this.role() !== baseRole.SIMPLE">
+        <div class="scrolling-area" >
+          <li class="collection-item" *ngFor="let scenario of scenarios">
+            <div class="element-info">
+              <p class="item-name">{{scenario.name}}</p>
+              <p class="item-description">{{scenario.description}}</p>
+            </div>
+            <div class="element-buttons">
+              <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="doubleScenario(scenario.id)" title="Дублировать сценарий">
+                <mat-icon>call_split</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="editScenario(scenario.id)" title="Редактировать сценарий">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="viewScenario(scenario.id)" title="Просмотреть сценарий">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE" (click)="removeScenario(scenario.id)" title="Удалить сценарий">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() !== baseRole.INTEGRATOR" (click)="compareScenario(scenario.id)" title="Загрузка сценария в контроллер">
+                <mat-icon>compare</mat-icon>
+              </button>
+              <!--<button mat-slide-toggle [(ngModel)]="isActivated" *ngIf="role() === baseRole.SIMPLE || role() === baseRole.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></button>-->
+            </div>
+          </li>
         </div>
+      </div>
+      <li class="collection-header" *ngIf="this.role() === baseRole.SIMPLE">
+        <h4>Сценарии по контроллерам</h4>
+      </li>
+      <div class="scrolling-container" *ngIf="this.role() === baseRole.SIMPLE">
+        <div class="scrolling-area" >
+          <li class="collection-item" *ngFor="let scenario of scenarios">
+            <div class="element-info">
+              <p class="item-name">{{scenario.name}}</p>
+              <p class="item-description">{{scenario.description}}</p>
+            </div>
+            <div class="element-buttons">
+              <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="doubleScenario(scenario.id)" title="Дублировать сценарий">
+                <mat-icon>call_split</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="editScenario(scenario.id)" title="Редактировать сценарий">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="viewScenario(scenario.id)" title="Просмотреть сценарий">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE" (click)="removeScenario(scenario.id)" title="Удалить сценарий">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="role() !== baseRole.INTEGRATOR" (click)="compareScenario(scenario.id)" title="Загрузка сценария в контроллер">
+                <mat-icon>compare</mat-icon>
+              </button>
+              <!--<button mat-slide-toggle [(ngModel)]="isActivated" *ngIf="role() === baseRole.SIMPLE || role() === baseRole.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></button>-->
+            </div>
+          </li>
+        </div>
+      </div>
     </ul>
     <div class="anyShown" *ngIf="!anyShown">Сценарии отсутствуют</div>
   </div>

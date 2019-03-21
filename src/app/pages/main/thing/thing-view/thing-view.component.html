@@ -33,7 +33,7 @@
             Владелец:
           </td>
           <td>
-            {{masterThing.name}}
+            {{masterThing !== null && masterThing !== undefined ? masterThing.name : ''}}
           </td>
         </tr>
       </table>

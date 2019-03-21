@@ -9,6 +9,7 @@ import {Scenario} from '../../../../models/scenario';
 import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
 import {ScenarioType} from '../../../../models/entity-type';
+import {Controller} from '../../../../models/controller';
 
 @Component({
   selector: 'wsm-scenario-list',
@@ -22,9 +23,11 @@ export class ScenarioListComponent implements AfterViewInit {
   private subscriptions: Array<Subscription> = [];
   private scenarios: Array<Scenario> = [];
   private baseRole = Roles;
+  private controllers: Array<Controller> = [];
 
-
-
+  public role() {
+    return this.$user.getValue().user_role;
+  }
 
   constructor(public router: Router,
                public activatedRoute: ActivatedRoute,
@@ -54,6 +57,7 @@ export class ScenarioListComponent implements AfterViewInit {
         }
         break;
       case Roles.SIMPLE:
+        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
         integrators = Utils.pushAll([], this.dataService.getIntegratorsByGroup(user.group));
         if (integrators.length !== 0) {
           integrators.forEach((integr) => {
@@ -151,10 +155,6 @@ export class ScenarioListComponent implements AfterViewInit {
 
   public anyShown() {
     return this.scenarios.length !== 0;
-  }
-
-  public role() {
-    return this.$user.getValue().user_role;
   }
 
   // public ngOnInit() {

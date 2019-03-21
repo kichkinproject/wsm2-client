@@ -33,7 +33,7 @@
             Владелец:
           </td>
           <td>
-            {{masterSensor.name}}
+            {{masterSensor !== null && masterSensor !== undefined ? masterSensor.name : ''}}
           </td>
         </tr>
       </table>
