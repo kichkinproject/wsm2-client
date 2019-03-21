@@ -16,6 +16,7 @@ import { Utils } from "../utils/utils";
 import { Controller } from "../models/controller";
 import { UserGroup } from "../models/user-group";
 import {WsmData} from '../models/data';
+import { ScenarioController } from "../models/scenario-controller";
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,8 @@ export class Wsm2DataService /*extends ApiService*/ {
   private $controllerData: Array<Controller> = this.source.controllers();
 
   private $userGroupData: Array<UserGroup> = this.source.userGroups();
+
+  private $scenarioControllerData: Array<ScenarioController> = this.source.scenarioControllers();
 
   public getIntegrator(login: string): User {
     return this.$integratorData.filter((integ) => integ.login === login).length !== 0
@@ -428,5 +431,48 @@ export class Wsm2DataService /*extends ApiService*/ {
       integrators = Utils.pushAll(integrators, this.getIntegratorsByGroup(gr.id));
     });
     return integrators;
+  }
+
+  public getScenarioController(id: number) {
+    return this.$scenarioControllerData.filter((sC) => sC.id === id).length !== 0 ? this.$scenarioControllerData.find((sC) => sC.id === id) : null;
+  }
+
+  public getScenarioControllersByScenario(id: number) {
+    return this.$scenarioControllerData.filter((sC) => sC.scenarioId === id).length !== 0 ? this.$scenarioControllerData.filter((sC) => sC.scenarioId === id) : null;
+  }
+
+  public getScenarioControllersByController(id: number) {
+    return this.$scenarioControllerData.filter((sC) => sC.controllerId === id).length !== 0 ? this.$scenarioControllerData.filter((sC) => sC.controllerId === id) : null;
+  }
+
+  public getScenarioControllers() {
+    return this.$scenarioControllerData;
+  }
+
+  public addScenarioController(scenarioId: number, controllerId: number, activated: boolean) {
+    let newId = this.findMaxIndex(this.$scenarioControllerData) + 1;
+    while (Utils.exists(this.getScenarioController(newId))) {
+      newId++;
+    }
+    const scenContr = new ScenarioController(newId, scenarioId, controllerId, activated);
+    this.$scenarioControllerData.push(scenContr);
+    return scenContr;
+  }
+
+  public updateScenarioController(id: number, scenarioId: number, controllerId: number, activated: boolean) {
+    const scenContr = this.getScenarioController(id);
+    scenContr.scenarioId = scenarioId;
+    scenContr.controllerId = controllerId;
+    scenContr.activated = activated;
+  }
+
+  public deleteScenarioController(id: number) {
+    const scenContr = this.getScenarioController(id);
+    if (Utils.exists(scenContr)) {
+      const index = this.$scenarioControllerData.indexOf(scenContr);
+      this.$scenarioControllerData.splice(index, 1);
+    } else {
+      console.log(`Такая связь между контроллером и сценарием в системе не найдена`);
+    }
   }
 }

@@ -10,6 +10,7 @@ import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
 import {ScenarioType} from '../../../../models/entity-type';
 import {Controller} from '../../../../models/controller';
+import { ScenarioController } from "../../../../models/scenario-controller";
 
 @Component({
   selector: 'wsm-scenario-list',
@@ -24,6 +25,8 @@ export class ScenarioListComponent implements AfterViewInit {
   private scenarios: Array<Scenario> = [];
   private baseRole = Roles;
   private controllers: Array<Controller> = [];
+  private controllerHidden: Map<number, boolean> = new Map<number, boolean>();
+  private controllerScenarios: Map<number, Array<Scenario>> = new Map<number, Array<Scenario>>();
 
   public role() {
     return this.$user.getValue().user_role;
@@ -58,17 +61,49 @@ export class ScenarioListComponent implements AfterViewInit {
         break;
       case Roles.SIMPLE:
         this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
-        integrators = Utils.pushAll([], this.dataService.getIntegratorsByGroup(user.group));
-        if (integrators.length !== 0) {
-          integrators.forEach((integr) => {
-            this.scenarios = Utils.pushAll([], this.dataService.getScenarioByCreator(integr.login));
+        this.controllerHidden.clear();
+        this.controllerScenarios.clear();
+        this.controllers.forEach((cnt) => {
+          this.controllerHidden.set(cnt.id, true);
+          const scenarioControllers = this.dataService.getScenarioControllersByController(cnt.id);
+          const scens: Array<Scenario> = [];
+          scenarioControllers.forEach(sC => {
+            const scenario = this.dataService.getScenario(sC.scenarioId);
+            if (Utils.exists(scenario)) {
+              scens.push(scenario);
+            }
           });
-        }
+          this.controllerScenarios.set(cnt.id, scens);
+        });
+        // integrators = Utils.pushAll([], this.dataService.getIntegratorsByGroup(user.group));
+        // if (integrators.length !== 0) {
+        //   integrators.forEach((integr) => {
+        //     this.scenarios = Utils.pushAll([], this.dataService.getScenarioByCreator(integr.login));
+        //   });
+        // }
         break;
       default:
         this.scenarios.slice(0, this.scenarios.length);
         break;
     }
+  }
+
+  public activated(controller: number, scenario: number) {
+    const contScen: ScenarioController = this.dataService.getScenarioControllersByController(controller).find(sC => sC.scenarioId === scenario);
+    return contScen.activated;
+  }
+
+  public turnScenario(controller: number, scenario: number, value: boolean) {
+    const contScen: ScenarioController = this.dataService.getScenarioControllersByController(controller).find(sC => sC.scenarioId === scenario);
+    contScen.activated = value;
+  }
+
+  public controllerScens(id: number) {
+    return this.controllerScenarios.get(id);
+}
+
+  public hidden(id: number) {
+    return this.controllerHidden.get(id);
   }
 
   public ngAfterViewInit() {
@@ -120,6 +155,14 @@ export class ScenarioListComponent implements AfterViewInit {
     }
   }
 
+  public shareControllersScenario(id: number) {
+    return this.controllerHidden.set(id, false);
+  }
+
+  public hideControllersScenario(id: number) {
+    return this.controllerHidden.set(id, true);
+  }
+
   public doubleScenario(id: number) {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
@@ -145,7 +188,7 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public compareScenario(id: number) {
-    alert('Модуль сопоставления сценария недоступен');
+    alert('Блок загрузки сценария в контроллер недоступен');
   }
 
   public accessed() {

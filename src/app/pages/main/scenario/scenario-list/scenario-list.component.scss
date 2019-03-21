@@ -24,8 +24,7 @@
 
 
 :host ul {
-  position: relative;
-  height: 700px;
+
 }
 
 :host .scrolling-container {
@@ -77,14 +76,31 @@
   }
 }
 
+
 :host .collection-with-header {
+  position: relative;
+  height: 700px;
   margin: 5px 0;
   padding: 0 5px;
   border: 1px solid #ffffff;
   border-radius: 2px;
   overflow: hidden;
-  position: relative;
 }
+
+:host .collection-main-header {
+  background-color: change_color($bluish-grey, $alpha: 0.6);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 10px;
+  font-size: 160%;
+}
+
+:host .collection-with-sub-header {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 
 :host .collection-header {
   background-color: change_color($bluish-grey, $alpha: 0.4);

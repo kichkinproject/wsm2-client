@@ -6,6 +6,7 @@ import {Sensor} from './sensor';
 import {Thing} from './thing';
 import {Controller} from './controller';
 import {UserGroup} from './user-group';
+import { ScenarioController } from "./scenario-controller";
 
 export class WsmData {
   private userData: User[] = [
@@ -980,6 +981,394 @@ export class WsmData {
     },
   ];
 
+  private scenarioСontrollerData: Array<ScenarioController> = [
+    {
+      id: 1,
+      scenarioId: 1,
+      controllerId: 1,
+      activated: true
+    },
+    {
+      id: 2,
+      scenarioId: 1,
+      controllerId: 5,
+      activated: true
+    },
+    {
+      id: 3,
+      scenarioId: 1,
+      controllerId: 7,
+      activated: true
+    },
+    {
+      id: 4,
+      scenarioId: 1,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 5,
+      scenarioId: 2,
+      controllerId: 5,
+      activated: true
+    },
+    {
+      id: 6,
+      scenarioId: 2,
+      controllerId: 4,
+      activated: true
+    },
+    {
+      id: 7,
+      scenarioId: 2,
+      controllerId: 9,
+      activated: true
+    },
+    {
+      id: 8,
+      scenarioId: 2,
+      controllerId: 22,
+      activated: true
+    },
+    // продолжить отсюда
+    {
+      id: 9,
+      scenarioId: 3,
+      controllerId: 24,
+      activated: true
+    },
+    {
+      id: 10,
+      scenarioId: 3,
+      controllerId: 3,
+      activated: true
+    },
+    {
+      id: 11,
+      scenarioId: 3,
+      controllerId: 4,
+      activated: true
+    },
+    {
+      id: 12,
+      scenarioId: 3,
+      controllerId: 8,
+      activated: true
+    },
+    {
+      id: 13,
+      scenarioId: 4,
+      controllerId: 9,
+      activated: true
+    },
+    {
+      id: 14,
+      scenarioId: 4,
+      controllerId: 19,
+      activated: true
+    },
+    {
+      id: 15,
+      scenarioId: 4,
+      controllerId: 11,
+      activated: true
+    },
+    {
+      id: 16,
+      scenarioId: 4,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 17,
+      scenarioId: 5,
+      controllerId: 6,
+      activated: true
+    },
+    {
+      id: 18,
+      scenarioId: 5,
+      controllerId: 2,
+      activated: true
+    },
+    {
+      id: 19,
+      scenarioId: 5,
+      controllerId: 1,
+      activated: true
+    },
+    {
+      id: 20,
+      scenarioId: 5,
+      controllerId: 17,
+      activated: true
+    },
+    {
+      id: 21,
+      scenarioId: 6,
+      controllerId: 17,
+      activated: true
+    },
+    {
+      id: 22,
+      scenarioId: 6,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 23,
+      scenarioId: 6,
+      controllerId: 18,
+      activated: true
+    },
+    {
+      id: 24,
+      scenarioId: 6,
+      controllerId: 25,
+      activated: true
+    },
+    {
+      id: 25,
+      scenarioId: 7,
+      controllerId: 7,
+      activated: true
+    },
+    {
+      id: 26,
+      scenarioId: 7,
+      controllerId: 6,
+      activated: true
+    },
+    {
+      id: 27,
+      scenarioId: 7,
+      controllerId: 5,
+      activated: true
+    },
+    {
+      id: 28,
+      scenarioId: 7,
+      controllerId: 4,
+      activated: true
+    },
+    {
+      id: 29,
+      scenarioId: 8,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 30,
+      scenarioId: 8,
+      controllerId: 25,
+      activated: true
+    },
+    {
+      id: 31,
+      scenarioId: 8,
+      controllerId: 17,
+      activated: true
+    },
+    {
+      id: 32,
+      scenarioId: 8,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 33,
+      scenarioId: 9,
+      controllerId: 1,
+      activated: true
+    },
+    {
+      id: 34,
+      scenarioId: 9,
+      controllerId: 5,
+      activated: true
+    },
+    {
+      id: 35,
+      scenarioId: 9,
+      controllerId: 7,
+      activated: true
+    },
+    {
+      id: 36,
+      scenarioId: 9,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 37,
+      scenarioId: 10,
+      controllerId: 17,
+      activated: true
+    },
+    {
+      id: 38,
+      scenarioId: 10,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 39,
+      scenarioId: 10,
+      controllerId: 12,
+      activated: true
+    },
+    {
+      id: 40,
+      scenarioId: 10,
+      controllerId: 5,
+      activated: true
+    },
+    {
+      id: 41,
+      scenarioId: 11,
+      controllerId: 7,
+      activated: true
+    },
+    {
+      id: 42,
+      scenarioId: 11,
+      controllerId: 1,
+      activated: true
+    },
+    {
+      id: 43,
+      scenarioId: 11,
+      controllerId: 11,
+      activated: true
+    },
+    {
+      id: 44,
+      scenarioId: 11,
+      controllerId: 16,
+      activated: true
+    },
+    {
+      id: 45,
+      scenarioId: 12,
+      controllerId: 18,
+      activated: true
+    },
+    {
+      id: 46,
+      scenarioId: 12,
+      controllerId: 19,
+      activated: true
+    },
+    {
+      id: 47,
+      scenarioId: 12,
+      controllerId: 20,
+      activated: true
+    },
+    {
+      id: 48,
+      scenarioId: 12,
+      controllerId: 10,
+      activated: true
+    },
+    {
+      id: 49,
+      scenarioId: 13,
+      controllerId: 21,
+      activated: true
+    },
+    {
+      id: 50,
+      scenarioId: 13,
+      controllerId: 24,
+      activated: true
+    },
+    {
+      id: 51,
+      scenarioId: 13,
+      controllerId: 17,
+      activated: true
+    },
+    {
+      id: 52,
+      scenarioId: 13,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 53,
+      scenarioId: 14,
+      controllerId: 13,
+      activated: true
+    },
+    {
+      id: 54,
+      scenarioId: 14,
+      controllerId: 15,
+      activated: true
+    },
+    {
+      id: 55,
+      scenarioId: 14,
+      controllerId: 17,
+      activated: true
+    },
+    {
+      id: 56,
+      scenarioId: 14,
+      controllerId: 11,
+      activated: true
+    },
+    {
+      id: 57,
+      scenarioId: 15,
+      controllerId: 8,
+      activated: true
+    },
+    {
+      id: 58,
+      scenarioId: 15,
+      controllerId: 9,
+      activated: true
+    },
+    {
+      id: 59,
+      scenarioId: 15,
+      controllerId: 6,
+      activated: true
+    },
+    {
+      id: 60,
+      scenarioId: 15,
+      controllerId: 7,
+      activated: true
+    },
+    {
+      id: 61,
+      scenarioId: 16,
+      controllerId: 5,
+      activated: true
+    },
+    {
+      id: 62,
+      scenarioId: 16,
+      controllerId: 4,
+      activated: true
+    },
+    {
+      id: 63,
+      scenarioId: 16,
+      controllerId: 3,
+      activated: true
+    },
+    {
+      id: 64,
+      scenarioId: 16,
+      controllerId: 2,
+      activated: true
+    },
+  ];
+
   public allUsers(): Array<User> {
     return this.userData;
   }
@@ -998,6 +1387,10 @@ export class WsmData {
 
   public scenarios(): Array<Scenario> {
     return this.scenarioData;
+  }
+
+  public scenarioControllers(): Array<ScenarioController> {
+    return this.scenarioСontrollerData;
   }
 
   public userGroups(): Array<UserGroup> {
