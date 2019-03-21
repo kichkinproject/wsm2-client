@@ -7,7 +7,7 @@
         <mat-icon>add_box</mat-icon>
       </button>
       <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN" (click)="createReportOnUserGroups()" title="Сгенерировать отчет">
-        <mat-icon>send</mat-icon>
+        <mat-icon>report</mat-icon>
       </button>
       <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN || role() === baseRole.INTEGRATOR" (click)="updateUserGroupList()" title="Обновить список групп пользователей">
         <mat-icon>cached</mat-icon>

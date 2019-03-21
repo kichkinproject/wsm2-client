@@ -7,7 +7,7 @@
         <mat-icon>add_box</mat-icon>
       </button>
       <button mat-icon-button (click)="createReportOnIntegrators()" title="Сгенерировать отчет">
-        <mat-icon>send</mat-icon>
+        <mat-icon>report</mat-icon>
       </button>
       <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.MAIN_ADMIN" (click)="updateAdminList()" title="Обновить список интеграторов">
         <mat-icon>cached</mat-icon>

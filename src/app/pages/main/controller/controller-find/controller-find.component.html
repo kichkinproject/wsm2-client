@@ -1,28 +1,35 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Поиск контроллеров</h2>
+  <h2 align="center">Поиск контроллеров</h2>
   <div class="block-container">
-    <ul class="collection with-header">
-      <li class="collection-header">
-        <h4>Контроллеры</h4>
-        <button mat-icon-button (click)="findNewControllers()">
-          <mat-icon>cached</mat-icon>
-        </button>
-      </li>
-      <li class="collection-item" *ngFor="let controller of controllers">
-        <div>
-          <p class="item-name">{{controller.name}}</p>
-          <p class="item-description">{{controller.description}}</p>
-          <button mat-icon-button (click)="confirmController(controller.id)">
-            <mat-icon>check</mat-icon>
-          </button>
-          <button mat-icon-button (click)="denyController(controller.id)">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </div>
-      </li>
-    </ul>
-    <div class="anyShown" *ngIf="!anyShown">Контроллеры отсутствуют</div>
+    <div class="searching-block">
+      <label>
+        Введите ID контроллера:
+        <input [(ngModel)]="controllerId" placeholder='controller'>
+        <span *ngIf="controllerNotFound()">Не найден ни один контроллер по заданному ID</span>
+        <span *ngIf="controllerExisting()">Такой контроллер уже есть в системе</span>
+      </label>
+      <button mat-icon-button (click)="findController()" title="Найти контроллер">
+        <mat-icon>find_replace</mat-icon>
+      </button>
+    </div>
+    <div class="find-block" *ngIf="controllerFounded">
+      <label>
+        Название контроллера:
+        <input [(ngModel)]="name" [disabled]="true">
+      </label>
+      <label>
+        Описание контроллера:
+        <input [(ngModel)]="description" [disabled]="true">
+      </label>
+      <label>
+        Тип контроллера:
+        <input [(ngModel)]="typeContr" [disabled]="true">
+      </label>
+      <button mat-icon-button (click)="addFoundedController()" title="Подключить контроллер">
+        <mat-icon>add_box</mat-icon>
+      </button>
+    </div>
     <div class="accessed" *ngIf="!accessed">Нет доступа к странице "Поиск контроллеров"</div>
   </div>
 </div>

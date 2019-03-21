@@ -7,7 +7,7 @@
         <mat-icon>add_box</mat-icon>
       </button>
       <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN || role() === baseRole.ADMIN" (click)="createReportOnScenarios()" title="Сгенерировать отчет">
-        <mat-icon>send</mat-icon>
+        <mat-icon>report</mat-icon>
       </button>
       <button mat-icon-button (click)="updateScenarioList()" title="Обновить список сценариев">
         <mat-icon>cached</mat-icon>

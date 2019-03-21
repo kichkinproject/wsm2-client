@@ -7,7 +7,7 @@
         <mat-icon>add_box</mat-icon>
       </button>
       <button mat-icon-button (click)="createReportOnUsers()" title="Сгенерировать отчет">
-        <mat-icon>send</mat-icon>
+        <mat-icon>report</mat-icon>
       </button>
       <button mat-icon-button (click)="updateUserList()" title="Обновить список пользователей">
         <mat-icon>cached</mat-icon>
@@ -17,7 +17,28 @@
       <li class="collection-header">
         <h4>Пользователи</h4>
       </li>
-      <div class="scrolling-container" >
+      <div class="scrolling-container" *ngIf="role() !== baseRole.SIMPLE">
+        <div class="scrolling-area" >
+          <li class="collection-item" *ngFor="let user of users">
+            <div class="element-info">
+              <p class="item-name">{{user.name}}</p>
+              <p class="item-description">{{user.login}}: {{user.info}}</p>
+            </div>
+            <div class="element-buttons">
+              <button mat-icon-button (click)="editUser(user.login)" title="Редактировать пользователя">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="viewUser(user.login)" title="Просмотреть пользователя">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="removeUser(user.login)" title="Удалить пользователя">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </li>
+        </div>
+      </div>
+      <div class="scrolling-container" *ngIf="role() === baseRole.SIMPLE">
         <div class="scrolling-area" >
           <li class="collection-item" *ngFor="let user of users">
             <div class="element-info">
