@@ -173,11 +173,11 @@ export class CabinetComponent implements AfterViewInit {
         break;
       case this.baseRole.INTEGRATOR:
         const simpleIntegrator = this.dataService.getIntegrator(this.simpleLogin);
-        this.dataService.updateIntegrator(simpleIntegrator.login, this.$login, this.$password, this.$name, this.info);
+        this.dataService.updateIntegrator(simpleIntegrator.login, this.$login, this.$password, this.$name, this.info, simpleIntegrator.group);
         break;
       case this.baseRole.SIMPLE:
         const simpleUser = this.dataService.getUser(this.simpleLogin);
-        this.dataService.updateUser(simpleUser.login, this.$login, this.$password, this.$name, this.info);
+        this.dataService.updateUser(simpleUser.login, this.$login, this.$password, this.$name, this.info, simpleUser.group);
         break;
     }
     this.router.navigate(['main/about'], {

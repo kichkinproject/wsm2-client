@@ -2,7 +2,7 @@
 <div class="wsm-data-container">
   <h2 align="center">Создание интегратора</h2>
   <div class="block-container" *ngIf="accessed">
-  <div class="entity-block">
+    <div class="entity-block">
       <div class="login">
         <label>
           Логин:
@@ -36,6 +36,21 @@
           Информация об интеграторе:
           <input [(ngModel)]="info" placeholder='Информация об интеграторе ФИО'>
           <span *ngIf="!checkInfo()">Не правильный формат ввода информации об интеграторе</span>
+        </label>
+      </div>
+      <div class="parents">
+        <label>
+          Группа интегратора:
+          <div class="updating-field">
+            <select [(ngModel)]="selectedGroup">
+              <option *ngFor="let gr of groups" [ngValue]="gr.name">
+                {{ gr.name }}
+              </option>
+            </select>
+            <button mat-icon-button (click)="updateList()">
+              <mat-icon>cached</mat-icon>
+            </button>
+          </div>
         </label>
       </div>
     </div>

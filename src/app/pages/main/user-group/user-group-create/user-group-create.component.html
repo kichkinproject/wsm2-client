@@ -20,13 +20,17 @@
       <div class="parents">
         <label>
           Родительская группа:
-          <select [(ngModel)]="selectedGroup">
-            <option [(ngRepeat)]="gr in groups" value="{{gr.name}}">{{gr.name}}</option>
-          </select>
+          <div class="updating-field">
+            <select [(ngModel)]="selectedGroup">
+              <option *ngFor="let gr of groups" [ngValue]="gr.name">
+                {{ gr.name }}
+              </option>
+            </select>
+            <button mat-icon-button (click)="updateList()">
+              <mat-icon>cached</mat-icon>
+            </button>
+          </div>
         </label>
-        <button mat-icon-button (click)="updateList()">
-          <mat-icon>cached</mat-icon>
-        </button>
       </div>
     </div>
     <button mat-icon-button (click)="createUserGroup()" [disabled]="!enabledToAdd()" title="Добавить группу пользователей">

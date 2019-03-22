@@ -6,6 +6,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {Utils} from '../../../../utils/utils';
+import {UserGroup} from '../../../../models/user-group';
 
 @Component({
   selector: 'wsm-integrator-edit',
@@ -20,6 +21,9 @@ export class IntegratorEditComponent implements AfterViewInit {
   private $login: string;
   private $name: string;
   private $info: string;
+  private $group: UserGroup;
+  private groups: Array<UserGroup> = [];
+  private noGroup: UserGroup = new UserGroup(0, 'Нет родителя', '');
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
@@ -33,6 +37,39 @@ export class IntegratorEditComponent implements AfterViewInit {
 
   private integratorLogin: string;
 
+  public updateList() {
+    this.groups.splice(0, this.groups.length);
+    if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
+      this.groups.push(this.noGroup);
+      const allGroups = this.dataService.getUserGroups();
+      if (allGroups.length !== 0) {
+        allGroups.forEach(gr => this.groups.push(gr));
+      }
+    }
+    if (this.role() === Roles.INTEGRATOR) {
+      this.groups.push(this.noGroup);
+      const user = this.dataService.getIntegrator(this.$user.getValue().user_login);
+      const children = this.dataService.getAllChildrenUserGroup(user.group);
+      if (children.length !== 0) {
+        children.forEach(ch => this.groups.push(ch))
+      }
+    }
+  }
+
+  public get selectedGroup() {
+    return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
+  }
+
+  public set selectedGroup(str: string) {
+    this.groups.forEach((gr) => {
+      if (gr.name === str) {
+        this.$group = gr;
+        return;
+      }
+    });
+    // this.$type
+  }
+
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
@@ -41,6 +78,8 @@ export class IntegratorEditComponent implements AfterViewInit {
     this.login = integrator.login;
     this.name = integrator.name;
     this.info = integrator.info;
+    this.updateList();
+    this.selectedGroup = integrator.group !== -1 ? this.dataService.getUserGroup(integrator.group).name : this.noGroup.name;
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
@@ -98,7 +137,7 @@ export class IntegratorEditComponent implements AfterViewInit {
 
   public saveIntegrator() {
     const integrator = this.dataService.getIntegrator(this.integratorLogin);
-    this.dataService.updateIntegrator(integrator.login, this.$login, integrator.password, this.$name, this.$info);
+    this.dataService.updateIntegrator(integrator.login, this.$login, integrator.password, this.$name, this.$info, this.$group.id);
     this.router.navigate(['main/integrator/integrator-list'], {
       queryParams: {}
     });

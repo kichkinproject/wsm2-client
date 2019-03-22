@@ -6,6 +6,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {Utils} from '../../../../utils/utils';
+import {UserGroup} from '../../../../models/user-group';
 
 @Component({
   selector: 'wsm-integrator-view',
@@ -20,6 +21,7 @@ export class IntegratorViewComponent implements AfterViewInit {
   private $login: string;
   private $name: string;
   private $info: string;
+  private $group: string;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
@@ -41,6 +43,7 @@ export class IntegratorViewComponent implements AfterViewInit {
     this.login = integrator.login;
     this.name = integrator.name;
     this.info = integrator.info;
+    this.group = this.dataService.getUserGroup(integrator.group).name;
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
@@ -86,5 +89,13 @@ export class IntegratorViewComponent implements AfterViewInit {
     if (Utils.exists(str)) {
       this.$info = str;
     }
+  }
+
+  public get group() {
+    return this.$group;
+  }
+
+  public set group(str: string) {
+    this.$group = str;
   }
 }

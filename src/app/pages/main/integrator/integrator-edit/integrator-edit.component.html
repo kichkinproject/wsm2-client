@@ -23,6 +23,21 @@
           <span *ngIf="!checkInfo()">Не правильный формат ввода информации об интеграторе</span>
         </label>
       </div>
+      <div class="parents">
+        <label>
+          Группа интегратора:
+          <div class="updating-field">
+            <select [(ngModel)]="selectedGroup">
+              <option *ngFor="let gr of groups" [ngValue]="gr.name">
+                {{ gr.name }}
+              </option>
+            </select>
+            <button mat-icon-button (click)="updateList()">
+              <mat-icon>cached</mat-icon>
+            </button>
+          </div>
+        </label>
+      </div>
     </div>
     <button mat-icon-button (click)="saveIntegrator()" [disabled]="!enabledToSave()">
       <mat-icon>save</mat-icon>

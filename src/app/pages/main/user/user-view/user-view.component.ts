@@ -20,6 +20,7 @@ export class UserViewComponent implements AfterViewInit {
   private $login: string;
   private $name: string;
   private $info: string;
+  private $group: string;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
@@ -41,6 +42,7 @@ export class UserViewComponent implements AfterViewInit {
     this.login = simple.login;
     this.name = simple.name;
     this.info = simple.info;
+    this.group = this.dataService.getUserGroup(simple.group).name;
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
@@ -86,5 +88,13 @@ export class UserViewComponent implements AfterViewInit {
     if (Utils.exists(str)) {
       this.$info = str;
     }
+  }
+
+  public get group() {
+    return this.$group;
+  }
+
+  public set group(str: string) {
+    this.$group = str;
   }
 }

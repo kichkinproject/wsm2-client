@@ -35,10 +35,16 @@
 
 }
 
+:host select {
+  padding: 5px;
+  display: inline-flex;
+  width: 600px;
+}
+
 :host button[mat-icon-button] {
   margin: 10px 0px;
   display: block;
-  align-self: right;
+  //align-self: right;
   font-size: rem(28px);
   @include defaultIcon;
   font-size: rem(28px);
@@ -53,5 +59,27 @@
   @include themify($themes) {
     background-color: themed('button', 'icon', 'color');
   }
+}
+
+:host .updating-button {
+  display: inline-flex;
+
+}
+
+
+:host .updating-field {
+  display: inline-block;
+  width: 800px;
+}
+
+:host .updating-button {
+  margin: 10px;
+}
+
+:host select {
+  padding: 5px;
+  display: inline-block;
+  width: 740px;
+  margin: 0 10px 0  0;
 }
 

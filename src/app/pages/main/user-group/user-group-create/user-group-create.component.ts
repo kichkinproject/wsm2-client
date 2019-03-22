@@ -49,12 +49,18 @@ export class UserGroupCreateComponent implements AfterViewInit {
     this.groups.splice(0, this.groups.length);
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
-      Utils.pushAll(this.groups, this.dataService.getUserGroups());
+      const allGroups = this.dataService.getUserGroups();
+      if (allGroups.length !== 0) {
+        allGroups.forEach(gr => this.groups.push(gr));
+      }
     }
     if (this.role() === Roles.INTEGRATOR) {
       this.groups.push(this.noGroup);
       const user = this.dataService.getIntegrator(this.$user.getValue().user_login);
-      Utils.pushAll(this.groups, this.dataService.getAllChildrenUserGroup(user.group));
+      const children = this.dataService.getAllChildrenUserGroup(user.group);
+      if (children.length !== 0) {
+        children.forEach(ch => this.groups.push(ch))
+      }
     }
   }
 
@@ -85,7 +91,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
 
 
   public get selectedGroup() {
-    return this.$group.name;
+    return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
   }
 
   public set selectedGroup(str: string) {
@@ -117,7 +123,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
 
   public createUserGroup() {
     this.dataService.addUserGroup(this.$name, this.$description, this.$group.id);
-    this.router.navigate(['/user-group-list'], {
+    this.router.navigate(['main/user-group/user-group-list'], {
       queryParams: {}
     });
   }

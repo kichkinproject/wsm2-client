@@ -60,28 +60,37 @@ export class Wsm2DataService /*extends ApiService*/ {
     return this.$integratorData;
   }
 
-  public addIntegrator(login: string, password: string, name: string, info: string): User {
+  public addIntegrator(login: string, password: string, name: string, info: string, group: number): User {
     if (Utils.exists(this.getIntegrator(login)) || Utils.exists(this.getUser(login))  || Utils.exists(this.getAdmin(login))) {
       console.log(`Пользователь ${login} в системе уже зарегистрирован`);
       return null;
     } else {
-      const integrator = new User(login, password, name, info, Roles.INTEGRATOR);
-      this.$integratorData.push(integrator);
-      return integrator;
+      if (Utils.exists(this.getUserGroup(group))) {
+        const integrator = new User(login, password, name, info, Roles.INTEGRATOR, group);
+        this.$integratorData.push(integrator);
+        return integrator;
+      } else {
+        console.log('Такой группы пользователей нет');
+      }
     }
   }
 
-  public updateIntegrator(oldLogin: string, login: string, password: string, name: string, info: string) {
-    if (oldLogin === login) {
-      const integrator = this.getIntegrator(login);
-      integrator.password = password;
-      integrator.name = name;
-      integrator.info = info;
-    } else {
-      const newIntegrator = this.addIntegrator(login, password, name, info);
-      if (Utils.exists(newIntegrator)) {
-        this.deleteIntegrator(oldLogin);
+  public updateIntegrator(oldLogin: string, login: string, password: string, name: string, info: string, group: number) {
+    if (Utils.exists(this.getUserGroup(group))) {
+      if (oldLogin === login) {
+        const integrator = this.getIntegrator(login);
+        integrator.password = password;
+        integrator.name = name;
+        integrator.info = info;
+        integrator.group = group;
+      } else {
+        const newIntegrator = this.addIntegrator(login, password, name, info, group);
+        if (Utils.exists(newIntegrator)) {
+          this.deleteIntegrator(oldLogin);
+        }
       }
+    } else {
+      console.log('Определенной группы пользователей нет');
     }
   }
 
@@ -158,28 +167,37 @@ export class Wsm2DataService /*extends ApiService*/ {
     return this.$userData;
   }
 
-  public addUser(login: string, password: string, name: string, info: string): User {
+  public addUser(login: string, password: string, name: string, info: string, group: number): User {
     if (Utils.exists(this.getIntegrator(login)) || Utils.exists(this.getUser(login))  || Utils.exists(this.getAdmin(login))) {
       console.log(`Пользователь ${login} в системе уже зарегистрирован`);
       return null;
     } else {
-      const user = new User(login, password, name, info, Roles.SIMPLE);
-      this.$userData.push(user);
-      return user;
+      if (Utils.exists(this.getUserGroup(group))) {
+        const user = new User(login, password, name, info, Roles.SIMPLE, group);
+        this.$userData.push(user);
+        return user;
+      } else {
+        console.log('Такой группы пользователей нет');
+      }
     }
   }
 
-  public updateUser(oldLogin: string, login: string, password: string, name: string, info: string) {
-    if (oldLogin === login) {
+  public updateUser(oldLogin: string, login: string, password: string, name: string, info: string, group: number) {
+    if (Utils.exists(this.getUserGroup(group))) {
+      if (oldLogin === login) {
       const user = this.getUser(login);
       user.password = password;
       user.name = name;
       user.info = info;
+      user.group = group;
     } else {
-      const newUser = this.addUser(login, password, name, info);
-      if (Utils.exists(newUser)) {
-        this.deleteUser(oldLogin);
+      const newUser = this.addUser(login, password, name, info, group);
+        if (Utils.exists(newUser)) {
+          this.deleteUser(oldLogin);
+        }
       }
+    } else {
+      console.log('Определенной группы пользователей нет');
     }
   }
 
@@ -364,6 +382,9 @@ export class Wsm2DataService /*extends ApiService*/ {
     while (Utils.exists(this.getUserGroup(newId))) {
       newId++;
     }
+    if (parent === 0) {
+      parent = -1;
+    }
     const userGroup = new UserGroup(newId, name, description, parent);
     this.$userGroupData.push(userGroup);
     return userGroup;
@@ -373,6 +394,9 @@ export class Wsm2DataService /*extends ApiService*/ {
     const userGroup = this.getUserGroup(id);
     userGroup.name = name;
     userGroup.description = desc;
+    if (parent === 0) {
+      parent = -1;
+    }
     userGroup.parentId = parent;
   }
 
@@ -386,11 +410,11 @@ export class Wsm2DataService /*extends ApiService*/ {
     }
   }
 
-  public getChildrenUserGroup(id: number) {
+  public getChildrenUserGroup(id: number): Array<UserGroup>  {
     return this.$userGroupData.filter((uGr) => uGr.parentId === id);
   }
 
-  public getAllChildrenUserGroup(id: number) {
+  public getAllChildrenUserGroup(id: number): Array<UserGroup> {
     let group = this.getUserGroup(id);
     let children = Utils.pushAll([group], this.getChildrenUserGroup(id));
     if (children.length === 0) {

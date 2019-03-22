@@ -38,6 +38,21 @@
           <span *ngIf="!checkInfo()">Не правильный формат ввода информации о пользователе</span>
         </label>
       </div>
+      <div class="parents">
+        <label>
+          Группа пользователя:
+          <div class="updating-field">
+            <select [(ngModel)]="selectedGroup">
+              <option *ngFor="let gr of groups" [ngValue]="gr.name">
+                {{ gr.name }}
+              </option>
+            </select>
+            <button mat-icon-button (click)="updateList()">
+              <mat-icon>cached</mat-icon>
+            </button>
+          </div>
+        </label>
+      </div>
     </div>
     <button mat-icon-button (click)="createUser()" [disabled]="!enabledToAdd()" title="Добавить пользователя">
       <mat-icon>save</mat-icon>
