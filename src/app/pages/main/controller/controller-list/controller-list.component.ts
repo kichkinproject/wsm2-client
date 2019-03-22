@@ -52,6 +52,26 @@ export class ControllerListComponent implements AfterViewInit {
     }
   }
 
+  public createThingLinks(id) {
+    if (Utils.exists(this.dataService.getController(id))) {
+      this.router.navigate(['main/controller/controller-thing-link', id.toString()], {
+        queryParams: {}
+      });
+    } else {
+      console.log('Ошибка, хотим настроить устройства для не существующего контроллера');
+    }
+  }
+
+  public createSensorLinks(id) {
+    if (Utils.exists(this.dataService.getController(id))) {
+      this.router.navigate(['main/controller/controller-sensor-link', id.toString()], {
+        queryParams: {}
+      });
+    } else {
+      console.log('Ошибка, хотим настроить датчики для не существующего контроллера');
+    }
+  }
+
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();

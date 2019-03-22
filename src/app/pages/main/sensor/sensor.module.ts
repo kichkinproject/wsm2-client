@@ -13,6 +13,7 @@ const routes: Routes = [
       { path: 'sensor-find', loadChildren: './sensor-find/sensor-find.module#SensorFindModule' },
       { path: 'sensor-list', loadChildren: './sensor-list/sensor-list.module#SensorListModule' },
       { path: 'sensor-view/:id', loadChildren: './sensor-view/sensor-view.module#SensorViewModule' },
+      { path: 'sensor-controller-link/:id', loadChildren: './sensor-controller-link/sensor-controller-link.module#SensorControllerLinkModule' },
       { path: 'sensor-report', loadChildren: './sensor-report/sensor-report.module#SensorReportModule' },
       { path: '**', redirectTo: 'sensor-list' },
     ],

@@ -52,6 +52,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №1',
       type: SensorType.SENSOR_TYPE_1,
       master: -1,
+      controller: -1,
     },
     {
       id: 102,
@@ -59,6 +60,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №2',
       type: SensorType.SENSOR_TYPE_2,
       master: -1,
+      controller: -1,
     },
     {
       id: 103,
@@ -66,6 +68,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №3',
       type: SensorType.SENSOR_TYPE_3,
       master: -1,
+      controller: -1,
     },
     {
       id: 104,
@@ -73,6 +76,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №4',
       type: SensorType.SENSOR_TYPE_4,
       master: -1,
+      controller: -1,
     },
     {
       id: 105,
@@ -80,6 +84,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №5',
       type: SensorType.SENSOR_TYPE_3,
       master: -1,
+      controller: -1,
     },
     {
       id: 106,
@@ -87,6 +92,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №6',
       type: SensorType.SENSOR_TYPE_1,
       master: -1,
+      controller: -1,
     },
     {
       id: 107,
@@ -94,6 +100,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №7',
       type: SensorType.SENSOR_TYPE_2,
       master: -1,
+      controller: -1,
     },
     {
       id: 108,
@@ -101,6 +108,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №8',
       type: SensorType.SENSOR_TYPE_3,
       master: -1,
+      controller: -1,
     },
     {
       id: 109,
@@ -108,6 +116,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №9',
       type: SensorType.SENSOR_TYPE_4,
       master: -1,
+      controller: -1,
     },
     {
       id: 110,
@@ -115,6 +124,7 @@ export class SensorFindComponent implements AfterViewInit {
       description: 'Датчик №10',
       type: SensorType.SENSOR_TYPE_3,
       master: -1,
+      controller: -1,
     },
   ];
 

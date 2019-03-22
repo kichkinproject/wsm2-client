@@ -13,6 +13,7 @@ const routes: Routes = [
       { path: 'thing-find', loadChildren: './thing-find/thing-find.module#ThingFindModule' },
       { path: 'thing-list', loadChildren: './thing-list/thing-list.module#ThingListModule' },
       { path: 'thing-view/:id', loadChildren: './thing-view/thing-view.module#ThingViewModule' },
+      { path: 'thing-controller-link/:id', loadChildren: './thing-controller-link/thing-controller-link.module#ThingControllerLinkModule' },
       { path: 'thing-report', loadChildren: './thing-report/thing-report.module#ThingReportModule' },
       { path: '**', redirectTo: 'thing-list' },
     ],

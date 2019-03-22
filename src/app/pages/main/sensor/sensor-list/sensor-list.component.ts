@@ -8,6 +8,8 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
+import { Controller } from "../../../../models/controller";
+import { Sensor } from "../../../../models/sensor";
 
 @Component({
   selector: 'wsm-sensor-list',
@@ -21,7 +23,9 @@ export class SensorListComponent implements AfterViewInit {
   private subscriptions: Array<Subscription> = [];
   private sensors: Array<Scenario> = [];
   private baseRole = Roles;
-
+  private controllers: Array<Controller> = [];
+  private controllerHidden: Map<number, boolean> = new Map<number, boolean>();
+  private controllerSensors: Map<number, Array<Sensor>> = new Map<number, Array<Sensor>>();
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
@@ -46,12 +50,35 @@ export class SensorListComponent implements AfterViewInit {
         this.sensors = Utils.pushAll([], this.dataService.getSensorsByGroup(user.group));
         break;
       case Roles.SIMPLE:
-        this.sensors.slice(0, this.sensors.length);
+        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
+        this.controllerHidden.clear();
+        this.controllerSensors.clear();
+        this.controllers.forEach((cnt) => {
+          this.controllerHidden.set(cnt.id, true);
+          const contrSensors = this.dataService.getSensorsByController(cnt.id);
+          this.controllerSensors.set(cnt.id, contrSensors);
+        });
         break;
       default:
         this.sensors.slice(0, this.sensors.length);
         break;
     }
+  }
+
+  public hidden(id: number) {
+    return this.controllerHidden.get(id);
+  }
+
+  public shareControllersSensors(id: number) {
+    return this.controllerHidden.set(id, false);
+  }
+
+  public hideControllersSensors(id: number) {
+    return this.controllerHidden.set(id, true);
+  }
+
+  public controllerSens(id: number) {
+    return this.controllerSensors.get(id);
   }
 
   public ngAfterViewInit() {
@@ -70,6 +97,25 @@ export class SensorListComponent implements AfterViewInit {
     this.router.navigate(['main/sensor/sensor-find'], {
       queryParams: {}
     });
+  }
+
+  public createLinkController(id) {
+    if (Utils.exists(this.dataService.getThing(id))) {
+      this.router.navigate(['main/sensor/sensor-controller-link', id.toString()], {
+        queryParams: {}
+      });
+    } else {
+      console.log('Ошибка, хотим просмотреть не существующее устройство');
+    }
+    // this.dataService.createSensorControllerLink()
+  }
+
+  public destroyLinkController(id) {
+    this.isCompleted$.next(false);
+    this.dataService.destroySensorControllerLink(id);
+    this.updateCollection();
+    this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public createReportOnSensors() {

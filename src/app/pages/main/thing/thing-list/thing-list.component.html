@@ -3,17 +3,17 @@
   <h2 align="center">Список устройств</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button (click)="findNewThing()" title="Найти устройство">
+      <button mat-icon-button *ngIf="role() === baseRole.INTEGRATOR" (click)="findNewThing()" title="Найти устройство">
         <mat-icon>search</mat-icon>
       </button>
-      <button mat-icon-button (click)="createReportOnThing()" title="Сгенерировать отчет">
+      <button mat-icon-button *ngIf="role() === baseRole.INTEGRATOR" (click)="createReportOnThing()" title="Сгенерировать отчет">
         <mat-icon>report</mat-icon>
       </button>
       <button mat-icon-button (click)="updateThingsList()" title="Обновить список устройств">
         <mat-icon>cached</mat-icon>
       </button>
     </div>
-    <ul class="collection-with-header">
+    <ul class="collection-with-header" *ngIf="role() === baseRole.INTEGRATOR">
       <li class="collection-header">
         <h4>Устройства</h4>
       </li>
@@ -28,11 +28,52 @@
               <button mat-icon-button (click)="viewThing(thing.id)" title="Просмотреть устройство">
                 <mat-icon>visibility</mat-icon>
               </button>
+              <button mat-icon-button *ngIf="thing.controller === -1" (click)="createLinkController(thing.id)" title="Подключиться к контроллеру">
+                <mat-icon>phonelink</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="thing.controller !== -1" (click)="destroyLinkController(thing.id)" title="Отсоединиться от контроллера">
+                <mat-icon>phonelink_off</mat-icon>
+              </button>
               <button mat-icon-button (click)="removeThing(thing.id)" title="Удалить устройство">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
 
+          </li>
+        </div>
+      </div>
+    </ul>
+    <ul class="collection-with-header" *ngIf="role() === baseRole.SIMPLE">
+      <li class="collection-header">
+        <h4>Устройства по контроллерам</h4>
+      </li>
+      <div class="scrolling-container" *ngIf="this.role() === baseRole.SIMPLE">
+        <div class="scrolling-area" >
+          <li *ngFor="let controller of controllers">
+            <div class="collection-header">
+              <p>{{controller.name}}: подключено устройств - {{controllerTh(controller.id).length}}</p>
+              <button mat-icon-button class="special-button" *ngIf="role() === baseRole.SIMPLE && hidden(controller.id)" (click)="shareControllersThings(controller.id)" title="Показать устройства">
+                <mat-icon>zoom_in</mat-icon>
+              </button>
+              <button mat-icon-button class="special-button" *ngIf="role() === baseRole.SIMPLE && !hidden(controller.id)" (click)="hideControllersThings(controller.id)" title="Спрятать устройства">
+                <mat-icon>zoom_out</mat-icon>
+              </button>
+            </div>
+            <ul *ngIf="!hidden(controller.id)" class="collection-with-sub-header">
+              <!--<div >-->
+              <li class="collection-item" *ngFor="let thing of controllerTh(controller.id)">
+                <div class="element-info">
+                  <p class="item-name">{{thing.name}}</p>
+                  <p class="item-description">{{thing.description}}</p>
+                </div>
+                <div class="element-buttons">
+                  <button mat-icon-button (click)="viewThing(thing.id)" title="Просмотреть устройство">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </div>
+              </li>
+              <!--</div>-->
+            </ul>
           </li>
         </div>
       </div>

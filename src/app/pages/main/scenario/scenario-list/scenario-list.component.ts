@@ -27,6 +27,7 @@ export class ScenarioListComponent implements AfterViewInit {
   private controllers: Array<Controller> = [];
   private controllerHidden: Map<number, boolean> = new Map<number, boolean>();
   private controllerScenarios: Map<number, Array<Scenario>> = new Map<number, Array<Scenario>>();
+  private $publicity: boolean = true;
 
   public role() {
     return this.$user.getValue().user_role;
@@ -45,18 +46,17 @@ export class ScenarioListComponent implements AfterViewInit {
   private updateCollection() {
     const role = this.$user.getValue().user_role;
     const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
-    let integrators: Array<User> = [];
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        this.dataService.getScenarios().forEach((scen) => this.scenarios.push(scen));
-        break;
+        // this.scenarios = [];
+        // this.dataService.getScenarios().forEach((scen) => this.scenarios.push(scen));
+        // break;
       case Roles.INTEGRATOR:
-        integrators = Utils.pushAll([], this.dataService.getIntegratorsByChildrenGroup(user.group));
-        if (integrators.length !== 0) {
-          integrators.forEach((integr) => {
-            this.scenarios = Utils.pushAll([], this.dataService.getScenarioByCreator(integr.login));
-          });
+        if (this.publicity) {
+          this.onlyPublic();
+        } else {
+          this.onlyPrivate();
         }
         break;
       case Roles.SIMPLE:
@@ -67,12 +67,14 @@ export class ScenarioListComponent implements AfterViewInit {
           this.controllerHidden.set(cnt.id, true);
           const scenarioControllers = this.dataService.getScenarioControllersByController(cnt.id);
           const scens: Array<Scenario> = [];
-          scenarioControllers.forEach(sC => {
-            const scenario = this.dataService.getScenario(sC.scenarioId);
-            if (Utils.exists(scenario)) {
-              scens.push(scenario);
-            }
-          });
+          if (Utils.exists(scenarioControllers) && scenarioControllers.length !== 0) {
+            scenarioControllers.forEach(sC => {
+              const scenario = this.dataService.getScenario(sC.scenarioId);
+              if (Utils.exists(scenario)) {
+                scens.push(scenario);
+              }
+            });
+          }
           this.controllerScenarios.set(cnt.id, scens);
         });
         // integrators = Utils.pushAll([], this.dataService.getIntegratorsByGroup(user.group));
@@ -88,6 +90,60 @@ export class ScenarioListComponent implements AfterViewInit {
     }
   }
 
+  public get publicity() {
+    return this.$publicity;
+  }
+
+  public set publicity(value: boolean) {
+    this.$publicity = value;
+  }
+
+  public onlyPrivate() {
+    this.publicity = false;
+    const role = this.$user.getValue().user_role;
+    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
+    switch (role) {
+      case Roles.MAIN_ADMIN:
+        this.scenarios = this.dataService.getPrivateScenarios();
+        break;
+      case Roles.ADMIN:
+        this.scenarios = this.dataService.getScenarioByCreator(user.login);
+        break;
+      case Roles.INTEGRATOR:
+        this.scenarios = [];
+        let integrators: Array<User> = [];
+        integrators = Utils.pushAll([], this.dataService.getIntegratorsByChildrenGroup(user.group));
+        if (integrators.length !== 0) {
+          integrators.forEach((integr) => {
+            const integrScens = this.dataService.getScenarioByCreator(integr.login);
+            integrScens.forEach(sc => this.scenarios.push(sc));
+          });
+        }
+        break;
+    }
+  }
+
+  public updoadNewScenario() {
+    alert('Блок загрузки сценария в систему пока не доступен');
+  }
+
+  public publishScenario(id: number) {
+    const scen = this.dataService.getScenario(id);
+    scen.publicity = true;
+    this.updateCollection();
+  }
+
+  public unpublishScenario(id: number) {
+    const scen = this.dataService.getScenario(id);
+    scen.publicity = false;
+    this.updateCollection();
+  }
+
+  public onlyPublic() {
+    this.publicity = true;
+    this.scenarios = this.dataService.getPublicScenarios();
+  }
+
   public activated(controller: number, scenario: number) {
     const contScen: ScenarioController = this.dataService.getScenarioControllersByController(controller).find(sC => sC.scenarioId === scenario);
     return contScen.activated;
@@ -100,7 +156,7 @@ export class ScenarioListComponent implements AfterViewInit {
 
   public controllerScens(id: number) {
     return this.controllerScenarios.get(id);
-}
+  }
 
   public hidden(id: number) {
     return this.controllerHidden.get(id);
@@ -119,9 +175,10 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public addNewScenario() {
-    this.router.navigate(['main/scenario/scenario-create'], {
-      queryParams: {}
-    });
+    alert('Блок создания сценария временно не доступен');
+    // this.router.navigate(['main/scenario/scenario-create'], {
+    //   queryParams: {}
+    // });
   }
 
   public createReportOnScenarios() {
@@ -137,22 +194,24 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public editScenario(id: number) {
-    if (Utils.exists(this.dataService.getScenario(id))) {
-      this.router.navigate(['main/scenario/scenario-edit', id.toString()], {
-        queryParams: {}
-      });
-    } else {
-      console.log('Ошибка, хотим редактировать не существующий сценарий');
-    }
+    alert('Блок редактирования сценария временно не доступен');
+    // if (Utils.exists(this.dataService.getScenario(id))) {
+    //   this.router.navigate(['main/scenario/scenario-edit', id.toString()], {
+    //     queryParams: {}
+    //   });
+    // } else {
+    //   console.log('Ошибка, хотим редактировать не существующий сценарий');
+    // }
   }
   public viewScenario(id: number) {
-    if (Utils.exists(this.dataService.getScenario(id))) {
-      this.router.navigate(['main/scenario/scenario-view', id.toString()], {
-        queryParams: {}
-      });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующий сценарий');
-    }
+    alert('Блок просмотра сценария временно не доступен');
+    // if (Utils.exists(this.dataService.getScenario(id))) {
+    //   this.router.navigate(['main/scenario/scenario-view', id.toString()], {
+    //     queryParams: {}
+    //   });
+    // } else {
+    //   console.log('Ошибка, хотим просмотреть не существующий сценарий');
+    // }
   }
 
   public shareControllersScenario(id: number) {

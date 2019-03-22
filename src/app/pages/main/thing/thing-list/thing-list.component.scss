@@ -19,9 +19,12 @@
 
 }
 
+:host button {
+}
+
+
 :host ul {
-  position: relative;
-  height: 700px;
+
 }
 
 :host .scrolling-container {
@@ -43,9 +46,6 @@
   min-height: 100%;
 }
 
-:host button {
-}
-
 :host button[mat-icon-button] {
   margin: 0 5px 0;
   @include defaultIcon;
@@ -60,14 +60,56 @@
   }
 }
 
+:host mat-slide-toggle.mat-checked:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-thumb {
+    background-color: $defaultColor;
+  }
+
+  & .mat-slide-toggle-bar {
+    background-color: change_color($defaultColor, $alpha: 0.5);
+  }
+}
+
+:host mat-slide-toggle:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-bar {
+    background-color: hsla(0, 0, 0%, 0.5);
+  }
+}
+
+
 :host .collection-with-header {
+  position: relative;
+  height: 700px;
   margin: 5px 0;
   padding: 0 5px;
   border: 1px solid #ffffff;
   border-radius: 2px;
   overflow: hidden;
-  position: relative;
 }
+
+:host .collection-main-header {
+  background-color: change_color($bluish-grey, $alpha: 0.6);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 10px;
+  font-size: 160%;
+}
+
+:host .collection-with-sub-header {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+:host .special-button {
+  //position: initial;
+  //align-items: inherit;
+  //display: flex;
+  //float: right;
+  //margin-right: 5px;
+  //text-align: right;
+}
+
 
 :host .collection-header {
   background-color: change_color($bluish-grey, $alpha: 0.4);
@@ -84,14 +126,14 @@
 }
 
 :host .element-info {
-  width: rem(1000px);
-  max-width: rem(1000px);
+  width: rem(800px);
+  max-width: rem(800px);
   margin: 0;
   display: inline-block;
 }
 
 :host .element-buttons {
-  width: rem(300px);
+  width: rem(500px);
   float: right;
   align-items: inherit;
   display: inline-block;

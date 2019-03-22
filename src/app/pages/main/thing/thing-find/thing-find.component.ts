@@ -52,6 +52,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №1',
       type: ThingType.THING_TYPE_1,
       master: -1,
+      controller: -1,
     },
     {
       id: 102,
@@ -59,6 +60,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №2',
       type: ThingType.THING_TYPE_2,
       master: -1,
+      controller: -1,
     },
     {
       id: 103,
@@ -66,6 +68,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №3',
       type: ThingType.THING_TYPE_3,
       master: -1,
+      controller: -1,
     },
     {
       id: 104,
@@ -73,6 +76,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №4',
       type: ThingType.THING_TYPE_4,
       master: -1,
+      controller: -1,
     },
     {
       id: 105,
@@ -80,6 +84,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №5',
       type: ThingType.THING_TYPE_3,
       master: -1,
+      controller: -1,
     },
     {
       id: 106,
@@ -87,6 +92,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №6',
       type: ThingType.THING_TYPE_1,
       master: -1,
+      controller: -1,
     },
     {
       id: 107,
@@ -94,6 +100,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №7',
       type: ThingType.THING_TYPE_2,
       master: -1,
+      controller: -1,
     },
     {
       id: 108,
@@ -101,6 +108,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №8',
       type: ThingType.THING_TYPE_3,
       master: -1,
+      controller: -1,
     },
     {
       id: 109,
@@ -108,6 +116,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №9',
       type: ThingType.THING_TYPE_4,
       master: -1,
+      controller: -1,
     },
     {
       id: 110,
@@ -115,6 +124,7 @@ export class ThingFindComponent implements AfterViewInit {
       description: 'Устройство №10',
       type: ThingType.THING_TYPE_3,
       master: -1,
+      controller: -1,
     },
   ];
 

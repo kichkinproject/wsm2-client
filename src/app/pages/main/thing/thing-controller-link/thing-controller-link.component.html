@@ -3,12 +3,6 @@
   <h2 align="center">Список контроллеров</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button (click)="findNewController()" title="Найти контроллер">
-        <mat-icon>search</mat-icon>
-      </button>
-      <button mat-icon-button (click)="createReportOnControllers()" title="Сгененировать отчет">
-        <mat-icon>report</mat-icon>
-      </button>
       <button mat-icon-button (click)="updateControllersList()" title="Обновить список контроллеров">
         <mat-icon>cached</mat-icon>
       </button>
@@ -25,17 +19,11 @@
               <p class="item-description">{{controller.description}}</p>
             </div>
             <div class="element-buttons">
-              <button mat-icon-button (click)="viewController(controller.id)" title="Просмотреть контроллер">
-                <mat-icon>visibility</mat-icon>
+              <button mat-icon-button *ngIf="thing.controller !== controller.id" (click)="createLinkThing(controller.id)" title="Датчик не подключен">
+                <mat-icon>check_box_outline_blank</mat-icon>
               </button>
-              <button mat-icon-button (click)="createThingLinks(controller.id)" title="Подключить устройства">
-                <mat-icon>speaker_group</mat-icon>
-              </button>
-              <button mat-icon-button (click)="createSensorLinks(controller.id)" title="Подключить датчики">
-                <mat-icon>wb_iridescent</mat-icon>
-              </button>
-              <button mat-icon-button (click)="removeController(controller.id)" title="Удалить контроллер">
-                <mat-icon>delete</mat-icon>
+              <button mat-icon-button *ngIf="thing.controller === controller.id" (click)="destroyLinkThing()" title="Датчик подключено">
+                <mat-icon>check_box</mat-icon>
               </button>
             </div>
           </li>

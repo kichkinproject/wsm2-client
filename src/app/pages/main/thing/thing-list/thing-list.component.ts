@@ -9,6 +9,7 @@ import {Wsm2DataService} from '../../../../services/wsm2-data-service';
 import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
 import {Thing} from '../../../../models/thing';
+import { Controller } from "../../../../models/controller";
 
 @Component({
   selector: 'wsm-thing-list',
@@ -22,6 +23,9 @@ export class ThingListComponent  implements AfterViewInit {
   private subscriptions: Array<Subscription> = [];
   private things: Array<Thing> = [];
   private baseRole = Roles;
+  private controllers: Array<Controller> = [];
+  private controllerHidden: Map<number, boolean> = new Map<number, boolean>();
+  private controllerThings: Map<number, Array<Thing>> = new Map<number, Array<Thing>>();
 
 
   constructor(public router: Router,
@@ -32,6 +36,22 @@ export class ThingListComponent  implements AfterViewInit {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     );
+  }
+
+  public hidden(id: number) {
+    return this.controllerHidden.get(id);
+  }
+
+  public controllerTh(id: number) {
+    return this.controllerThings.get(id);
+  }
+
+  public shareControllersThings(id: number) {
+    return this.controllerHidden.set(id, false);
+  }
+
+  public hideControllersThings(id: number) {
+    return this.controllerHidden.set(id, true);
   }
 
   private updateCollection() {
@@ -46,12 +66,39 @@ export class ThingListComponent  implements AfterViewInit {
         this.things = Utils.pushAll([], this.dataService.getThingsByGroup(user.group));
         break;
       case Roles.SIMPLE:
-        this.things.slice(0, this.things.length);
+        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
+        this.controllerHidden.clear();
+        this.controllerThings.clear();
+        this.controllers.forEach((cnt) => {
+          this.controllerHidden.set(cnt.id, true);
+          const contrThings = this.dataService.getThingsByController(cnt.id);
+          this.controllerThings.set(cnt.id, contrThings);
+        });
         break;
       default:
         this.things.slice(0, this.things.length);
         break;
     }
+  }
+
+  public createLinkController(id) {
+    if (Utils.exists(this.dataService.getThing(id))) {
+      this.router.navigate(['main/thing/thing-controller-link', id.toString()], {
+        queryParams: {}
+      });
+    } else {
+      console.log('Ошибка, хотим просмотреть не существующее устройство');
+    }
+    // alert('Блок настройки связи с контроллером временно не доступен');
+    // this.dataService.createSensorControllerLink()
+  }
+
+  public destroyLinkController(id) {
+    this.isCompleted$.next(false);
+    this.dataService.destroyThingControllerLink(id);
+    this.updateCollection();
+    this.isCompleted$.next(true);
+    this.cd.detectChanges();
   }
 
   public ngAfterViewInit() {

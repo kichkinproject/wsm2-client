@@ -310,6 +310,7 @@ export class WsmData {
       description: 'Датчик влажности',
       type: SensorType.SENSOR_TYPE_1,
       master: 1,
+      controller: -1,
     },
     {
       id: 2,
@@ -317,6 +318,7 @@ export class WsmData {
       description: 'Датчик движения',
       type: SensorType.SENSOR_TYPE_2,
       master: 2,
+      controller: -1,
     },
     {
       id: 3,
@@ -324,6 +326,7 @@ export class WsmData {
       description: 'Датчик температуры',
       type: SensorType.SENSOR_TYPE_3,
       master: 3,
+      controller: -1,
     },
     {
       id: 4,
@@ -331,6 +334,7 @@ export class WsmData {
       description: 'Датчик света',
       type: SensorType.SENSOR_TYPE_4,
       master: 4,
+      controller: -1,
     },
     {
       id: 5,
@@ -338,6 +342,7 @@ export class WsmData {
       description: 'Датчик влажности Сидоровых',
       type: SensorType.SENSOR_TYPE_3,
       master: 5,
+      controller: -1,
     },
     {
       id: 6,
@@ -345,6 +350,7 @@ export class WsmData {
       description: 'Датчик температуры Сидоровых',
       type: SensorType.SENSOR_TYPE_1,
       master: 5,
+      controller: -1,
     },
     {
       id: 7,
@@ -352,6 +358,7 @@ export class WsmData {
       description: 'Датчик давления Сидоровых',
       type: SensorType.SENSOR_TYPE_1,
       master: 6,
+      controller: -1,
     },
     {
       id: 8,
@@ -359,6 +366,7 @@ export class WsmData {
       description: 'Датчик света 1 Сидоровых',
       type: SensorType.SENSOR_TYPE_4,
       master: 7,
+      controller: -1,
     },
     {
       id: 8,
@@ -366,6 +374,7 @@ export class WsmData {
       description: 'Датчик света 2 Сидоровых',
       type: SensorType.SENSOR_TYPE_4,
       master: 7,
+      controller: -1,
     },
     {
       id: 10,
@@ -373,6 +382,7 @@ export class WsmData {
       description: 'Датчик движения Сидоровых',
       type: SensorType.SENSOR_TYPE_4,
       master: 8,
+      controller: -1,
     },
     {
       id: 11,
@@ -380,6 +390,7 @@ export class WsmData {
       description: 'Датчик влажности 1 семьи Банан',
       type: SensorType.SENSOR_TYPE_3,
       master: 9,
+      controller: -1,
     },
     {
       id: 12,
@@ -387,6 +398,7 @@ export class WsmData {
       description: 'Датчик влажности 2 семьи Банан',
       type: SensorType.SENSOR_TYPE_1,
       master: 9,
+      controller: -1,
     },
     {
       id: 13,
@@ -394,6 +406,7 @@ export class WsmData {
       description: 'Датчик движения семьи Банан',
       type: SensorType.SENSOR_TYPE_1,
       master: 10,
+      controller: -1,
     },
     {
       id: 14,
@@ -401,6 +414,7 @@ export class WsmData {
       description: 'Датчик света семьи Банан',
       type: SensorType.SENSOR_TYPE_4,
       master: 11,
+      controller: -1,
     },
     {
       id: 15,
@@ -408,6 +422,7 @@ export class WsmData {
       description: 'Осветительный прибор 2 семьи Банан',
       type: SensorType.SENSOR_TYPE_4,
       master: 11,
+      controller: -1,
     },
     {
       id: 16,
@@ -415,6 +430,7 @@ export class WsmData {
       description: 'Датчик газа семьи Банан',
       type: SensorType.SENSOR_TYPE_4,
       master: 12,
+      controller: -1,
     },
     {
       id: 17,
@@ -422,6 +438,7 @@ export class WsmData {
       description: 'Датчик температуры 1 аптеки',
       type: SensorType.SENSOR_TYPE_3,
       master: 13,
+      controller: -1,
     },
     {
       id: 18,
@@ -429,6 +446,7 @@ export class WsmData {
       description: 'Датчик температуры 2 аптеки',
       type: SensorType.SENSOR_TYPE_1,
       master: 13,
+      controller: -1,
     },
     {
       id: 19,
@@ -436,6 +454,7 @@ export class WsmData {
       description: 'Датчик влажности аптеки',
       type: SensorType.SENSOR_TYPE_1,
       master: 14,
+      controller: -1,
     },
     {
       id: 20,
@@ -443,6 +462,7 @@ export class WsmData {
       description: 'Датчик света аптеки',
       type: SensorType.SENSOR_TYPE_4,
       master: 15,
+      controller: -1,
     },
     {
       id: 21,
@@ -450,6 +470,7 @@ export class WsmData {
       description: 'Датчик движения аптеки',
       type: SensorType.SENSOR_TYPE_4,
       master: 15,
+      controller: -1,
     },
     {
       id: 22,
@@ -457,6 +478,7 @@ export class WsmData {
       description: 'Датчик давления аптеки',
       type: SensorType.SENSOR_TYPE_4,
       master: 16,
+      controller: -1,
     },
     {
       id: 22,
@@ -464,6 +486,7 @@ export class WsmData {
       description: 'Датчик газа 1 кафе',
       type: SensorType.SENSOR_TYPE_3,
       master: 17,
+      controller: -1,
     },
     {
       id: 23,
@@ -471,6 +494,7 @@ export class WsmData {
       description: 'Датчик газа 2 кафе',
       type: SensorType.SENSOR_TYPE_1,
       master: 17,
+      controller: -1,
     },
     {
       id: 24,
@@ -478,6 +502,7 @@ export class WsmData {
       description: 'Датчик температуры кафе',
       type: SensorType.SENSOR_TYPE_1,
       master: 18,
+      controller: -1,
     },
     {
       id: 25,
@@ -485,6 +510,7 @@ export class WsmData {
       description: 'Датчик света кафе',
       type: SensorType.SENSOR_TYPE_4,
       master: 19,
+      controller: -1,
     },
     {
       id: 26,
@@ -492,6 +518,7 @@ export class WsmData {
       description: 'Датчик движения кафе',
       type: SensorType.SENSOR_TYPE_4,
       master: 20,
+      controller: -1,
     },
     {
       id: 27,
@@ -499,6 +526,7 @@ export class WsmData {
       description: 'Датчик давления кафе',
       type: SensorType.SENSOR_TYPE_4,
       master: 20,
+      controller: -1,
     },
     {
       id: 29,
@@ -506,6 +534,7 @@ export class WsmData {
       description: 'Датчик влажности магазина',
       type: SensorType.SENSOR_TYPE_1,
       master: 21,
+      controller: -1,
     },
     {
       id: 30,
@@ -513,6 +542,7 @@ export class WsmData {
       description: 'Датчик температуры магазина',
       type: SensorType.SENSOR_TYPE_1,
       master: 22,
+      controller: -1,
     },
     {
       id: 31,
@@ -520,6 +550,7 @@ export class WsmData {
       description: 'Датчик света магазина',
       type: SensorType.SENSOR_TYPE_4,
       master: 23,
+      controller: -1,
     },
     {
       id: 32,
@@ -527,6 +558,7 @@ export class WsmData {
       description: 'Датчик давления магазина',
       type: SensorType.SENSOR_TYPE_4,
       master: 24,
+      controller: -1,
     },
     {
       id: 33,
@@ -534,6 +566,7 @@ export class WsmData {
       description: 'Датчик движения магазина',
       type: SensorType.SENSOR_TYPE_4,
       master: 24,
+      controller: -1,
     },
   ];
 
@@ -544,6 +577,7 @@ export class WsmData {
       description: 'Прибор учета электроэнергии',
       type: ThingType.THING_TYPE_1,
       master: 1,
+      controller: -1,
     },
     {
       id: 2,
@@ -551,6 +585,7 @@ export class WsmData {
       description: 'Прибор учета воды',
       type: ThingType.THING_TYPE_2,
       master: 2,
+      controller: -1,
     },
     {
       id: 3,
@@ -558,6 +593,7 @@ export class WsmData {
       description: 'Прибор 3',
       type: ThingType.THING_TYPE_3,
       master: 3,
+      controller: -1,
     },
     {
       id: 4,
@@ -565,6 +601,7 @@ export class WsmData {
       description: 'Прибор 4',
       type: ThingType.THING_TYPE_4,
       master: 4,
+      controller: -1,
     },
     {
       id: 5,
@@ -572,6 +609,7 @@ export class WsmData {
       description: 'Чайник Сидоровых',
       type: ThingType.THING_TYPE_3,
       master: 5,
+      controller: -1,
     },
     {
       id: 6,
@@ -579,6 +617,7 @@ export class WsmData {
       description: 'Прибор учета электроэнергии Сидоровых',
       type: ThingType.THING_TYPE_1,
       master: 5,
+      controller: -1,
     },
     {
       id: 7,
@@ -586,6 +625,7 @@ export class WsmData {
       description: 'Прибор учета воды Сидоровых',
       type: ThingType.THING_TYPE_1,
       master: 6,
+      controller: -1,
     },
     {
       id: 8,
@@ -593,6 +633,7 @@ export class WsmData {
       description: 'Осветительный прибор 1 Сидоровых',
       type: ThingType.THING_TYPE_4,
       master: 7,
+      controller: -1,
     },
     {
       id: 8,
@@ -600,6 +641,7 @@ export class WsmData {
       description: 'Осветительный прибор 2 Сидоровых',
       type: ThingType.THING_TYPE_4,
       master: 7,
+      controller: -1,
     },
     {
       id: 10,
@@ -607,6 +649,7 @@ export class WsmData {
       description: 'Осветительный прибор 3 Сидоровых',
       type: ThingType.THING_TYPE_4,
       master: 8,
+      controller: -1,
     },
     {
       id: 11,
@@ -614,6 +657,7 @@ export class WsmData {
       description: 'Чайник семьи Банан',
       type: ThingType.THING_TYPE_3,
       master: 9,
+      controller: -1,
     },
     {
       id: 12,
@@ -621,6 +665,7 @@ export class WsmData {
       description: 'Прибор учета электроэнергии семьи Банан',
       type: ThingType.THING_TYPE_1,
       master: 9,
+      controller: -1,
     },
     {
       id: 13,
@@ -628,6 +673,7 @@ export class WsmData {
       description: 'Прибор учета воды семьи Банан',
       type: ThingType.THING_TYPE_1,
       master: 10,
+      controller: -1,
     },
     {
       id: 14,
@@ -635,6 +681,7 @@ export class WsmData {
       description: 'Осветительный прибор 1 семьи Банан',
       type: ThingType.THING_TYPE_4,
       master: 11,
+      controller: -1,
     },
     {
       id: 15,
@@ -642,6 +689,7 @@ export class WsmData {
       description: 'Осветительный прибор 2 семьи Банан',
       type: ThingType.THING_TYPE_4,
       master: 11,
+      controller: -1,
     },
     {
       id: 16,
@@ -649,6 +697,7 @@ export class WsmData {
       description: 'Осветительный прибор 3 семьи Банан',
       type: ThingType.THING_TYPE_4,
       master: 12,
+      controller: -1,
     },
     {
       id: 17,
@@ -656,6 +705,7 @@ export class WsmData {
       description: 'Чайник аптеки',
       type: ThingType.THING_TYPE_3,
       master: 13,
+      controller: -1,
     },
     {
       id: 18,
@@ -663,6 +713,7 @@ export class WsmData {
       description: 'Прибор учета электроэнергии аптеки',
       type: ThingType.THING_TYPE_1,
       master: 13,
+      controller: -1,
     },
     {
       id: 19,
@@ -670,6 +721,7 @@ export class WsmData {
       description: 'Прибор учета воды аптеки',
       type: ThingType.THING_TYPE_1,
       master: 14,
+      controller: -1,
     },
     {
       id: 20,
@@ -677,6 +729,7 @@ export class WsmData {
       description: 'Осветительный прибор 1 аптеки',
       type: ThingType.THING_TYPE_4,
       master: 15,
+      controller: -1,
     },
     {
       id: 21,
@@ -684,6 +737,7 @@ export class WsmData {
       description: 'Холодильник аптеки',
       type: ThingType.THING_TYPE_4,
       master: 15,
+      controller: -1,
     },
     {
       id: 22,
@@ -691,6 +745,7 @@ export class WsmData {
       description: 'Осветительный прибор 2 аптеки',
       type: ThingType.THING_TYPE_4,
       master: 16,
+      controller: -1,
     },
     {
       id: 22,
@@ -698,6 +753,7 @@ export class WsmData {
       description: 'Холодильник кафе',
       type: ThingType.THING_TYPE_3,
       master: 17,
+      controller: -1,
     },
     {
       id: 23,
@@ -705,6 +761,7 @@ export class WsmData {
       description: 'Прибор учета электроэнергии кафе',
       type: ThingType.THING_TYPE_1,
       master: 17,
+      controller: -1,
     },
     {
       id: 24,
@@ -712,6 +769,7 @@ export class WsmData {
       description: 'Прибор учета воды кафе',
       type: ThingType.THING_TYPE_1,
       master: 18,
+      controller: -1,
     },
     {
       id: 25,
@@ -719,6 +777,7 @@ export class WsmData {
       description: 'Осветительный прибор 1 кафе',
       type: ThingType.THING_TYPE_4,
       master: 19,
+      controller: -1,
     },
     {
       id: 26,
@@ -726,6 +785,7 @@ export class WsmData {
       description: 'Осветительный прибор 2 кафе',
       type: ThingType.THING_TYPE_4,
       master: 20,
+      controller: -1,
     },
     {
       id: 27,
@@ -733,6 +793,7 @@ export class WsmData {
       description: 'Осветительный прибор 3 кафе',
       type: ThingType.THING_TYPE_4,
       master: 20,
+      controller: -1,
     },
     {
       id: 29,
@@ -740,6 +801,7 @@ export class WsmData {
       description: 'Прибор учета электроэнергии магазина',
       type: ThingType.THING_TYPE_1,
       master: 21,
+      controller: -1,
     },
     {
       id: 30,
@@ -747,6 +809,7 @@ export class WsmData {
       description: 'Прибор учета воды магазина',
       type: ThingType.THING_TYPE_1,
       master: 22,
+      controller: -1,
     },
     {
       id: 31,
@@ -754,6 +817,7 @@ export class WsmData {
       description: 'Осветительный прибор 1 магазина',
       type: ThingType.THING_TYPE_4,
       master: 23,
+      controller: -1,
     },
     {
       id: 32,
@@ -761,6 +825,7 @@ export class WsmData {
       description: 'Осветительный прибор 2 магазина',
       type: ThingType.THING_TYPE_4,
       master: 24,
+      controller: -1,
     },
     {
       id: 33,
@@ -768,6 +833,7 @@ export class WsmData {
       description: 'Осветительный прибор 3 магазина',
       type: ThingType.THING_TYPE_4,
       master: 24,
+      controller: -1,
     }
   ];
 

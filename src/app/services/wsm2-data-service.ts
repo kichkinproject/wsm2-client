@@ -219,6 +219,14 @@ export class Wsm2DataService /*extends ApiService*/ {
     return this.$scenarioData;
   }
 
+  public getPublicScenarios(): Array<Scenario> {
+    return this.$scenarioData.filter(sc => sc.publicity);
+  }
+
+  public getPrivateScenarios(): Array<Scenario> {
+    return this.$scenarioData.filter(sc => !sc.publicity);
+  }
+
   public findMaxIndex(objects: any[]) {
     let max = -1;
     objects.forEach((obj) => {
@@ -247,9 +255,9 @@ export class Wsm2DataService /*extends ApiService*/ {
     scenario.publicity = publicity;
   }
 
-  public duplicateScenario(id: number, creator: string) {
+  public duplicateScenario(id: number, creator: string, publicity: boolean = false) {
     const scenario = this.getScenario(id);
-    return this.addScenario(scenario.name, scenario.description, scenario.script, scenario.type, scenario.publicity, creator);
+    return this.addScenario(scenario.name, scenario.description, scenario.script, scenario.type, publicity, creator);
   }
 
   public getScenarioByCreator(login: string) {
@@ -280,14 +288,28 @@ export class Wsm2DataService /*extends ApiService*/ {
     return this.$sensorData.filter((sens) => sens.master === id);
   }
 
-  public addSensor(name: string, description: string, type: SensorType, master: number): Sensor {
+  public getSensorsByController(id: number): Array<Sensor> {
+    return this.$sensorData.filter((sens) => sens.controller === id);
+  }
+
+  public addSensor(name: string, description: string, type: SensorType, master: number, controller: number = -1): Sensor {
     let newId = this.findMaxIndex(this.$sensorData) + 1;
     while (Utils.exists(this.getScenario(newId))) {
       newId++;
     }
-    const sensor = new Sensor(newId, name, description, type, master);
+    const sensor = new Sensor(newId, name, description, type, master, controller);
     this.$sensorData.push(sensor);
     return sensor;
+  }
+
+  public createSensorControllerLink(id: number, controller: number) {
+    const sensor = this.getSensor(id);
+    sensor.controller = controller;
+  }
+
+  public destroySensorControllerLink(id: number) {
+    const sensor = this.getSensor(id);
+    sensor.controller = -1;
   }
 
   public deleteSensor(id: number) {
@@ -314,14 +336,28 @@ export class Wsm2DataService /*extends ApiService*/ {
     return this.$thingData.filter((th) => th.master === id);
   }
 
-  public addThing(name: string, description: string, type: ThingType, master: number): Thing {
+  public getThingsByController(id: number): Array<Thing> {
+    return this.$thingData.filter((th) => th.controller === id);
+  }
+
+  public addThing(name: string, description: string, type: ThingType, master: number, controller: number = -1): Thing {
     let newId = this.findMaxIndex(this.$thingData) + 1;
     while (Utils.exists(this.getThing(newId))) {
       newId++;
     }
-    const thing = new Thing(newId, name, description, type, master);
+    const thing = new Thing(newId, name, description, type, master, controller);
     this.$thingData.push(thing);
     return thing;
+  }
+
+  public createThingControllerLink(id: number, controller: number) {
+    const thing = this.getThing(id);
+    thing.controller = controller;
+  }
+
+  public destroyThingControllerLink(id: number) {
+    const thing = this.getThing(id);
+    thing.controller = -1;
   }
 
   public deleteThing(id: number) {

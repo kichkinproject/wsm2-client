@@ -9,15 +9,15 @@
     <ng-container *ngIf="isMainAdmin">
       <mat-nav-list>
         <h4 class="menu-group">Главный администратор</h4>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" (click)="drawer.toggle()">
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/admin'" (click)="drawer.toggle()">
           <mat-icon>local_library</mat-icon>
           <span class="general-item-name">Администраторы</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" (click)="drawer.toggle()">
           <mat-icon>group</mat-icon>
           <span class="general-item-name">Группы пользователей</span>
         </a>
@@ -31,19 +31,19 @@
       <mat-nav-list>
         <ng-container>
           <h4 class="menu-group">Администратор</h4>
-          <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" (click)="drawer.toggle()">
             <mat-icon>home</mat-icon>
             <span class="general-item-name">Главная страница</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/main/admin'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/admin'" (click)="drawer.toggle()">
             <mat-icon>local_library</mat-icon>
             <span class="general-item-name">Администраторы</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" (click)="drawer.toggle()">
             <mat-icon>group</mat-icon>
             <span class="general-item-name">Группы пользователей</span>
           </a>
-          <a mat-list-item class="general-item-link" [routerLink]="'/main/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
+          <a mat-list-item class="general-item-link" [routerLink]="'/main/integrator'" (click)="drawer.toggle()">
             <mat-icon>airline_seat_recline_normal</mat-icon>
             <span class="general-item-name">Интеграторы</span>
           </a>
@@ -57,19 +57,19 @@
     <ng-container *ngIf="isIntegrator">
       <mat-nav-list>
         <h4 class="menu-group">Интегратор</h4>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" (click)="drawer.toggle()">
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/integrator'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/integrator'" (click)="drawer.toggle()">
           <mat-icon>airline_seat_recline_normal</mat-icon>
           <span class="general-item-name">Интеграторы</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/user-group'" (click)="drawer.toggle()">
           <mat-icon>group</mat-icon>
           <span class="general-item-name">Группы пользователей</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/user'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/user'" (click)="drawer.toggle()">
           <mat-icon>mood</mat-icon>
           <span class="general-item-name">Пользователи</span>
         </a>
@@ -77,15 +77,15 @@
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/controller'" [queryParams]="defaultState" (click)="drawer.toggle()">
-          <mat-icon>cast_connected</mat-icon>
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/controller'" (click)="drawer.toggle()">
+          <mat-icon>phonelink</mat-icon>
           <span class="general-item-name">Контроллеры</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/thing'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/thing'" (click)="drawer.toggle()">
           <mat-icon>speaker_group</mat-icon>
           <span class="general-item-name">Устройства</span>
         </a>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/sensor'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/sensor'" (click)="drawer.toggle()">
           <mat-icon>wb_iridescent</mat-icon>
           <span class="general-item-name">Датчики</span>
         </a>
@@ -94,13 +94,21 @@
     <ng-container *ngIf="isUser">
       <mat-nav-list>
         <h4 class="menu-group">Пользователь</h4>
-        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" [queryParams]="defaultState" (click)="drawer.toggle()">
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/about'" (click)="drawer.toggle()">
           <mat-icon>home</mat-icon>
           <span class="general-item-name">Главная страница</span>
         </a>
         <a mat-list-item class="general-item-link" [routerLink]="'/main/scenario'" (click)="drawer.toggle()">
           <mat-icon>code</mat-icon>
           <span class="general-item-name">Сценарии</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/thing'" (click)="drawer.toggle()">
+          <mat-icon>speaker_group</mat-icon>
+          <span class="general-item-name">Устройства</span>
+        </a>
+        <a mat-list-item class="general-item-link" [routerLink]="'/main/sensor'" (click)="drawer.toggle()">
+          <mat-icon>wb_iridescent</mat-icon>
+          <span class="general-item-name">Датчики</span>
         </a>
       </mat-nav-list>
     </ng-container>

@@ -14,6 +14,8 @@ const routes: Routes = [
       { path: 'controller-list', loadChildren: './controller-list/controller-list.module#ControllerListModule' },
       { path: 'controller-view/:id', loadChildren: './controller-view/controller-view.module#ControllerViewModule' },
       { path: 'controller-report', loadChildren: './controller-report/controller-report.module#ControllerReportModule' },
+      { path: 'controller-thing-link/:id', loadChildren: './controller-thing-link/controller-thing-link.module#ControllerThingLinkModule' },
+      { path: 'controller-sensor-link/:id', loadChildren: './controller-sensor-link/controller-sensor-link.module#ControllerSensorLinkModule' },
       { path: '**', redirectTo: 'controller-list' },
     ],
   },
