@@ -21,6 +21,9 @@
       <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && !publicity" (click)="onlyPublic()" title="Сценарии доступные мне">
         <mat-icon>cloud_off</mat-icon>
       </button>
+      <button mat-icon-button *ngIf="role() === baseRole.INTEGRATOR" (click)="createControllerScenario()" title="Загрузить сценарии в контроллеры">
+        <mat-icon>send</mat-icon>
+      </button>
     </div>
     <ul class="collection-with-header" >
       <li class="collection-header" *ngIf="this.role() !== baseRole.SIMPLE">
@@ -51,9 +54,6 @@
               </button>
               <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN || role() === baseRole.ADMIN || (role() === baseRole.INTEGRATOR && scenario.creator === $user.getValue().user_login)" (click)="removeScenario(scenario.id)" title="Удалить сценарий">
                 <mat-icon>delete</mat-icon>
-              </button>
-              <button mat-icon-button *ngIf="role() === baseRole.INTEGRATOR" (click)="compareScenario(scenario.id)" title="Загрузка сценария в контроллер">
-                <mat-icon>send</mat-icon>
               </button>
               <!--<button mat-slide-toggle [(ngModel)]="isActivated" *ngIf="role() === baseRole.SIMPLE || role() === baseRole.INTEGRATOR" (click)="scenarioOnOff(scenario.id)"></button>-->
             </div>

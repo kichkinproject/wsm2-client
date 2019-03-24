@@ -238,16 +238,11 @@ export class ScenarioListComponent implements AfterViewInit {
     this.isCompleted$.next(true);
   }
 
-  public isActivated(id: number) {
-    return false;
-  }
-
-  public scenarioOnOff(id: number) {
-    console.log('Тык');
-  }
-
-  public compareScenario(id: number) {
-    alert('Блок загрузки сценария в контроллер недоступен');
+  public createControllerScenario() {
+    this.router.navigate(['main/scenario/scenario-controller-link'], {
+      queryParams: {}
+    });
+    // alert('Блок загрузки сценариев в контроллеры недоступен');
   }
 
   public accessed() {
@@ -259,18 +254,4 @@ export class ScenarioListComponent implements AfterViewInit {
     return this.scenarios.length !== 0;
   }
 
-  // public ngOnInit() {
-  //   this.subscriptions.push(
-  //     this.activatedRoute.queryParams.subscribe(res => this.setQueryParams(res))
-  //   );
-  // }
-
-  // private setQueryParams(params: Params) {
-  //
-  //   this.destId = this.roleDest(params);
-  //   if (Utils.exists(params['period'])) {
-  //     this.period = Utils.idToDate(+params['period']);
-  //   }
-  //   this.loaded$.next(true);
-  // }
 }

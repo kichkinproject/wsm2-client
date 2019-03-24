@@ -1,0 +1,189 @@
+@import "../../../../../styles/mixins";
+
+:host .block-container {
+  font-family: 'Times New Roman';
+  display: block;
+  width: rem(1400px);
+  max-width: rem(1600px);
+  flex-basis: rem(1600px);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+}
+
+:host .wsm-data-container {
+  font-family: 'Times New Roman';
+}
+
+:host .buttons-block {
+
+}
+
+:host button {
+}
+
+
+:host ul {
+
+}
+
+:host .scrolling-container {
+  width: 100%;
+  height: 80%;
+  overflow-y: auto;
+}
+
+:host .scrolling-area {
+  position: relative;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  //flex-wrap: wrap;
+  max-width: rem(1400px);
+  flex-basis: rem(1400px);
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: flex-start;
+  min-height: 100%;
+}
+
+:host button[mat-icon-button] {
+  margin: 0 5px 0;
+  @include defaultIcon;
+  font-size: rem(28px);
+
+  &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  @include themify($themes) {
+    background-color: themed('button', 'icon', 'color');
+  }
+}
+
+:host mat-slide-toggle.mat-checked:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-thumb {
+    background-color: $defaultColor;
+  }
+
+  & .mat-slide-toggle-bar {
+    background-color: change_color($defaultColor, $alpha: 0.5);
+  }
+}
+
+:host mat-slide-toggle:not(.mat-disabled) /deep/ {
+  & .mat-slide-toggle-bar {
+    background-color: hsla(0, 0, 0%, 0.5);
+  }
+}
+
+
+:host .collection-with-header {
+  position: relative;
+  height: 700px;
+  margin: 5px 0;
+  padding: 0 5px;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+:host .collection-main-header {
+  background-color: change_color($bluish-grey, $alpha: 0.6);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 10px;
+  font-size: 160%;
+}
+
+:host .collection-with-sub-header {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+:host .special-button {
+  //position: initial;
+  //align-items: inherit;
+  //display: flex;
+  //float: right;
+  //margin-right: 5px;
+  //text-align: right;
+}
+
+:host .updating-field {
+  display: inline-block;
+  width: 1300px;
+}
+
+:host .updating-button {
+  margin: 10px;
+}
+
+:host .combobox-block {
+  display: inline-block;
+  width: rem(1200px);
+}
+
+:host label {
+  display: block;
+  font-size: 120%;
+  padding: 5px;
+  white-space: pre;
+}
+
+:host input {
+  padding: 5px;
+  display: block;
+  width: 800px;
+
+}
+
+:host select {
+  padding: 5px;
+  display: inline-block;
+  width: 1000px;
+  margin: 0 10px 0  0;
+}
+
+:host .collection-header {
+  background-color: change_color($bluish-grey, $alpha: 0.4);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 10px;
+  font-size: 160%;
+}
+
+:host .collection-item {
+  background-color: change_color($bluish-grey, $alpha: 0.2);
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px 10px;
+  align-items: center;
+}
+
+:host .element-info {
+  width: rem(800px);
+  max-width: rem(800px);
+  margin: 0;
+  display: inline-block;
+}
+
+:host .element-buttons {
+  width: rem(500px);
+  float: right;
+  align-items: inherit;
+  display: inline-block;
+  margin-right: 5px;
+  padding: 10px;
+  text-align: right;
+}
+
+:host .item-name {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 150%;
+}
+
+:host item-description {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 120%;
+}

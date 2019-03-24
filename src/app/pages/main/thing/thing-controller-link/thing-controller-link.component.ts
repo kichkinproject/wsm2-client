@@ -57,7 +57,7 @@ export class ThingControllerLinkComponent implements AfterViewInit {
     }
   }
 
-  public createLinkSensor(id) {
+  public createLinkThing(id) {
     this.isCompleted$.next(false);
     this.dataService.createThingControllerLink(this.thing.id, id);
     this.updateCollection();
@@ -65,7 +65,7 @@ export class ThingControllerLinkComponent implements AfterViewInit {
     this.cd.detectChanges();
   }
 
-  public destroyLinkSensor() {
+  public destroyLinkThing() {
     this.isCompleted$.next(false);
     this.dataService.destroyThingControllerLink(this.thing.id);
     this.updateCollection();
