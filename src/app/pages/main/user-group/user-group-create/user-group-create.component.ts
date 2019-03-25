@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } 
 import { Role, Roles } from "../../../../models/role";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Wsm2DataService } from "../../../../services/wsm2-data-service";
+import { Wsm2DataService } from "../../../../services/wsm2-data.service";
 import { GetCurrentUser, State } from "../../../../_state";
 import { Utils } from "../../../../utils/utils";
 import { select, Store } from "@ngrx/store";

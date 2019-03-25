@@ -7,7 +7,9 @@ export interface IAppState {
   clientguid: string;
 }
 
-@Injectable()
+@Injectable( {
+  providedIn: 'root'
+})
 export class AppState {
   private _clientguid: GUID;
   private _moniker: string;

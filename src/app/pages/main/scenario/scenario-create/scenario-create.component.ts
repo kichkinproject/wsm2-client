@@ -5,7 +5,7 @@ import {Scenario} from '../../../../models/scenario';
 import {ActivatedRoute, Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
-import {Wsm2DataService} from '../../../../services/wsm2-data-service';
+import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {ScenarioType} from '../../../../models/entity-type';
 import {Utils} from '../../../../utils/utils';
 import {LoaderModule} from '../../../../components/loader/loader.component';

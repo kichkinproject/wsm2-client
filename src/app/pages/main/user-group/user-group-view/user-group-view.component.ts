@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Wsm2DataService } from "../../../../services/wsm2-data-service";
+import { Wsm2DataService } from "../../../../services/wsm2-data.service";
 import { GetCurrentUser, State } from "../../../../_state";
 import { SensorType } from "../../../../models/entity-type";
 import { UserGroup } from "../../../../models/user-group";

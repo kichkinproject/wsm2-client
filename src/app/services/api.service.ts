@@ -115,7 +115,7 @@ export class ApiService {
   }
 
   public loginDomain(): Observable<string> {
-    return this.get<string>(`${this.url}/Account/LoginDomain`)
+    return this.get<string>(`${this.url}/Account/Login`)
       .pipe(
         tap((res: string) => {
           this.appState.moniker = res;

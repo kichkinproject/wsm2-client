@@ -4,7 +4,7 @@ import { Role, Roles } from "../../../../models/role";
 import { select, Store } from "@ngrx/store";
 import { GetCurrentUser, State } from "../../../../_state";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Wsm2DataService } from "../../../../services/wsm2-data-service";
+import { Wsm2DataService } from "../../../../services/wsm2-data.service";
 import { Utils } from "../../../../utils/utils";
 import { Controller } from "../../../../models/controller";
 import { Sensor } from "../../../../models/sensor";

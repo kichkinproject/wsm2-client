@@ -1,6 +1,6 @@
-import { IAppState } from "./app-state";
-import { InjectionToken } from "@angular/core";
-import { IAppConfig } from "../app.config";
+import { IAppState } from './app-state';
+import { InjectionToken } from '@angular/core';
+import { IAppConfig } from '../app.config';
 
-export declare const AppStateToken: InjectionToken<IAppState>;
-export declare const AppConfigToken: InjectionToken<IAppConfig>;
+export const AppStateToken = new InjectionToken<IAppState>('AppState');
+export const AppConfigToken = new InjectionToken<IAppConfig>('AppConfig');

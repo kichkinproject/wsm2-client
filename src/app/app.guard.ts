@@ -8,17 +8,19 @@ import { AppConfigToken } from "./models/token";
 import { LayoutSetUser } from './_state/actions/layout.actions';
 import { GetCurrentUser, State } from './_state';
 import { select, Store } from '@ngrx/store';
-import { Wsm2AccountService } from './services/wsm2-account-service';
+import { Wsm2AccountService } from './services/wsm2-account.service';
 import {Utils} from './utils/utils';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppGuard implements CanActivate {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
 
   constructor(private router: Router,
               private accountService: Wsm2AccountService,
-              private store: Store<State>
-              // , @Inject(AppConfigToken) protected config: AppConfig
+              private store: Store<State>,
+              @Inject(AppConfigToken) protected config: AppConfig
   ) {
     this.store.pipe(select(GetCurrentUser)).subscribe(user => this.$user.next(user));
   }

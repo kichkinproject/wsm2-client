@@ -13,18 +13,14 @@ import {WsmData} from '../models/data';
 @Injectable({
   providedIn: 'root'
 })
-export class Wsm2AccountService /*extends ApiService*/ {
-  // private accountUrl = `${this.url}/Account`;
+export class Wsm2AccountService extends ApiService {
+  private accountUrl = `${this.url}/Account`;
 
   constructor(protected http: HttpClient,
-              // protected appState: AppState,
-              // @Inject(AppConfigToken) protected config: IAppConfig
+              protected appState: AppState,
+              @Inject(AppConfigToken) protected config: IAppConfig
   ) {
-    console.log('man');
-    // super(http, appState, aclService, alertsService, config);
-    // super(http, appState
-    //     //   // , config
-    //     // );
+    super(http, appState, config);
   }
 
   private source: WsmData = new WsmData();

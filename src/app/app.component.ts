@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnDestroy, Renderer2 } from "@angular/core";
 import { Meta } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { Wsm2AccountService } from "./services/wsm2-account-service";
+import { Wsm2AccountService } from "./services/wsm2-account.service";
 import { select, Store } from "@ngrx/store";
 import { State, GetLoaded, GetTheme  } from "./_state";
 import { IAppConfig } from "./app.config";
@@ -25,8 +25,8 @@ export class AppComponent implements OnDestroy {
               private elementRef: ElementRef,
               private router: Router,
               private accountService: Wsm2AccountService,
-              private store: Store<State>
-              // , @Inject(AppConfigToken) private config: IAppConfig
+              private store: Store<State>,
+              @Inject(AppConfigToken) private config: IAppConfig
   ) {
     this.meta.addTag({ name: 'version', content: environment.version });
     this.subscriptions.push(

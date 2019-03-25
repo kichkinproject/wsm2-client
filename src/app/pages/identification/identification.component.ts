@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { User } from '../../models/user';
 import { Utils } from '../../utils/utils';
-import { Wsm2AccountService } from '../../services/wsm2-account-service';
+import { Wsm2AccountService } from '../../services/wsm2-account.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from "@ngrx/store";
 import { GetCurrentUser, State } from "../../_state";

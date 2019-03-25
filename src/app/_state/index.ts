@@ -1,4 +1,4 @@
-import * as fromLayout from './reducers/layout.reducers';
+  import * as fromLayout from './reducers/layout.reducers';
 import * as fromParams from './reducers/params.reducers';
 import { RouterStateUrl } from './utils';
 import { ReportParams } from '../models/report-params';

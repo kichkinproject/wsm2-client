@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  version: require('../../package.json').version
+  version: require('../../package.json').version,
+  api: {
+    apiServer: 'localhost:56526',
+    https: false
+  }
 };
 
 /*

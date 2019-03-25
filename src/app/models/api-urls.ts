@@ -1,0 +1,10 @@
+export const baseApi = 'api';
+export const urlAccount = `${baseApi}/Account`;
+export const urlAdmin = `${baseApi}/Admin`;
+export const urlController = `${baseApi}/Controller`;
+export const urlScenario = `${baseApi}/Scenario`;
+export const urlSensor = `${baseApi}/Sensor`;
+export const urlThing = `${baseApi}/SmartThing`;
+export const urlUser = `${baseApi}/User`;
+export const urlUserGroup = `${baseApi}/UserGroup`;
+export const urlValue = `${baseApi}/Values`;

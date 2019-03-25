@@ -6,7 +6,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, flatMap } from 'rxjs/operators';
 import { GetConfig, State } from './_state';
 import {LayoutSetConfig} from './_state/actions/layout.actions';
-import { InjectionToken } from '@angular/core';
+import {baseApi} from './models/api-urls';
 
 export interface IAppConfig {
   ServerName: string;
@@ -15,10 +15,12 @@ export interface IAppConfig {
 }
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppConfig implements IAppConfig {
   public get ServerName(): string {
-    return this.getConfig('api');
+    return this.getConfig('apiServer');
   }
 
   public get Protocol(): string {
@@ -26,12 +28,14 @@ export class AppConfig implements IAppConfig {
   }
 
   public get WebApiUrl(): string {
-    return `${this.Protocol}://${this.ServerName}/ScenarioManager`;
+    return `${this.Protocol}://${this.ServerName}/{${baseApi}`;
   }
 
   public get WebSocketUrl(): string {
     return `${this.Protocol}://${this.ServerName}/`;
   }
+
+  // public get
 
   private config = null;
 

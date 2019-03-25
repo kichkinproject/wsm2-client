@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GetCurrentUser, State } from "../../../_state";
 import { select, Store } from "@ngrx/store";
-import { Wsm2DataService } from "../../../services/wsm2-data-service";
+import { Wsm2DataService } from "../../../services/wsm2-data.service";
 import { Utils } from "../../../utils/utils";
 import { User } from "../../../models/user";
 

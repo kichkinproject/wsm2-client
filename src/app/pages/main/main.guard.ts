@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {Role} from '../../models/role';
-import {Wsm2AccountService} from '../../services/wsm2-account-service';
+import {Wsm2AccountService} from '../../services/wsm2-account.service';
 import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../_state';
 import {AppConfig, IAppConfig } from '../../app.config';
@@ -17,7 +17,7 @@ export class MainGuard implements CanActivate {
   constructor(private router: Router,
               private accountService: Wsm2AccountService,
               private store: Store<State>,
-              // @Inject(AppConfigToken) protected config: AppConfig
+              @Inject(AppConfigToken) protected config: AppConfig
   ) {
     this.store.pipe(select(GetCurrentUser)).subscribe(user => this.$user.next(user));
   }

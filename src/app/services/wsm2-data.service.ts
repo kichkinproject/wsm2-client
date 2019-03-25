@@ -17,17 +17,26 @@ import { Controller } from "../models/controller";
 import { UserGroup } from "../models/user-group";
 import {WsmData} from '../models/data';
 import { ScenarioController } from "../models/scenario-controller";
+import {urlAdmin,
+  urlAccount,
+  urlController,
+  urlScenario,
+  urlSensor,
+  urlThing,
+  urlUser,
+  urlUserGroup,
+  urlValue} from '../models/api-urls';
 
 @Injectable({
   providedIn: 'root'
 })
-export class Wsm2DataService /*extends ApiService*/ {
+export class Wsm2DataService extends ApiService {
   constructor(protected http: HttpClient,
-              // protected appState: AppState
-              // @Inject(AppConfigToken) protected config: IAppConfig
+              protected appState: AppState,
+              @Inject(AppConfigToken) protected config: IAppConfig
   ) {
     // super(http, appState, aclService, alertsService, config),
-    // super(http, appState, config);
+    super(http, appState, config);
   }
 
   private source: WsmData = new WsmData();
@@ -152,7 +161,7 @@ export class Wsm2DataService /*extends ApiService*/ {
       return this.getAdmin(login);
     }
     if (this.getIntegrator(login)) {
-      return this.getIntegrator(login)
+      return this.getIntegrator(login);
     }
     if (this.getUser(login)) {
       return this.getUser(login);

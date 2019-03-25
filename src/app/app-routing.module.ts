@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import {Routes, RouterModule, PreloadAllModules} from '@angular/router';
 import { environment } from '../environments/environment';
+import {AppGuard} from './app.guard';
+import {AppResolverService} from './app-resolver.service';
 
 const routes: Routes = [
   {
@@ -10,11 +12,16 @@ const routes: Routes = [
   {
     path: 'main',
     loadChildren: './pages/main/main.module#MainModule',
+    // resolve: {
+    //   resolved: AppResolverService
+    // },
+    canActivate: [AppGuard]
   },
   {
     path: '**',
     redirectTo: 'identification'
-  }
+  },
+
 ];
 
 @NgModule({
@@ -26,6 +33,6 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule,
-  ]
+  ],
 })
 export class AppRoutingModule { }

@@ -8,9 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AppConfig } from './app.config';
-import { Wsm2AccountService } from './services/wsm2-account-service';
+import { Wsm2AccountService } from './services/wsm2-account.service';
 import { AppState } from './models/app-state';
-import {AppConfigToken, AppStateToken} from './models/token'
+import {AppConfigToken, AppStateToken} from './models/token';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { CustomRouterStateSerializer } from './_state/utils';
 import {StoreModule} from '@ngrx/store';
@@ -44,20 +44,20 @@ export function appInit(config: AppConfig) {
   bootstrap: [AppComponent],
   providers: [
     Wsm2AccountService,
-    // {
-    //   provide: AppConfigToken,
-    //   useClass: AppConfig,
-    // },
-    // {
-    //   provide: AppStateToken,
-    //   useClass: AppState,
-    // },
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: appInit,
-    //   deps: [AppConfig],
-    //   multi: true,
-    // },
+    {
+      provide: AppConfigToken,
+      useClass: AppConfig,
+    },
+    {
+      provide: AppStateToken,
+      useClass: AppState,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInit,
+      deps: [AppConfig],
+      multi: true,
+    },
     {
       provide: RouterStateSerializer,
       useClass: CustomRouterStateSerializer,

@@ -5,7 +5,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { GetCurrentUser, State } from "../../_state";
 import { select, Store } from "@ngrx/store";
 import {ActivatedRoute, Router} from '@angular/router';
-import { Wsm2DataService } from "../../services/wsm2-data-service";
+import { Wsm2DataService } from "../../services/wsm2-data.service";
 
 @Component({
   selector: 'wsm-main',
