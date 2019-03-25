@@ -28,7 +28,7 @@ export class AppConfig implements IAppConfig {
   }
 
   public get WebApiUrl(): string {
-    return `${this.Protocol}://${this.ServerName}/{${baseApi}`;
+    return `${this.Protocol}://${this.ServerName}/${baseApi}`;
   }
 
   public get WebSocketUrl(): string {

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { User } from '../../models/user';
 import { Utils } from '../../utils/utils';
 import { Wsm2AccountService } from '../../services/wsm2-account.service';
+import { Wsm2DataService } from "../../services/wsm2-data.service";
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from "@ngrx/store";
 import { GetCurrentUser, State } from "../../_state";
@@ -9,6 +10,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { Role } from "../../models/role";
 import * as _ from "lodash";
 import {LayoutLoaded, LayoutSetUser} from '../../_state/actions/layout.actions';
+import { LoginToken } from "../../models/token";
 
 @Component({
   selector: 'wsm-identification',
@@ -54,12 +56,14 @@ export class IdentificationComponent implements OnInit {
 
   constructor(private router: Router,
               private store: Store<State>,
-              private accountService: Wsm2AccountService) {
+              private accountService: Wsm2AccountService,
+              private dataService: Wsm2DataService) {
     this.store.pipe(select(GetCurrentUser)).subscribe(() => this.$user.next(null));
-    this.store.dispatch(new LayoutLoaded(true));
     // this.subscriptions.push(
-    // this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
+    //   this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
     // );
+    this.store.dispatch(new LayoutLoaded(true));
+
   }
 
   public enabledLogin(): boolean {
@@ -69,16 +73,53 @@ export class IdentificationComponent implements OnInit {
   public tryIdentify() {
     // Отправляем в сервис логин и пароль пользователя на проверку
     const user = this.accountService.checkUser(this.$login, this.$password);
-    if (Utils.exists(user)) {
+    // const token = this.accountService.checkUser2(this.$login, this.$password);
+    const prom = this.accountService.checkUser3(this.$login, this.$password);
+    console.log(prom);
+    prom.then(function(authentication) {
+        console.log(authentication);
+        window.sessionStorage.setItem('token', authentication.token);
+      });
+      // .then(this.accountService.getAccount())
+      // .then(function(accounts) {
+      //
+      // })
+      // .catch(function(error) {
+      //   console.log(error);
+      // });
 
-      // Запрос в сервис на юзера по логину
-      console.log(`Пользователь с логином ${this.$login} существует и пароль введен верно`);
-      this.identify(user);
-    } else {
-      console.log(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
-      this.deny = true;
-      this.$user = null;
-    }
+    // if (Utils.exists(window.sessionStorage.getItem('token'))) {
+    //
+    // } else {
+    //     alert(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
+    // }
+    // if (Utils.exists(user)) {
+    //   // Запрос в сервис на юзера по логину
+    //   console.log(`Пользователь с логином ${this.$login} существует и пароль введен верно`);
+    //   this.identify(user);
+    // } else {
+    //   console.log(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
+    //   this.deny = true;
+    //   this.$user = null;
+    // }
+    // if (Utils.exists(token)) {
+    //   // Запрос в сервис на юзера по логину
+    //   console.log(`Пользователь с логином ${this.$login} существует и пароль введен верно`);
+    //   this.identify2(token);
+    // } else {
+    //   console.log(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
+    //   this.deny = true;
+    //   this.$user = null;
+    // }
+    // if (Utils.exists(token)) {
+    //   // Запрос в сервис на юзера по логину
+    //   console.log(`Пользователь с логином ${this.$login} существует и пароль введен верно`);
+    //   this.identify2(token);
+    // } else {
+    //   console.log(`Пользователя с логином ${this.$login} не существует или пароль введен неверно`);
+    //   this.deny = true;
+    //   this.$user = null;
+    // }
   }
 
   private identify(user: User) {
@@ -87,6 +128,14 @@ export class IdentificationComponent implements OnInit {
     console.log(`${this.$login} идентифицирован`);
     this.router.navigate(['/main/about']);
   }
+
+  // private identify2(token: LoginToken) {
+  //   const user = new User();
+  //   const role = new Role(user);
+  //   this.store.dispatch(new LayoutSetUser(role));
+  //   console.log(`${this.$login} идентифицирован`);
+  //   this.router.navigate(['/main/about']);
+  // }
 
   public ngOnInit() {
 

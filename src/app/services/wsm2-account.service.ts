@@ -1,23 +1,31 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { IAppConfig } from '../app.config';
-import { AppConfigToken } from "../models/token";
+import { AppConfigToken, AppStateToken } from "../models/token";
 import { Observable } from 'rxjs';
-import { AppState } from '../models/app-state';
+import { AppState, IAppState } from "../models/app-state";
 import {ApiService} from './api.service';
 import {User} from '../models/user';
 import {Roles} from '../models/role';
 import {forEach} from '@angular/router/src/utils/collection';
 import {WsmData} from '../models/data';
+import { Utils } from "../utils/utils";
+import {LoginToken} from "../models/token";
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class Wsm2AccountService extends ApiService {
-  private accountUrl = `${this.url}/Account`;
+  private accountUrl = `${this.config.WebApiUrl}/Account`;
 
   constructor(protected http: HttpClient,
-              protected appState: AppState,
+              @Inject(AppStateToken) protected appState: IAppState,
               @Inject(AppConfigToken) protected config: IAppConfig
   ) {
     super(http, appState, config);
@@ -34,6 +42,41 @@ export class Wsm2AccountService extends ApiService {
       }
     }
     return null;
+  }
+
+  public checkUser2(login, password): Observable<any> {
+    return this.http.post(this.accountUrl + '/' + 'Login', {
+      Login: login,
+      Password: password
+    }, httpOptions);
+  }
+
+  public checkUser3(login, password) {
+    return fetch(this.accountUrl + '/' + 'Login', {
+      method: 'POST',
+      body: JSON.stringify({
+        Login: login,
+        Password: password
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
+  }
+
+  public getAccount() {
+    return fetch(this.accountUrl + '/' + 'Login', {
+      headers: {
+        'Authorization': 'Token ' + window.sessionStorage.getItem('token'),
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
   // // Запрос на получение пользователя по

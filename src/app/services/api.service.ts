@@ -3,9 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, filter, map, retryWhen, tap } from 'rxjs/operators';
 import { Utils } from '../utils/utils';
-import { AppState } from '../models/app-state';
+import { AppState, IAppState } from "../models/app-state";
 import { IAppConfig } from '../app.config';
 import { ApiResponse, RequestResultStatus } from '../models/api-response';
+import { AppStateToken } from "../models/token";
 
 @Injectable()
 export class ApiService {
@@ -13,7 +14,7 @@ export class ApiService {
   private checkInterval: any;
 
   constructor(protected http: HttpClient,
-              protected appState: AppState,
+              @Inject(AppStateToken) protected appState: IAppState,
               @Inject('AppConfig') protected config: IAppConfig) {
     this.url = `${config.WebApiUrl}/api`;
   }

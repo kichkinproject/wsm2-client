@@ -26,7 +26,13 @@ export class AppGuard implements CanActivate {
   }
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return of(true);
+    const role = this.$user.getValue();
+    if (!role) {
+      console.log(window.sessionStorage);
+      this.router.navigate(['/identification']);
+    } else {
+      return of(true);
+    }
     //
     // if (!this.$user.getValue()) {
     //   this.router.navigate(['/identification']);

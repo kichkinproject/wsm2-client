@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Inject, Injectable } from '@angular/core';
 import { IAppConfig } from '../app.config';
-import { AppConfigToken } from "../models/token";
+import { AppConfigToken, AppStateToken } from "../models/token";
 import { Observable } from 'rxjs';
-import { AppState } from '../models/app-state';
+import { AppState, IAppState } from "../models/app-state";
 import {ApiService} from './api.service';
 import {User} from '../models/user';
 import {Roles} from '../models/role';
@@ -17,7 +17,8 @@ import { Controller } from "../models/controller";
 import { UserGroup } from "../models/user-group";
 import {WsmData} from '../models/data';
 import { ScenarioController } from "../models/scenario-controller";
-import {urlAdmin,
+import {
+  urlAdmin,
   urlAccount,
   urlController,
   urlScenario,
@@ -25,14 +26,21 @@ import {urlAdmin,
   urlThing,
   urlUser,
   urlUserGroup,
-  urlValue} from '../models/api-urls';
+  urlValue, baseApi
+} from "../models/api-urls";
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class Wsm2DataService extends ApiService {
   constructor(protected http: HttpClient,
-              protected appState: AppState,
+              @Inject(AppStateToken) protected appState: IAppState,
               @Inject(AppConfigToken) protected config: IAppConfig
   ) {
     // super(http, appState, aclService, alertsService, config),
@@ -68,6 +76,11 @@ export class Wsm2DataService extends ApiService {
   public getIntegrators(): Array<User> {
     return this.$integratorData;
   }
+
+  // public getIntegrators2(): Array<User> {
+  //   const users = this.http.get(`${baseApi}/${urlUser}/AllUsers`, httpOptions);
+  //
+  // }
 
   public addIntegrator(login: string, password: string, name: string, info: string, group: number): User {
     if (Utils.exists(this.getIntegrator(login)) || Utils.exists(this.getUser(login))  || Utils.exists(this.getAdmin(login))) {
