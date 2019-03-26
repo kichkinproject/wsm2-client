@@ -21,14 +21,14 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class Wsm2AccountService extends ApiService {
-  private accountUrl = `${this.config.WebApiUrl}/Account`;
+export class Wsm2AccountService {
+  private accountUrl = `${this.config.WebApiUrl}/account`;
 
   constructor(protected http: HttpClient,
               @Inject(AppStateToken) protected appState: IAppState,
               @Inject(AppConfigToken) protected config: IAppConfig
   ) {
-    super(http, appState, config);
+    // super(http, appState, config);
   }
 
   private source: WsmData = new WsmData();
@@ -45,38 +45,10 @@ export class Wsm2AccountService extends ApiService {
   }
 
   public checkUser2(login, password): Observable<any> {
-    return this.http.post(this.accountUrl + '/' + 'Login', {
-      Login: login,
-      Password: password
-    }, httpOptions);
-  }
-
-  public checkUser3(login, password) {
-    return fetch(this.accountUrl + '/' + 'Login', {
-      method: 'POST',
-      body: JSON.stringify({
-        Login: login,
-        Password: password
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(function(response) {
-      console.log(response);
-      return response.json();
-    });
-  }
-
-  public getAccount() {
-    return fetch(this.accountUrl + '/' + 'Login', {
-      headers: {
-        'Authorization': 'Token ' + window.sessionStorage.getItem('token'),
-        'Content-Type': 'application/json'
-      }
-    }).then(function(response) {
-      console.log(response);
-      return response.json();
-    });
+    return this.http.post(this.accountUrl, JSON.stringify({
+      login: login,
+      password: password
+    }), httpOptions);
   }
 
   // // Запрос на получение пользователя по

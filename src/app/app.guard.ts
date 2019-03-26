@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import {Role} from './models/role';
+import {Role, Roles} from './models/role';
 import {AppConfig, IAppConfig } from './app.config';
 import { AppConfigToken } from "./models/token";
 import { LayoutSetUser } from './_state/actions/layout.actions';
@@ -10,6 +10,7 @@ import { GetCurrentUser, State } from './_state';
 import { select, Store } from '@ngrx/store';
 import { Wsm2AccountService } from './services/wsm2-account.service';
 import {Utils} from './utils/utils';
+import {WsmAccountService} from './services/wsm-account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class AppGuard implements CanActivate {
 
   constructor(private router: Router,
               private accountService: Wsm2AccountService,
+              private accService: WsmAccountService,
               private store: Store<State>,
               @Inject(AppConfigToken) protected config: AppConfig
   ) {
@@ -27,36 +29,37 @@ export class AppGuard implements CanActivate {
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     const role = this.$user.getValue();
-    if (!role) {
-      console.log(window.sessionStorage);
-      this.router.navigate(['/identification']);
+    console.log(window.sessionStorage);
+    if (!role || !role.hasAccess()) {
+      if (Utils.exists(window.sessionStorage.getItem('access')) || Utils.exists(window.sessionStorage.getItem('refresh'))) {
+        this.accService.getAccount()
+          .then((response) => {
+            role = new Role({
+              login: response.login,
+              name: response.fio,
+              role: response.login === 'system_author' && response.role === 'Admin'
+                ? Roles.MAIN_ADMIN
+                : response.role === 'Admin'
+                  ? Roles.ADMIN
+                  : response.role === 'Integrator'
+                    ? Roles.INTEGRATOR
+                    : response.role === 'SimpleUser'
+                      ? Roles.SIMPLE : Roles.NONE
+            });
+            this.store.dispatch(new LayoutSetUser(role));
+            console.log(`${role.user_login} идентифицирован`);
+            this.router.navigate(['/main/about']);
+          }).catch((reject) => {
+          // TODO: Допилить refreshToken
+          alert('Ошибка идентификации');
+          // console.log(error);
+        });
+      } else {
+        console.log(window.sessionStorage);
+        this.router.navigate(['/identification']);
+      }
     } else {
       return of(true);
     }
-    //
-    // if (!this.$user.getValue()) {
-    //   this.router.navigate(['/identification']);
-    // } else {
-    //   return of(true);
-    // }
-    // if (!this.$user.getValue()) {
-    //   return this.accountService.currentUserInfo().pipe(
-    //     flatMap(user => {
-    //       return this.setUser(user);
-    //     }));
-    // } else {
-    //   return of(true);
-    // }
   }
-
-  // private setUser(user: any): Observable<boolean> {
-  //   const role = new Role(user);
-  //   return this.accountService.getUserSettings().pipe(
-  //     flatMap((settings: string) => {
-  //       // role.settings = Utils.exists(settings) ? JSON.parse(settings) : {};
-  //       this.store.dispatch(new LayoutSetUser(role));
-  //       return of(true);
-  //     }),
-  //   );
-  // }
 }

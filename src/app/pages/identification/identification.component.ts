@@ -3,14 +3,16 @@ import { User } from '../../models/user';
 import { Utils } from '../../utils/utils';
 import { Wsm2AccountService } from '../../services/wsm2-account.service';
 import { Wsm2DataService } from "../../services/wsm2-data.service";
+import { WsmAccountService } from '../../services/wsm-account.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from "@ngrx/store";
 import { GetCurrentUser, State } from "../../_state";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { Role } from "../../models/role";
+import {Role, Roles} from '../../models/role';
 import * as _ from "lodash";
 import {LayoutLoaded, LayoutSetUser} from '../../_state/actions/layout.actions';
 import { LoginToken } from "../../models/token";
+import {flatMap} from 'rxjs/operators';
 
 @Component({
   selector: 'wsm-identification',
@@ -56,6 +58,7 @@ export class IdentificationComponent implements OnInit {
 
   constructor(private router: Router,
               private store: Store<State>,
+              private accService: WsmAccountService,
               private accountService: Wsm2AccountService,
               private dataService: Wsm2DataService) {
     this.store.pipe(select(GetCurrentUser)).subscribe(() => this.$user.next(null));
@@ -74,19 +77,42 @@ export class IdentificationComponent implements OnInit {
     // Отправляем в сервис логин и пароль пользователя на проверку
     const user = this.accountService.checkUser(this.$login, this.$password);
     // const token = this.accountService.checkUser2(this.$login, this.$password);
-    const prom = this.accountService.checkUser3(this.$login, this.$password);
-    console.log(prom);
-    prom.then(function(authentication) {
+    // this.accService.checkUser2(this.$login, this.$password)
+    //   .pipe(flatMap((res: any) => {
+    //     console.log(res);
+    //     window.sessionStorage.setItem('access', res.accessToken);
+    //     window.sessionStorage.setItem('refresh', res.refreshToken);
+    //     console.log(sessionStorage);
+    //     return res;
+    //   })).pipe(flatMap(() => this.accService.getAccount2()))
+    //   .pipe(flatMap((res: any) => {
+    //     this.identify({
+    //       login: res.Login,
+    //       name: res.FIO,
+    //       role: res.Login === 'system_author' && res.Role === 'Admin'
+    //         ? Roles.MAIN_ADMIN
+    //         : res.Role === 'Admin'
+    //           ? Roles.ADMIN
+    //           : res.Role === 'Integrator'
+    //             ? Roles.INTEGRATOR
+    //             : res.Role === 'SimpleUser'
+    //               ? Roles.SIMPLE : Roles.NONE
+    //     });
+    //     return res;
+    //   }));
+
+
+    this.accService.checkUser(this.$login, this.$password)
+      .then(function(authentication) {
         console.log(authentication);
-        window.sessionStorage.setItem('token', authentication.token);
+        window.sessionStorage.setItem('access', authentication.accessToken);
+        window.sessionStorage.setItem('refresh', authentication.refreshToken);
+        console.log(sessionStorage);
+        return authentication;
+    }).then((response) => this.router.navigate(['/main/about']))
+      .catch(function(error) {
+        console.log(error);
       });
-      // .then(this.accountService.getAccount())
-      // .then(function(accounts) {
-      //
-      // })
-      // .catch(function(error) {
-      //   console.log(error);
-      // });
 
     // if (Utils.exists(window.sessionStorage.getItem('token'))) {
     //
@@ -122,8 +148,8 @@ export class IdentificationComponent implements OnInit {
     // }
   }
 
-  private identify(user: User) {
-    const role = new Role(user);
+  private identify(model: any) {
+    const role = new Role(model);
     this.store.dispatch(new LayoutSetUser(role));
     console.log(`${this.$login} идентифицирован`);
     this.router.navigate(['/main/about']);

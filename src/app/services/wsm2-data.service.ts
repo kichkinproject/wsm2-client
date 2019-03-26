@@ -47,6 +47,17 @@ export class Wsm2DataService extends ApiService {
     super(http, appState, config);
   }
 
+  private adminUrl = `${this.config.WebApiUrl}/admin`;
+  private controllerUrl = `${this.config.WebApiUrl}/controller`;
+  private forControllersUrl = `${this.config.WebApiUrl}/forControllers`;
+  private scenarioUrl = `${this.config.WebApiUrl}/scenario`;
+  private sensorUrl = `${this.config.WebApiUrl}/sensor`;
+  private thingUrl = `${this.config.WebApiUrl}/smartThing`;
+  private userUrl = `${this.config.WebApiUrl}/user`;
+  private userGroupUrl = `${this.config.WebApiUrl}/userGroup`;
+  private valueUrl = `${this.config.WebApiUrl}/values`;
+
+
   private source: WsmData = new WsmData();
 
   private $scenarioData: Array<Scenario> = this.source.scenarios();

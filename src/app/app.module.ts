@@ -18,6 +18,7 @@ import {reducers, metaReducers} from './_state';
 import {SelectionPanelComponent, SelectionPanelModule} from './components/selection-panel/selection-panel.component';
 import {environment} from '../environments/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {WsmAccountService} from './services/wsm-account.service';
 
 export function appInit(config: AppConfig) {
   return () => config.load();
@@ -44,7 +45,8 @@ export function appInit(config: AppConfig) {
   bootstrap: [AppComponent],
   providers: [
     Wsm2AccountService,
-    {
+    WsmAccountService,
+  {
       provide: AppConfigToken,
       useClass: AppConfig,
     },

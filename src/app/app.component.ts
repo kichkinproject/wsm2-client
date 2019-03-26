@@ -9,6 +9,7 @@ import { AppConfigToken } from "./models/token";
 import { environment } from "../environments/environment";
 import { Subscription } from "rxjs";
 import { LayoutLoaded } from './_state/actions/layout.actions';
+import {WsmAccountService} from './services/wsm-account.service';
 
 @Component({
   selector: 'wsm-app',
@@ -25,6 +26,7 @@ export class AppComponent implements OnDestroy {
               private elementRef: ElementRef,
               private router: Router,
               private accountService: Wsm2AccountService,
+              private accService: WsmAccountService,
               private store: Store<State>,
               @Inject(AppConfigToken) private config: IAppConfig
   ) {

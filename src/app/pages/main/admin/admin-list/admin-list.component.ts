@@ -8,6 +8,7 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-admin-list',
@@ -25,6 +26,7 @@ export class AdminListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               public dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -32,12 +34,19 @@ export class AdminListComponent implements AfterViewInit {
     );
   }
 
+
+
   private updateCollection() {
     const role = this.$user.getValue().user_role;
     const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
+        const someAdmins = this.serviceData.getAdmins().subscribe(
+          data => {
+            console.log(data);
+          }
+        );
         this.admins = Utils.pushAll([], this.dataService.getAdmins());
         break;
       default:
