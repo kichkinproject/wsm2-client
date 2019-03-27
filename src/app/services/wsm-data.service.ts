@@ -1,35 +1,16 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Inject, Injectable } from '@angular/core';
-import { IAppConfig } from '../app.config';
-import { AppConfigToken, AppStateToken } from "../models/token";
-import {Observable, throwError} from 'rxjs';
-import { AppState, IAppState } from "../models/app-state";
-import {ApiService} from './api.service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {IAppConfig} from '../app.config';
+import {AppConfigToken, AppStateToken} from '../models/token';
+import {IAppState} from '../models/app-state';
 import {User} from '../models/user';
 import {Roles} from '../models/role';
-import {forEach} from '@angular/router/src/utils/collection';
-import { Scenario } from "../models/scenario";
-import { ControllerType, ScenarioType, SensorType, ThingType } from "../models/entity-type";
-import { Sensor } from "../models/sensor";
-import { Thing } from "../models/thing";
-import { Utils } from "../utils/utils";
-import { Controller } from "../models/controller";
-import { UserGroup } from "../models/user-group";
-import {WsmData} from '../models/data';
-import { ScenarioController } from "../models/scenario-controller";
-import {
-  urlAdmin,
-  urlAccount,
-  urlController,
-  urlScenario,
-  urlSensor,
-  urlThing,
-  urlUser,
-  urlUserGroup,
-  urlValue, baseApi
-} from "../models/api-urls";
-import {HttpParamsOptions} from '@angular/common/http/src/params';
-import {catchError, flatMap, map} from 'rxjs/operators';
+import {ControllerType, ScenarioType, SensorType, ThingType} from '../models/entity-type';
+import {Utils} from '../utils/utils';
+import {Scenario} from '../models/scenario';
+import {Thing} from '../models/thing';
+import {Sensor} from '../models/sensor';
+import {Controller} from '../models/controller';
 
 const httpOptions: HttpHeaders = new HttpHeaders({
   'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -61,12 +42,47 @@ export class WsmDataService {
 
 
 
-  public getIntegrator(login: string): User {
-
+  public getIntegrator(login: string) {
+    return fetch(this.userUrl + '/' + login, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
-  public getIntegrators(): Array<User> {
-
+  public getIntegrators() {
+    const integrators: Array<User> = [];
+    fetch(this.userUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userType !== 0).length !== 0) {
+        response.filter(res => res.userType !== 0).forEach(res => {
+          integrators.push(new User(
+            res.login,
+            '',
+            res.fio,
+            '',
+            Roles.INTEGRATOR,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+      console.log(integrators);
+    });
+    return integrators;
   }
 
   // public getIntegrators2(): Array<User> {
@@ -74,7 +90,7 @@ export class WsmDataService {
   //
   // }
 
-  public addIntegrator(login: string, password: string, name: string, info: string, group: number): User {
+  public addIntegrator(login: string, password: string, name: string, info: string, group: number) {
 
   }
 
@@ -86,32 +102,65 @@ export class WsmDataService {
 
   }
 
-  public getAdmin(login: string): User {
-
+  public getAdmin(login: string) {
+    return fetch(this.adminUrl + '/' + login, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
-  public getAdmins() {
-    // return fetch(this.adminUrl, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
-    //     'Content-Type': 'application/json'
-    //   },
-    // }).then(function(response) {
-    //   console.log(response);
-    //   return response.json();
-    // });
-    return this.http.get(this.adminUrl, httpOptions)
-      .pipe(map((data: any) => data.result ),
-      catchError(error => {
-        return throwError('Its a Trap!');
-      })
-    );
-
+  public getAdmins(): Array<User> {
+    const admins: Array<User> = [];
+    fetch(this.adminUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 /*&& response.filter(res => res.login !== 'system_author').length !== 0*/) {
+        response/*.filter(res => res.login !== 'system_author')*/.forEach(res => {
+          admins.push(new User(
+            res.login,
+            '',
+            res.fio,
+            '',
+            Roles.ADMIN,
+            -1
+          ));
+        });
+      }
+      console.log(admins);
+    });
+    return admins;
   }
 
-  public addAdmin(login: string, password: string, name: string, info: string): User {
-
+  public addAdmin(login: string, password: string, name: string, info: string) {
+    return fetch(this.adminUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        login: login,
+        fio: name,
+        password: password
+      }),
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
   public updateAdmin(oldLogin: string, login: string, password: string, name: string, info: string) {
@@ -119,22 +168,66 @@ export class WsmDataService {
   }
 
   public deleteAdmin(login: string) {
-
+    return fetch(this.adminUrl + '/' + login, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
   public getSomeUser(login: string) {
-
+   return [this.getAdmin(login), this.getUser(login)];
   }
 
-  public getUser(login: string): User {
-
+  public getUser(login: string) {
+    return fetch(this.userUrl + '/' + login, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
-  public getUsers(): Array<User> {
-
+  public getUsers() {
+    const users: Array<User> = [];
+    fetch(this.userUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+        response.filter(res => res.userType === 0).forEach(res => {
+          users.push(new User(
+            res.login,
+            '',
+            res.fio,
+            '',
+            Roles.SIMPLE,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+      console.log(users);
+    });
+    return users;
   }
 
-  public addUser(login: string, password: string, name: string, info: string, group: number): User {
+  public addUser(login: string, password: string, name: string, info: string, group: number) {
 
   }
 
@@ -146,27 +239,107 @@ export class WsmDataService {
 
   }
 
-  public getScenario(id: number): Scenario {
+  public getScenario(id: number) {
 
   }
 
-  public getScenarios(): Array<Scenario> {
+  // public getScenarios() {
+  //   const users: Array<User> = [];
+  //   fetch(this.scenarioUrl, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+  //       'Content-Type': 'application/json'
+  //     },
+  //   }).then(function(response) {
+  //     console.log(response);
+  //     return response.json();
+  //   }).then((response) => {
+  //     console.log(response);
+  //     if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+  //       response.filter(res => res.userType === 0).forEach(res => {
+  //         users.push(new User(
+  //           res.login,
+  //           '',
+  //           res.fio,
+  //           '',
+  //           Roles.SIMPLE,
+  //           Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+  //         ));
+  //       });
+  //     }
+  //     console.log(users);
+  //   });
+  //   return users;
+  // }
 
+  public getPublicScenarios() {
+    const scenarios: Array<Scenario> = [];
+      fetch(this.scenarioUrl + '/public', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+          'Content-Type': 'application/json'
+        },
+      }).then(function(response) {
+        console.log(response);
+        return response.json();
+      }).then((response) => {
+        console.log(response);
+        if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+          response.filter(res => res.userType === 0).forEach(res => {
+            scenarios.push(new Scenario(
+              res.id,
+              res.name,
+              res.description,
+              res.text,
+              ScenarioType.USER_ACTION,
+              true,
+              Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+            ));
+          });
+        }
+        console.log(scenarios);
+      });
+      return scenarios;
   }
 
-  public getPublicScenarios(): Array<Scenario> {
-
-  }
-
-  public getPrivateScenarios(): Array<Scenario> {
-
+  public getPrivateScenarios() {
+    const scenarios: Array<Scenario> = [];
+    fetch(this.scenarioUrl + '/available', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+        response.filter(res => res.userType === 0).forEach(res => {
+          scenarios.push(new Scenario(
+            res.id,
+            res.name,
+            res.description,
+            res.text,
+            ScenarioType.USER_ACTION,
+            true,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+      console.log(scenarios);
+    });
+    return scenarios;
   }
 
   public findMaxIndex(objects: any[]) {
 
   }
 
-  public addScenario(name: string, description: string, script: string, type: ScenarioType, publicity: boolean, creator: string = ''): Scenario {
+  public addScenario(name: string, description: string, script: string, type: ScenarioType, publicity: boolean, creator: string = '') {
 
   }
 
@@ -186,23 +359,49 @@ export class WsmDataService {
 
   }
 
-  public getSensor(id: number): Sensor {
+  public getSensor(id: number) {
 
   }
 
-  public getSensors(): Array<Sensor> {
+  public getSensors() {
+    const sensors: Array<Sensor> = [];
+    fetch(this.sensorUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+        response.filter(res => res.userType === 0).forEach(res => {
+          sensors.push(new Sensor(
+            res.id,
+            res.name,
+            res.description,
+            res.type,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
+            res.controllerId
+          ));
+        });
+      }
+      console.log(sensors);
+    });
+    return sensors;
+  }
+
+  public getSensorsByGroup(id: number) {
 
   }
 
-  public getSensorsByGroup(id: number): Array<Sensor> {
+  public getSensorsByController(id: number) {
 
   }
 
-  public getSensorsByController(id: number): Array<Sensor> {
-
-  }
-
-  public addSensor(name: string, description: string, type: SensorType, master: number, controller: number = -1): Sensor {
+  public addSensor(name: string, description: string, type: SensorType, master: number, controller: number = -1) {
 
   }
 
@@ -218,23 +417,49 @@ export class WsmDataService {
 
   }
 
-  public getThing(id: number): Thing {
+  public getThing(id: number) {
 
   }
 
-  public getThings(): Array<Thing> {
+  public getThings() {
+    const things: Array<Thing> = [];
+    fetch(this.thingUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+        response.filter(res => res.userType === 0).forEach(res => {
+          things.push(new Thing(
+            res.id,
+            res.name,
+            res.description,
+            res.type,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
+            res.controllerId
+          ));
+        });
+      }
+      console.log(things);
+    });
+    return things;
+  }
+
+  public getThingsByGroup(id: number) {
 
   }
 
-  public getThingsByGroup(id: number): Array<Thing> {
+  public getThingsByController(id: number) {
 
   }
 
-  public getThingsByController(id: number): Array<Thing> {
-
-  }
-
-  public addThing(name: string, description: string, type: ThingType, master: number, controller: number = -1): Thing {
+  public addThing(name: string, description: string, type: ThingType, master: number, controller: number = -1) {
 
   }
 
@@ -250,12 +475,37 @@ export class WsmDataService {
 
   }
 
-  public getController(id: number): Controller {
+  public getController(id: number) {
 
   }
 
-  public getControllers(): Array<Controller> {
-
+  public getControllers() {
+    const controllers: Array<Controller> = [];
+    fetch(this.thingUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+        response.filter(res => res.userType === 0).forEach(res => {
+          controllers.push(new Controller(
+            res.id,
+            res.name,
+            res.description,
+            res.type,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
+          ));
+        });
+      }
+      console.log(controllers);
+    });
+    return controllers;
   }
 
 
@@ -263,7 +513,7 @@ export class WsmDataService {
 
   }
 
-  public addController(name: string, description: string, type: ControllerType, master: number): Controller {
+  public addController(name: string, description: string, type: ControllerType, master: number) {
 
   }
 
@@ -275,7 +525,7 @@ export class WsmDataService {
 
   }
 
-  public getUserGroups(): Array<UserGroup> {
+  public getUserGroups() {
 
   }
 
@@ -291,11 +541,11 @@ export class WsmDataService {
 
   }
 
-  public getChildrenUserGroup(id: number): Array<UserGroup>  {
+  public getChildrenUserGroup(id: number)  {
 
   }
 
-  public getAllChildrenUserGroup(id: number): Array<UserGroup> {
+  public getAllChildrenUserGroup(id: number) {
 
   }
 

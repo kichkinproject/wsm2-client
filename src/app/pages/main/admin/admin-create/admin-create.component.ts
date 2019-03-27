@@ -6,6 +6,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-admin-create',
@@ -26,6 +27,7 @@ export class AdminCreateComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -109,6 +111,15 @@ export class AdminCreateComponent implements AfterViewInit {
 
   public checkExistingLogin() {
     return this.dataService.getSomeUser(this.$login) !== null;
+    // const result = this.dataService.getSomeUser(this.$login);
+    // result[0]
+    //   .then((response) => {
+    //     return (response !== null).json();
+    //   })
+    //   .then(result[1])
+    //   .then((response) => {
+    //     return (response !== null).json();
+    //   });
   }
 
   public checkRightLogin() {
@@ -136,10 +147,13 @@ export class AdminCreateComponent implements AfterViewInit {
   }
 
   public createAdmin() {
-    this.dataService.addAdmin(this.$login, this.$password, this.$name, this.$info);
-    this.router.navigate(['main/admin/admin-list'], {
-      queryParams: {}
-    });
+    this.serviceData.addAdmin(this.$login, this.$password, this.$name, this.$info)
+      .then(response => {
+        this.router.navigate(['main/admin/admin-list'], {
+          queryParams: {}
+        });
+      });
+    // this.dataService.addAdmin(this.$login, this.$password, this.$name, this.$info);
   }
 
   public enabledToAdd() {

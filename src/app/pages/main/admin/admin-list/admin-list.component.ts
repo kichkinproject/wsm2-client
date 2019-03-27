@@ -1,7 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
-import {Scenario} from '../../../../models/scenario';
 import {ActivatedRoute, Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
@@ -39,18 +38,14 @@ export class AdminListComponent implements AfterViewInit {
   private updateCollection() {
     const role = this.$user.getValue().user_role;
     const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
+    this.admins = [];
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        const someAdmins = this.serviceData.getAdmins().subscribe(
-          data => {
-            console.log(data);
-          }
-        );
-        this.admins = Utils.pushAll([], this.dataService.getAdmins());
+        this.admins = this.serviceData.getAdmins();
+        // this.admins = Utils.pushAll([], this.dataService.getAdmins());
         break;
       default:
-        this.admins = [];
         break;
     }
   }
@@ -86,31 +81,71 @@ export class AdminListComponent implements AfterViewInit {
   }
 
   public editAdmin(login: string) {
-    if (Utils.exists(this.dataService.getAdmin(login))) {
-      this.router.navigate(['main/admin/admin-edit', login], {
-        queryParams: {}
+    this.serviceData.getAdmin(login)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const admin = new User(
+            response.login,
+            '',
+            response.fio,
+            '',
+            Roles.ADMIN,
+            -1
+          );
+          this.router.navigate(['main/admin/admin-edit', login], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим редактировать не существующего администратора');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим редактировать не существующего администратора');
-    }
+    // if (Utils.exists(this.dataService.getAdmin(login))) {
+    //   this.router.navigate(['main/admin/admin-edit', login], {
+    //     queryParams: {}
+    //   });
+    // } else {
+    //   console.log('Ошибка, хотим редактировать не существующего администратора');
+    // }
   }
+
   public viewAdmin(login: string) {
-    if (Utils.exists(this.dataService.getAdmin(login))) {
-      this.router.navigate(['main/admin/admin-view', login], {
-        queryParams: {}
+    this.serviceData.getAdmin(login)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const admin = new User(
+            response.login,
+            '',
+            response.fio,
+            '',
+            Roles.ADMIN,
+            -1
+          );
+          this.router.navigate(['main/admin/admin-view', login], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим просмотреть не существующего администратора');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующего администратора');
-    }
+
+    // if (Utils.exists(this.dataService.getAdmin(login))) {
+    //   this.router.navigate(['main/admin/admin-view', login], {
+    //     queryParams: {}
+    //   });
+    // } else {
+    //   console.log('Ошибка, хотим просмотреть не существующего администратора');
+    // }
   }
 
   public removeAdmin(login: string) {
     this.isCompleted$.next(false);
     this.cd.detectChanges();
-    this.dataService.deleteAdmin(login);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.deleteAdmin(login)
+      .then((response) => {
+        this.updateCollection();
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public accessed() {

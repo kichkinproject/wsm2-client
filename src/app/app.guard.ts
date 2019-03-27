@@ -28,7 +28,7 @@ export class AppGuard implements CanActivate {
   }
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    const role = this.$user.getValue();
+    let role = this.$user.getValue();
     console.log(window.sessionStorage);
     if (!role || !role.hasAccess()) {
       if (Utils.exists(window.sessionStorage.getItem('access')) || Utils.exists(window.sessionStorage.getItem('refresh'))) {
@@ -50,8 +50,24 @@ export class AppGuard implements CanActivate {
             console.log(`${role.user_login} идентифицирован`);
             this.router.navigate(['/main/about']);
           }).catch((reject) => {
+          if (Utils.exists(window.sessionStorage.getItem('refresh'))) {
+            this.accService.refreshToken()
+              .then((response) => {
+                console.log(response);
+                window.sessionStorage.setItem('access', response.accessToken);
+                window.sessionStorage.setItem('refresh', response.refreshToken);
+                console.log(sessionStorage);
+                return response;
+              })
+              .then((response) => {
+                console.log(`${role.user_login} переидентифицирован`);
+                this.router.navigate(['/main/about']);
+              });
+          } else {
+            alert('Ошибка идентификации');
+            this.router.navigate(['/identification']);
+          }
           // TODO: Допилить refreshToken
-          alert('Ошибка идентификации');
           // console.log(error);
         });
       } else {
