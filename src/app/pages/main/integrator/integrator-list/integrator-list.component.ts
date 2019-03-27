@@ -7,6 +7,7 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {User} from '../../../../models/user';
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-integrator-list',
@@ -24,6 +25,7 @@ export class IntegratorListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -33,15 +35,19 @@ export class IntegratorListComponent implements AfterViewInit {
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        this.integrators = Utils.pushAll([], this.dataService.getIntegrators());
+        this.integrators = this.serviceData.getIntegrators();
         break;
       case Roles.INTEGRATOR:
-        this.integrators = Utils.pushAll([], this.dataService.getIntegratorsByChildrenGroup(user.group));
-
+        this.serviceData.getUser(this.$user.getValue().user_login)
+          .then((response) => {
+            if (Utils.missing(response.ok)) {
+              this.integrators = Utils.pushAll([], this.serviceData.getIntegratorsByChildrenGroup(response.userGroup.id));
+            } else {
+              this.integrators = [];
+            }});
         break;
       default:
         this.integrators.slice(0, this.integrators.length);
@@ -80,22 +86,45 @@ export class IntegratorListComponent implements AfterViewInit {
   }
 
   public editIntegrator(login: string) {
-    if (Utils.exists(this.dataService.getIntegrator(login))) {
-      this.router.navigate(['main/integrator/integrator-edit', login], {
-        queryParams: {}
+    this.serviceData.getIntegrator(login)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const admin = new User(
+            response.login,
+            '',
+            response.fio,
+            response.info,
+            Roles.INTEGRATOR,
+            -1
+          );
+          this.router.navigate(['main/integrator/integrator-edit', login], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим редактировать не существующего интегратора');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим редактировать не существующего интегратора');
-    }
   }
+
   public viewIntegrator(login: string) {
-    if (Utils.exists(this.dataService.getIntegrator(login))) {
-      this.router.navigate(['main/integrator/integrator-view', login], {
-        queryParams: {}
+    this.serviceData.getIntegrator(login)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const admin = new User(
+            response.login,
+            '',
+            response.fio,
+            response.info,
+            Roles.INTEGRATOR,
+            -1
+          );
+          this.router.navigate(['main/integrator/integrator-view', login], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим просмотреть не существующего интегратора');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующего интегратора');
-    }
   }
 
   public removeIntegrator(login: string) {

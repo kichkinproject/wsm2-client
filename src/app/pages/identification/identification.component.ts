@@ -109,7 +109,24 @@ export class IdentificationComponent implements OnInit {
         window.sessionStorage.setItem('refresh', authentication.refreshToken);
         console.log(sessionStorage);
         return authentication;
-    }).then((response) => this.router.navigate(['/main/about']))
+    }).then((response) => this.accService.getAccount())
+      .then((response) => {
+          const role = new Role({
+            login: response.login,
+            name: response.fio,
+            role: response.login === 'system_author' && response.role === 'Admin'
+              ? Roles.MAIN_ADMIN
+              : response.role === 'Admin'
+                ? Roles.ADMIN
+                : response.role === 'Integrator'
+                  ? Roles.INTEGRATOR
+                  : response.role === 'SimpleUser'
+                    ? Roles.SIMPLE : Roles.NONE
+          });
+          this.store.dispatch(new LayoutSetUser(role));
+          console.log(`${role.user_login} идентифицирован`);
+          this.router.navigate(['/main/about']);
+      })
       .catch(function(error) {
         console.log(error);
       });

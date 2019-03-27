@@ -110,7 +110,11 @@ export class AdminCreateComponent implements AfterViewInit {
 
 
   public checkExistingLogin() {
-    return this.dataService.getSomeUser(this.$login) !== null;
+    if (Utils.exists(this.$login)) {
+      // console.log(result);
+    }
+    return false;
+    //this.dataService.getSomeUser(this.$login) !== null;
     // const result = this.dataService.getSomeUser(this.$login);
     // result[0]
     //   .then((response) => {
@@ -147,11 +151,28 @@ export class AdminCreateComponent implements AfterViewInit {
   }
 
   public createAdmin() {
-    this.serviceData.addAdmin(this.$login, this.$password, this.$name, this.$info)
-      .then(response => {
-        this.router.navigate(['main/admin/admin-list'], {
-          queryParams: {}
-        });
+    this.serviceData.getAdmin(this.$login)
+      .then((response) => {
+        if (Utils.exists(response.ok) && (!response.ok || response.statusText !== 'No Content')) {
+          alert('Пользователь с таким логином уже зарегистрирован');
+        } else {
+          this.serviceData.getUser(this.$login)
+            .then((response1) => {
+              if (Utils.exists(response1.ok) && (!response1.ok || response1.statusText !== 'No Content')) {
+                alert('Пользователь с таким логином уже зарегистрирован');
+              } else {
+                this.isCompleted$.next(false);
+                this.serviceData.addAdmin(this.$login, this.$password, this.$name, this.$info)
+                  .then((response2) => {
+                    this.router.navigate(['main/admin/admin-list'], {
+                      queryParams: {}
+                    });
+                    this.isCompleted$.next(true);
+                    this.cd.detectChanges();
+                  });
+              }
+            });
+        }
       });
     // this.dataService.addAdmin(this.$login, this.$password, this.$name, this.$info);
   }

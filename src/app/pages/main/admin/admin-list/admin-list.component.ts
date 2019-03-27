@@ -37,13 +37,11 @@ export class AdminListComponent implements AfterViewInit {
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     this.admins = [];
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
         this.admins = this.serviceData.getAdmins();
-        // this.admins = Utils.pushAll([], this.dataService.getAdmins());
         break;
       default:
         break;
@@ -99,13 +97,6 @@ export class AdminListComponent implements AfterViewInit {
           console.log('Ошибка, хотим редактировать не существующего администратора');
         }
       });
-    // if (Utils.exists(this.dataService.getAdmin(login))) {
-    //   this.router.navigate(['main/admin/admin-edit', login], {
-    //     queryParams: {}
-    //   });
-    // } else {
-    //   console.log('Ошибка, хотим редактировать не существующего администратора');
-    // }
   }
 
   public viewAdmin(login: string) {
@@ -127,25 +118,19 @@ export class AdminListComponent implements AfterViewInit {
           console.log('Ошибка, хотим просмотреть не существующего администратора');
         }
       });
-
-    // if (Utils.exists(this.dataService.getAdmin(login))) {
-    //   this.router.navigate(['main/admin/admin-view', login], {
-    //     queryParams: {}
-    //   });
-    // } else {
-    //   console.log('Ошибка, хотим просмотреть не существующего администратора');
-    // }
   }
 
   public removeAdmin(login: string) {
-    this.isCompleted$.next(false);
-    this.cd.detectChanges();
-    this.serviceData.deleteAdmin(login)
-      .then((response) => {
-        this.updateCollection();
-        this.isCompleted$.next(true);
-        this.cd.detectChanges();
-      });
+    if (confirm(`Вы уверены, что хотите удалить администратора ${login}?`)) {
+      this.isCompleted$.next(false);
+      this.cd.detectChanges();
+      this.serviceData.deleteAdmin(login)
+        .then((response) => {
+          this.updateCollection();
+          this.isCompleted$.next(true);
+          this.cd.detectChanges();
+        });
+    }
   }
 
   public accessed() {

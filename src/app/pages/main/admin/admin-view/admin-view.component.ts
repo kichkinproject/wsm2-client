@@ -7,6 +7,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-admin-view',
@@ -25,6 +26,7 @@ export class AdminViewComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -38,12 +40,15 @@ export class AdminViewComponent implements AfterViewInit {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.adminLogin = this.activatedRoute.params['_value']['login'];
-    const admin = this.dataService.getAdmin(this.adminLogin);
-    this.login = admin.login;
-    this.name = admin.name;
-    this.info = admin.info;
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getAdmin(this.adminLogin)
+      .then((response) => {
+        this.login = response.login;
+        this.name = response.fio;
+        this.info = response.info;
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
+
   }
 
   public accessed() {

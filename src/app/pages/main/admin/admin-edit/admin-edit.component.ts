@@ -7,6 +7,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-admin-edit',
@@ -25,6 +26,7 @@ export class AdminEditComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -38,12 +40,14 @@ export class AdminEditComponent implements AfterViewInit {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.adminLogin = this.activatedRoute.params['_value']['login'];
-    const admin = this.dataService.getAdmin(this.adminLogin);
-    this.login = admin.login;
-    this.name = admin.name;
-    this.info = admin.info;
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getAdmin(this.adminLogin)
+      .then((response) => {
+        this.login = response.login;
+        this.name = response.fio;
+        this.info = response.info;
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public accessed() {
@@ -98,6 +102,18 @@ export class AdminEditComponent implements AfterViewInit {
   }
 
   public saveAdmin() {
+    this.serviceData.getAdmin(this.$login)
+      .then((response) => {
+        this.isCompleted$.next(false);
+        this.serviceData.updateAdmin(this.$login, this.$password, this.$name, this.$info)
+          .then((response2) => {
+            this.router.navigate(['main/admin/admin-list'], {
+              queryParams: {}
+            });
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
+      });
     const admin = this.dataService.getAdmin(this.adminLogin);
     this.dataService.updateAdmin(admin.login, this.$login, admin.password, this.$name, this.$info);
     this.router.navigate(['main/admin/admin-list'], {

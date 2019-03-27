@@ -3,12 +3,10 @@
   <h2 align="center">Кабинет {{currentRole}}а</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="login">
+      <div class="login" [disabled]="true">
         <label>
           Логин:
           <input [(ngModel)]="login" placeholder='user'>
-          <span *ngIf="checkExistingLogin()">Такой {{currentRole}} уже зарегистрирован в системе</span>
-          <span *ngIf="!checkRightLogin()">Не правильный формат ввода логина</span>
         </label>
       </div>
       <div class="password">

@@ -48,21 +48,6 @@ export class WsmAccountService {
     });
   }
 
-  public checkUser2(login: string, password: string): Observable<any> {
-    return this.http.post(this.accountUrl, {
-      login: login,
-      password: password
-    }, httpOptions);
-  }
-
-  public getAccount2(): Observable<any> {
-    return this.http.get(this.accountUrl + '/info', {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
-        'Content-Type': 'application/json',
-      })});
-  }
-
   public getAccount() {
     return fetch(this.accountUrl + '/info', {
       method: 'GET',
@@ -79,11 +64,8 @@ export class WsmAccountService {
   public refreshToken() {
     return fetch(this.accountUrl + '/refresh', {
       method: 'POST',
-      body: JSON.stringify({
-        token: window.sessionStorage.getItem('refresh')
-      }),
+      body: JSON.stringify(window.sessionStorage.getItem('refresh')),
       headers: {
-        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json',
       },
     }).then(function(response) {

@@ -39,9 +39,6 @@ export class WsmDataService {
   private userGroupUrl = `${this.config.WebApiUrl}/userGroup`;
   private valueUrl = `${this.config.WebApiUrl}/values`;
 
-
-
-
   public getIntegrator(login: string) {
     return fetch(this.userUrl + '/' + login, {
       method: 'GET',
@@ -51,20 +48,23 @@ export class WsmDataService {
       }
     }).then(function(response) {
       console.log(response);
-      return response.json();
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response;
+      }
     });
   }
 
   public getIntegrators() {
     const integrators: Array<User> = [];
-    fetch(this.userUrl, {
+    fetch(this.userUrl + '/allIntegrators', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
     }).then(function(response) {
-      console.log(response);
       return response.json();
     }).then((response) => {
       console.log(response);
@@ -74,13 +74,12 @@ export class WsmDataService {
             res.login,
             '',
             res.fio,
-            '',
+            res.info,
             Roles.INTEGRATOR,
             Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
           ));
         });
       }
-      console.log(integrators);
     });
     return integrators;
   }
@@ -111,7 +110,11 @@ export class WsmDataService {
       }
     }).then(function(response) {
       console.log(response);
-      return response.json();
+      if (response.ok && response.statusText !== 'No Content') {
+        return response.json();
+      } else {
+        return response;
+      }
     });
   }
 
@@ -128,13 +131,13 @@ export class WsmDataService {
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 /*&& response.filter(res => res.login !== 'system_author').length !== 0*/) {
-        response/*.filter(res => res.login !== 'system_author')*/.forEach(res => {
+      if (response.length !== 0 && response.filter(res => res.login !== 'system_author').length !== 0) {
+        response.filter(res => res.login !== 'system_author').forEach(res => {
           admins.push(new User(
             res.login,
             '',
             res.fio,
-            '',
+            res.info,
             Roles.ADMIN,
             -1
           ));
@@ -151,20 +154,36 @@ export class WsmDataService {
       body: JSON.stringify({
         login: login,
         fio: name,
-        password: password
+        password: password,
+        info: info
       }),
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
-    }).then(function(response) {
+    }).then((response) => {
       console.log(response);
-      return response.json();
+      return response;
     });
   }
 
-  public updateAdmin(oldLogin: string, login: string, password: string, name: string, info: string) {
-
+  public updateAdmin(login: string, password: string, name: string, info: string) {
+    return fetch(this.adminUrl, {
+      method: 'PUT',
+      body: JSON.stringify({
+        login: login,
+        fio: name,
+        password: password,
+        info: info
+      }),
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then((response) => {
+      console.log(response);
+      return response;
+    });
   }
 
   public deleteAdmin(login: string) {
@@ -176,7 +195,7 @@ export class WsmDataService {
       },
     }).then(function(response) {
       console.log(response);
-      return response.json();
+      return response;
     });
   }
 
@@ -192,8 +211,27 @@ export class WsmDataService {
         'Content-Type': 'application/json'
       }
     }).then(function(response) {
-      console.log(response);
-      return response.json();
+      if (response.ok && response.statusText !== 'No Content') {
+        return response.json();
+      } else {
+        return response;
+      }
+    });
+  }
+
+  public getSimple(login) {
+    return fetch(this.userUrl + '/' + login, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+      if (response.ok && response.statusText !== 'No Content') {
+        return response.json();
+      } else {
+        return response;
+      }
     });
   }
 
@@ -216,7 +254,7 @@ export class WsmDataService {
             res.login,
             '',
             res.fio,
-            '',
+            res.info,
             Roles.SIMPLE,
             Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
           ));
@@ -558,11 +596,59 @@ export class WsmDataService {
   }
 
   public getIntegratorsByGroup(id: number) {
-
+    const integrators: Array<User> = [];
+    fetch(this.userUrl + '/allIntegrators', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
+        response.filter(res => res.userGroup.id === id).forEach(res => {
+          integrators.push(new User(
+            res.login,
+            '',
+            res.fio,
+            res.info,
+            Roles.INTEGRATOR,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+    });
+    return integrators;
   }
 
   public getIntegratorsByChildrenGroup(id: number) {
-
+    const integrators: Array<User> = [];
+    fetch(this.userUrl + '/allIntegrators', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
+        response.filter(res => res.userGroup.id === id).forEach(res => {
+          integrators.push(new User(
+            res.login,
+            '',
+            res.fio,
+            res.info,
+            Roles.INTEGRATOR,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+    });
+    return integrators;
   }
 
   public getScenarioController(id: number) {
