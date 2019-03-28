@@ -44,10 +44,12 @@ export class IntegratorCreateComponent implements AfterViewInit {
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
       this.serviceData.getUserGroups2()
+        .then(response => {
+          return response.json();
+        })
         .then((response) => {
-          let resp = response.json();
-          if (resp.length !== 0) {
-            resp.forEach(res => {
+          if (response.length !== 0) {
+            response.forEach(res => {
               this.groups.push(new UserGroup(
                 res.id,
                 res.name,
@@ -62,17 +64,19 @@ export class IntegratorCreateComponent implements AfterViewInit {
       this.groups.push(this.noGroup);
       this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
-          if (response.length !== 0) {
-            response.forEach(res => {
-              this.groups.push(new UserGroup(
-                res.id,
-                res.name,
-                res.description,
-                Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
-              ));
-            });
-          }
-        });
+          return response.json();
+        }).then((response) => {
+        if (response.length !== 0) {
+          response.forEach(res => {
+            this.groups.push(new UserGroup(
+              res.id,
+              res.name,
+              res.description,
+              Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+            ));
+          });
+        }
+      });
     }
     // this.groups.splice(0, this.groups.length);
     // if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
@@ -96,7 +100,6 @@ export class IntegratorCreateComponent implements AfterViewInit {
     this.isCompleted$.next(false);
     this.updateList();
     this.selectedGroup = this.groups[0].name;
-
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
@@ -209,10 +212,15 @@ export class IntegratorCreateComponent implements AfterViewInit {
   }
 
   public createIntegrator() {
-    this.dataService.addIntegrator(this.$login, this.$password, this.$name, this.$info, this.$group.id);
-    this.router.navigate(['main/integrator/integrator-list'], {
-      queryParams: {}
-    });
+    this.isCompleted$.next(false);
+    this.serviceData.addIntegrator(this.$login, this.$password, this.$name, this.$info, this.$group.id !== 0 ? this.$group.id : null)
+      .then((response) => {
+        this.router.navigate(['main/integrator/integrator-list'], {
+          queryParams: {}
+        });
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public enabledToAdd() {

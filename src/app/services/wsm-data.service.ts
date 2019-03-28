@@ -321,7 +321,7 @@ export class WsmDataService {
   }
 
   public addUser(login: string, password: string, name: string, info: string, group: number) {
-    return fetch(this.adminUrl + '/user', {
+    return fetch(this.userUrl, {
       method: 'POST',
       body: JSON.stringify({
         login: login,
@@ -1172,6 +1172,8 @@ export class WsmDataService {
       body: JSON.stringify({
         id: id,
         name: name,
+        description: desc,
+        parentGroupId: parent !== -1 ? parent : null
       }),
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),

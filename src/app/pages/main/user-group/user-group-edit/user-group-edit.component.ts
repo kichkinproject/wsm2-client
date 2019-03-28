@@ -70,8 +70,11 @@ export class UserGroupEditComponent  implements AfterViewInit {
       this.groups.push(this.noGroup);
       this.serviceData.getUserGroups2()
         .then((response) => {
-          if (response.length !== 0) {
-            response.forEach(res => {
+          return response.json();
+        })
+        .then((response) => {
+          if (response.length !== 0 && response.filter(res => res.id !== this.groupId)) {
+            response.filter(res => res.id !== this.groupId).forEach(res => {
               this.groups.push(new UserGroup(
                 res.id,
                 res.name,
@@ -88,8 +91,8 @@ export class UserGroupEditComponent  implements AfterViewInit {
         .then((response) => {
           return response.json();
         }).then((response) => {
-        if (response.length !== 0) {
-          response.forEach(res => {
+        if (response.length !== 0 && response.filter(res => res.id !== this.groupId)) {
+          response.filter(res => res.id !== this.groupId).forEach(res => {
             this.groups.push(new UserGroup(
               res.id,
               res.name,
@@ -158,10 +161,22 @@ export class UserGroupEditComponent  implements AfterViewInit {
   }
 
   public saveUserGroup() {
-    this.dataService.updateUserGroup(this.groupId, this.$name, this.$description, this.$group.id);
-    this.router.navigate(['main/user-group/user-group-list'], {
-      queryParams: {}
-    });
+    this.serviceData.getUserGroup(this.groupId)
+      .then((response) => {
+        this.isCompleted$.next(false);
+        this.serviceData.updateUserGroup(this.groupId, this.$name, this.$description, this.$group.id === 0 ? null : this.$group.id)
+          .then((response1) => {
+            if (!response1.ok) {
+              alert('Изменить группу пользователя не получилось. Что-то пошло не так. Ввозможно у вас нет доступа к редактированию этой группы пользователя');
+            } else {
+              this.router.navigate(['main/user-group/user-group-list'], {
+                queryParams: {}
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
+      });
   }
 
   public enabledToSave() {

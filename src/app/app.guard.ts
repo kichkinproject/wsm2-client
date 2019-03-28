@@ -48,7 +48,11 @@ export class AppGuard implements CanActivate {
             });
             this.store.dispatch(new LayoutSetUser(role));
             console.log(`${role.user_login} идентифицирован`);
-            this.router.navigate(['/main/about']);
+            if (this.router.url.indexOf('identification') !== -1) {
+              this.router.navigate(['/main/about']);
+            } else {
+              this.router.navigate([this.router.url]);
+            }
           }).catch((reject) => {
           if (Utils.exists(window.sessionStorage.getItem('refresh'))) {
             this.accService.refreshToken()
@@ -61,6 +65,11 @@ export class AppGuard implements CanActivate {
               })
               .then((response) => {
                 console.log(`${role.user_login} переидентифицирован`);
+                if (this.router.url.indexOf('identification') !== -1) {
+                  this.router.navigate(['/main/about']);
+                } else {
+                  this.router.navigate([this.router.url]);
+                }
                 // this.router.navigate(this.router.);
                 // this.router.navigate(['/main/about']);
               });
