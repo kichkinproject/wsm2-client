@@ -49,7 +49,7 @@ export class IntegratorListComponent implements AfterViewInit {
                   res.fio,
                   res.info,
                   Roles.INTEGRATOR,
-                  res.userGroup.id
+                  res.userGroupId
                 ));
               });
             }
@@ -68,7 +68,7 @@ export class IntegratorListComponent implements AfterViewInit {
                 res.fio,
                 res.info,
                 Roles.INTEGRATOR,
-                res.userGroup.id
+                res.userGroupId
               ));
             });
           }

@@ -42,6 +42,12 @@
           <span *ngIf="!checkInfo()">Не правильный формат ввода информации об {{currentRole}}е</span>
         </label>
       </div>
+      <div class="group" *ngIf="role() !== baseRole.ADMIN">
+        <label>
+          Группа {{currentRole}}а:
+          <input [(ngModel)]="group" [disabled]="true">
+        </label>
+      </div>
     </div>
     <button mat-icon-button (click)="saveCurrentSettings()" [disabled]="!enabledToSave()" title="Сохранить изменения">
       <mat-icon>save</mat-icon>

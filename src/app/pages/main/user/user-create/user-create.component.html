@@ -7,7 +7,6 @@
         <label>
           Логин:
           <input [(ngModel)]="login" placeholder='user'>
-          <span *ngIf="checkExistingLogin()">Такой пользователь уже зарегистрирован в системе</span>
           <span *ngIf="!checkRightLogin()">Не правильный формат ввода логина</span>
         </label>
       </div>

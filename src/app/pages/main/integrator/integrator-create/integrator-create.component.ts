@@ -26,7 +26,7 @@ export class IntegratorCreateComponent implements AfterViewInit {
   private $info: string;
   private $group: UserGroup;
   private groups: Array<UserGroup> = [];
-  private noGroup: UserGroup = new UserGroup(0, 'Нет родителя', '');
+  private noGroup: UserGroup = new UserGroup(0, 'Нет группы', '');
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,

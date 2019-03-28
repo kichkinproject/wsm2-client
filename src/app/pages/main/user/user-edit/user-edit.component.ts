@@ -7,6 +7,7 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {UserGroup} from '../../../../models/user-group';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-user-edit',
@@ -20,14 +21,16 @@ export class UserEditComponent implements AfterViewInit {
   private subscriptions: Array<Subscription> = [];
   private $login: string;
   private $name: string;
+  private $password: string;
   private $info: string;
   private $group: UserGroup;
   private groups: Array<UserGroup> = [];
-  private noGroup: UserGroup = new UserGroup(0, 'Нет родителя', '');
+  private noGroup: UserGroup = new UserGroup(0, 'Нет группы', '');
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -40,13 +43,24 @@ export class UserEditComponent implements AfterViewInit {
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
-    this.simpleLogin = this.activatedRoute.params['_value']['login'];
-    const integrator = this.dataService.getUser(this.simpleLogin);
-    this.login = integrator.login;
-    this.name = integrator.name;
-    this.info = integrator.info;
     this.updateList();
-    this.selectedGroup = integrator.group !== -1 ? this.dataService.getUserGroup(integrator.group).name : this.noGroup.name;
+    this.simpleLogin = this.activatedRoute.params['_value']['login'];
+    this.serviceData.getUser(this.simpleLogin)
+      .then((response) => {
+        this.login = response.login;
+        this.name = response.fio;
+        this.info = response.info;
+        if (response.userGroup === null) {
+          this.selectedGroup = 'Нет группы';
+        } else {
+          this.serviceData.getUserGroup(response.userGroup.id)
+            .then((response1) => {
+              this.selectedGroup = response1.name;
+            });
+        }
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
@@ -55,18 +69,40 @@ export class UserEditComponent implements AfterViewInit {
     this.groups.splice(0, this.groups.length);
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
-      const allGroups = this.dataService.getUserGroups();
-      if (allGroups.length !== 0) {
-        allGroups.forEach(gr => this.groups.push(gr));
-      }
+      this.serviceData.getUserGroups2()
+        .then(response => {
+          return response.json();
+        })
+        .then((response) => {
+          if (response.length !== 0) {
+            response.forEach(res => {
+              this.groups.push(new UserGroup(
+                res.id,
+                res.name,
+                res.description,
+                Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+              ));
+            });
+          }
+        });
     }
     if (this.role() === Roles.INTEGRATOR) {
       this.groups.push(this.noGroup);
-      const user = this.dataService.getIntegrator(this.$user.getValue().user_login);
-      const children = this.dataService.getAllChildrenUserGroup(user.group);
-      if (children.length !== 0) {
-        children.forEach(ch => this.groups.push(ch))
-      }
+      this.serviceData.getAllChildrenUserGroup2()
+        .then((response) => {
+          return response.json();
+        }).then((response) => {
+        if (response.length !== 0) {
+          response.forEach(res => {
+            this.groups.push(new UserGroup(
+              res.id,
+              res.name,
+              res.description,
+              Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+            ));
+          });
+        }
+      });
     }
   }
 
@@ -91,6 +127,16 @@ export class UserEditComponent implements AfterViewInit {
 
   public role() {
     return this.$user.getValue().user_role;
+  }
+
+  public get password() {
+    return this.$password;
+  }
+
+  public set password(str: string) {
+    if (Utils.exists(str)) {
+      this.$password = str;
+    }
   }
 
   public get completed(): Observable<boolean> {
@@ -136,15 +182,27 @@ export class UserEditComponent implements AfterViewInit {
   }
 
   public saveUser() {
-    const simple = this.dataService.getUser(this.simpleLogin);
-    this.dataService.updateUser(simple.login, this.$login, simple.password, this.$name, this.$info, this.$group.id);
-    this.router.navigate(['main/user/user-list'], {
-      queryParams: {}
-    });
+    this.serviceData.getUser(this.$login)
+      .then((response) => {
+        this.isCompleted$.next(false);
+        this.serviceData.updateUser(this.$login, this.$password, this.$name, this.$info, this.$group.id !== 0 ? this.$group.id : null)
+          .then((response1) => {
+            if (!response1.ok) {
+              alert('Изменить пользователя не получилось. Скорее всего неправильно введен пароль');
+            } else {
+              this.router.navigate(['main/user/user-list'], {
+                queryParams: {}
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
+      });
   }
 
   public enabledToSave() {
     return Utils.exists(this.$login)
+      && Utils.exists(this.$password)
       && Utils.exists(this.$name)
       && Utils.exists(this.$info);
   }

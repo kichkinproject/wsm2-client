@@ -6,6 +6,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-user-view',
@@ -25,6 +26,7 @@ export class UserViewComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -38,13 +40,22 @@ export class UserViewComponent implements AfterViewInit {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.simpleLogin = this.activatedRoute.params['_value']['login'];
-    const simple = this.dataService.getUser(this.simpleLogin);
-    this.login = simple.login;
-    this.name = simple.name;
-    this.info = simple.info;
-    this.group = this.dataService.getUserGroup(simple.group).name;
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getUser(this.simpleLogin)
+      .then((response) => {
+        this.login = response.login;
+        this.name = response.fio;
+        this.info = response.info;
+        if (response.userGroup === null) {
+          this.group = 'Нет группы';
+        } else {
+          this.serviceData.getUserGroup(response.userGroup.id)
+            .then((response1) => {
+              this.group = response1.name;
+            });
+        }
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public accessed() {

@@ -8,6 +8,7 @@ import { Wsm2DataService } from "../../../services/wsm2-data.service";
 import { Utils } from "../../../utils/utils";
 import { User } from "../../../models/user";
 import {WsmDataService} from '../../../services/wsm-data.service';
+import {UserGroup} from '../../../models/user-group';
 
 @Component({
   selector: 'wsm-cabinet',
@@ -26,6 +27,8 @@ export class CabinetComponent implements AfterViewInit {
   private $repeat: string;
   private $name: string;
   private $info: string;
+  private $group: string;
+  private grgr: any;
   private currentUser: User;
   private baseRole = Roles;
   private currentRole = '';
@@ -58,26 +61,32 @@ export class CabinetComponent implements AfterViewInit {
           });
         break;
       case this.baseRole.INTEGRATOR:
-        this.currentUser = this.dataService.getIntegrator(this.simpleLogin);
-        this.currentRole = 'интегратор';
-        this.login = this.currentUser.login;
-        this.old = this.currentUser.password;
-        // this.repeatPassword = this.currentUser.password;
-        this.name = this.currentUser.name;
-        this.info = this.currentUser.info;
-        this.isCompleted$.next(true);
-        this.cd.detectChanges();
+        this.serviceData.getIntegrator(this.simpleLogin)
+          .then((response) => {
+            this.currentRole = 'интегратор';
+            this.login = response.login;
+            // this.repeatPassword = this.currentUser.password;
+            this.name = response.fio;
+            this.info = response.info;
+            this.group = Utils.missing(response.userGroup) ? 'Нет группы' : response.userGroup.name;
+            this.grgr = response.userGroup;
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       case this.baseRole.SIMPLE:
         this.currentUser = this.dataService.getUser(this.simpleLogin);
-        this.currentRole = 'юзер';
-        this.login = this.currentUser.login;
-        this.old = this.currentUser.password;
-        // this.repeatPassword = this.currentUser.password;
-        this.name = this.currentUser.name;
-        this.info = this.currentUser.info;
-        this.isCompleted$.next(true);
-        this.cd.detectChanges();
+        this.serviceData.getUser(this.simpleLogin)
+          .then((response) => {
+            this.currentRole = 'юзер';
+            this.login = response.login;
+            // this.repeatPassword = this.currentUser.password;
+            this.name = response.fio;
+            this.info = response.info;
+            this.$group = Utils.missing(response.userGroup) ? 'Нет группы' : response.userGroup.name;
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
     }
   }
@@ -93,6 +102,16 @@ export class CabinetComponent implements AfterViewInit {
   public set login(str: string) {
     if (Utils.exists(str)) {
       this.$login = str;
+    }
+  }
+
+  public get group() {
+    return this.$group;
+  }
+
+  public set group(str: string) {
+    if (Utils.exists(str)) {
+      this.$group = str;
     }
   }
 
@@ -223,18 +242,53 @@ export class CabinetComponent implements AfterViewInit {
         }
         break;
       case this.baseRole.INTEGRATOR:
+        if (Utils.missing(this.$password)) {
+          this.serviceData.updateIntegrator(this.$login, this.$old, this.$name, this.$info, this.grgr.id)
+            .then((response) => {
+              if (response.ok) {
+                this.router.navigate(['main/about'], {
+                  queryParams: {}
+                });
+              } else {
+                alert('Неверно введен пароль для изменения информации. Проверьте пароль и попробуйте снова');
+              }
+            });
+        } else {
+          this.serviceData.updateIntegratorWithPassword(this.$login, this.$old, this.$password, this.$name, this.$info, this.grgr.id)
+            .then((response) => {
+              if (response.ok) {
+                this.router.navigate(['main/about'], {
+                  queryParams: {}
+                });
+              } else {
+                alert('Неверно введен пароль для изменения информации. Проверьте пароль и попробуйте снова');
+              }
+            });
+        }
         const simpleIntegrator = this.dataService.getIntegrator(this.simpleLogin);
-        this.dataService.updateIntegrator(simpleIntegrator.login, this.$login, this.$password, this.$name, this.info, simpleIntegrator.group);
-        this.router.navigate(['main/about'], {
-          queryParams: {}
-        });
-        break;
-      case this.baseRole.SIMPLE:
-        const simpleUser = this.dataService.getUser(this.simpleLogin);
-        this.dataService.updateUser(simpleUser.login, this.$login, this.$password, this.$name, this.info, simpleUser.group);
-        this.router.navigate(['main/about'], {
-          queryParams: {}
-        });
+        if (Utils.missing(this.$password)) {
+          this.serviceData.updateUser(this.$login, this.$old, this.$name, this.$info, this.grgr.id)
+            .then((response) => {
+              if (response.ok) {
+                this.router.navigate(['main/about'], {
+                  queryParams: {}
+                });
+              } else {
+                alert('Неверно введен пароль для изменения информации. Проверьте пароль и попробуйте снова');
+              }
+            });
+        } else {
+          this.serviceData.updateUserWithPassword(this.$login, this.$old, this.$password, this.$name, this.$info, this.grgr.id)
+            .then((response) => {
+              if (response.ok) {
+                this.router.navigate(['main/about'], {
+                  queryParams: {}
+                });
+              } else {
+                alert('Неверно введен пароль для изменения информации. Проверьте пароль и попробуйте снова');
+              }
+            });
+        }
         break;
     }
 

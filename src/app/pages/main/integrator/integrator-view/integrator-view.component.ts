@@ -46,6 +46,14 @@ export class IntegratorViewComponent implements AfterViewInit {
         this.login = response.login;
         this.name = response.fio;
         this.info = response.info;
+        if (response.userGroup === null) {
+          this.group = 'Нет группы';
+        } else {
+          this.serviceData.getUserGroup(response.userGroup.id)
+            .then((response1) => {
+              this.group = response1.name;
+            });
+        }
         this.isCompleted$.next(true);
         this.cd.detectChanges();
       });

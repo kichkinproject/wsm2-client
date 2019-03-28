@@ -7,6 +7,7 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-user-list',
@@ -24,6 +25,7 @@ export class UserListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -34,16 +36,48 @@ export class UserListComponent implements AfterViewInit {
   private updateCollection() {
     const role = this.$user.getValue().user_role;
     const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
+    this.users = [];
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        this.users = Utils.pushAll([], this.dataService.getUsers());
+        this.isCompleted$.next(false);
+        this.serviceData.getUsers()
+          .then((response) => {
+            if (response.length !== 0) {
+              response.forEach(res => {
+                this.users.push(new User(
+                  res.login,
+                  '',
+                  res.fio,
+                  res.info,
+                  Roles.SIMPLE,
+                  res.userGroupId
+                ));
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       case Roles.INTEGRATOR:
-        this.users = Utils.pushAll([], this.dataService.getUsersByChildrenGroup(user.group));
-        break;
-      case Roles.SIMPLE:
-        this.users = Utils.pushAll([], this.dataService.getUsersByGroup(user.group));
+        this.isCompleted$.next(false);
+        this.serviceData.getUsersByChildrenGroup()
+          .then((response) => {
+            if (response.length !== 0) {
+              response.forEach(res => {
+                this.users.push(new User(
+                  res.login,
+                  '',
+                  res.fio,
+                  res.info,
+                  Roles.SIMPLE,
+                  res.userGroupId
+                ));
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       default:
         this.users.slice(0, this.users.length);
@@ -52,11 +86,8 @@ export class UserListComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -74,14 +105,30 @@ export class UserListComponent implements AfterViewInit {
   }
 
   public updateUserList() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public editUser(login: string) {
+    this.serviceData.getUser(login)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const user = new User(
+            response.login,
+            '',
+            response.fio,
+            response.info,
+            Roles.SIMPLE,
+            response.userGroupId
+          );
+          this.router.navigate(['main/user/user-edit', login], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим редактировать не существующего пользователя');
+        }
+      });
+
     if (Utils.exists(this.dataService.getUser(login))) {
       this.router.navigate(['main/user/user-edit', login], {
         queryParams: {}
@@ -91,22 +138,33 @@ export class UserListComponent implements AfterViewInit {
     }
   }
   public viewUser(login: string) {
-    if (Utils.exists(this.dataService.getUser(login))) {
-      this.router.navigate(['main/user/user-view', login], {
-        queryParams: {}
+    this.serviceData.getUser(login)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const user = new User(
+            response.login,
+            '',
+            response.fio,
+            response.info,
+            Roles.SIMPLE,
+            response.userGroupId
+          );
+          this.router.navigate(['main/user/user-view', login], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим просмотреть не существующего пользователя');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующего пользователя');
-    }
   }
 
   public removeUser(login: string) {
-    this.isCompleted$.next(false);
-    // this.cd.detectChanges();
-    this.dataService.deleteUser(login);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    if (confirm(`Вы уверены, что хотите удалить пользователя ${login}?`)) {
+      this.serviceData.deleteUser(login)
+        .then((response) => {
+          this.updateCollection();
+        });
+    }
   }
 
   public accessed() {

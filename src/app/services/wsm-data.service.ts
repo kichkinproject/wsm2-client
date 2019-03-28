@@ -1261,7 +1261,7 @@ export class WsmDataService {
     return users;
   }
 
-  public getUsersByChildrenGroup(id: number) {
+  public getUsersByChildrenGroup() {
     const users: Array<User> = [];
     fetch(this.userUrl + '/children/users', {
       method: 'GET',
