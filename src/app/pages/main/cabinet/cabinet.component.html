@@ -3,25 +3,30 @@
   <h2 align="center">Кабинет {{currentRole}}а</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="login" [disabled]="true">
+      <div class="login">
         <label>
           Логин:
-          <input [(ngModel)]="login" placeholder='user'>
+          <input [(ngModel)]="login" placeholder='user' [disabled]="true">
         </label>
       </div>
       <div class="password">
         <label>
-          Пароль:
-          <input type="password" [(ngModel)]="password" placeholder='*******'>
-          <span *ngIf="!checkFirstPassword()">Неверный формат для пароля</span>
+          Старый пароль:
+          <input type="password" [(ngModel)]="old" placeholder='*******'>
+          <span *ngIf="!checkOldPassword()">Неверный формат для пароля</span>
         </label>
-        <br>
         <label>
-          Повторите пароль:
-          <input type="password" [(ngModel)]="repeatPassword" placeholder='*******'>
-          <span *ngIf="!checkSecondPassword()">Неверный формат для пароля</span>
+          Новый пароль:
+          <input type="password" [(ngModel)]="password" placeholder='*******'>
         </label>
-        <span *ngIf="!checkPasswords()">Пароли не совпадают</span>
+        <div *ngIf="checkFirstPassword()">
+          <label>
+            Повторите пароль:
+            <input type="password" [(ngModel)]="repeatPassword" placeholder='*******'>
+            <span *ngIf="!checkSecondPassword()">Неверный формат для пароля</span>
+          </label>
+          <span *ngIf="!checkPasswords()">Пароли не совпадают</span>
+        </div>
       </div>
       <div class="name">
         <label>

@@ -18,6 +18,7 @@ import { WsmDataService } from "../../../../services/wsm-data.service";
 export class AdminEditComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private $password: string;
   private subscriptions: Array<Subscription> = [];
   private $login: string;
   private $name: string;
@@ -73,6 +74,16 @@ export class AdminEditComponent implements AfterViewInit {
     }
   }
 
+  public get password() {
+    return this.$password;
+  }
+
+  public set password(str: string) {
+    if (Utils.exists(str)) {
+      this.$password = str;
+    }
+  }
+
   public get name() {
     return this.$name;
   }
@@ -106,23 +117,23 @@ export class AdminEditComponent implements AfterViewInit {
       .then((response) => {
         this.isCompleted$.next(false);
         this.serviceData.updateAdmin(this.$login, this.$password, this.$name, this.$info)
-          .then((response2) => {
-            this.router.navigate(['main/admin/admin-list'], {
-              queryParams: {}
-            });
+          .then((response1) => {
+            if (!response1.ok) {
+              alert('Изменить аминистратора не получилось. Неверный пароль. Введите правильный пароль администратора.');
+            } else {
+              this.router.navigate(['main/admin/admin-list'], {
+                queryParams: {}
+              });
+            }
             this.isCompleted$.next(true);
             this.cd.detectChanges();
           });
       });
-    const admin = this.dataService.getAdmin(this.adminLogin);
-    this.dataService.updateAdmin(admin.login, this.$login, admin.password, this.$name, this.$info);
-    this.router.navigate(['main/admin/admin-list'], {
-      queryParams: {}
-    });
   }
 
   public enabledToSave() {
     return Utils.exists(this.$login)
+      && Utils.exists(this.$password)
       && Utils.exists(this.$name)
       && Utils.exists(this.$info);
   }
