@@ -89,7 +89,7 @@ export class IntegratorListComponent implements AfterViewInit {
     this.serviceData.getIntegrator(login)
       .then((response) => {
         if (Utils.exists(response)) {
-          const admin = new User(
+          const integrator = new User(
             response.login,
             '',
             response.fio,
@@ -110,7 +110,7 @@ export class IntegratorListComponent implements AfterViewInit {
     this.serviceData.getIntegrator(login)
       .then((response) => {
         if (Utils.exists(response)) {
-          const admin = new User(
+          const integrator = new User(
             response.login,
             '',
             response.fio,
@@ -128,12 +128,16 @@ export class IntegratorListComponent implements AfterViewInit {
   }
 
   public removeIntegrator(login: string) {
-    this.isCompleted$.next(false);
-    this.cd.detectChanges();
-    this.dataService.deleteIntegrator(login);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    if (confirm(`Вы уверены, что хотите удалить интегратора ${login}?`)) {
+      this.isCompleted$.next(false);
+      this.cd.detectChanges();
+      this.serviceData.deleteIntegrator(login)
+        .then((response) => {
+          this.updateCollection();
+          this.isCompleted$.next(true);
+          this.cd.detectChanges();
+        });
+    }
   }
 
   public accessed() {

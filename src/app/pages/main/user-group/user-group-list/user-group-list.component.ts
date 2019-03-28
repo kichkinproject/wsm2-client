@@ -8,6 +8,7 @@ import { User } from "../../../../models/user";
 import {UserGroup} from "../../../../models/user-group";
 import { Utils } from "../../../../utils/utils";
 import { select, Store } from "@ngrx/store";
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-user-group-list',
@@ -25,6 +26,7 @@ export class UserGroupListComponent  implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -38,10 +40,10 @@ export class UserGroupListComponent  implements AfterViewInit {
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        this.groups = Utils.pushAll([], this.dataService.getUserGroups());
+        this.groups = this.serviceData.getUserGroups();
         break;
       case Roles.INTEGRATOR:
-        this.groups = Utils.pushAll([], this.dataService.getAllChildrenUserGroup(user.group));
+        this.groups = this.serviceData.getAllChildrenUserGroup(user.group);
         break;
       case Roles.SIMPLE:
         this.groups.slice(0, this.groups.length);
@@ -80,31 +82,54 @@ export class UserGroupListComponent  implements AfterViewInit {
   }
 
   public editUserGroup(id: number) {
-    if (Utils.exists(this.dataService.getUserGroup(id))) {
-      this.router.navigate(['main/user-group/user-group-edit', id], {
-        queryParams: {}
+    this.serviceData.getUserGroup(id)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const group = new UserGroup(
+            response.id,
+            response.name,
+            response.description,
+            response.parentGroupId,
+          );
+          this.router.navigate(['main/user-group/user-group-edit', id], {
+            queryParams: {}
+          });
+        } else {
+          alert('Ошибка, хотим редактировать не существующую группу пользователей');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим редактировать не существующую группу пользователей');
-    }
   }
+
   public viewUserGroup(id: number) {
-    if (Utils.exists(this.dataService.getUserGroup(id))) {
-      this.router.navigate(['main/user-group/user-group-view', id], {
-        queryParams: {}
+    this.serviceData.getUserGroup(id)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const group = new UserGroup(
+            response.id,
+            response.name,
+            response.description,
+            response.parentGroupId,
+          );
+          this.router.navigate(['main/user-group/user-group-view', id], {
+            queryParams: {}
+          });
+        } else {
+          alert('Ошибка, хотим просмотреть не существующую группу пользователей');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующую группу пользователей');
-    }
   }
 
   public removeUserGroup(id: number) {
-    this.isCompleted$.next(false);
-    // this.cd.detectChanges();
-    this.dataService.deleteUserGroup(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    if (confirm(`Вы уверены, что хотите удалить данную группу пользователей?`)) {
+      this.isCompleted$.next(false);
+      this.cd.detectChanges();
+      this.serviceData.deleteUserGroup(id)
+        .then((response) => {
+          this.updateCollection();
+          this.isCompleted$.next(true);
+          this.cd.detectChanges();
+        });
+    }
   }
 
   public accessed() {

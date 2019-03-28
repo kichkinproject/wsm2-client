@@ -62,9 +62,12 @@ export class WsmAccountService {
   }
 
   public refreshToken() {
+    console.log(window.sessionStorage.getItem('refresh'));
     return fetch(this.accountUrl + '/refresh', {
       method: 'POST',
-      body: JSON.stringify(window.sessionStorage.getItem('refresh')),
+      body: JSON.stringify({
+        token: window.sessionStorage.getItem('refresh')
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -73,26 +76,4 @@ export class WsmAccountService {
       return response.json();
     });
   }
-
-  // // Запрос на получение пользователя по
-  // public checkUser(): Observable<boolean> {
-  //   // return this.
-  // }
-
-  // public getUserSettings(): Observable<any> {
-  //   return this.post<any>(`${this.url}/LoadUserConfig`, {});
-  // }
-  //
-  // public setUserSettings(body?: any): Observable<any> {
-  //   return this.post<any>(`${this.url}/SaveUserConfig`, body);
-  // }
-  //
-  // public currentUserInfo() {
-  //   return this.post<any>(`${this.url}/GetUserInfo`);
-  // }
-
-  private userInfo(user: User) {
-    return user.info;
-  }
-
 }

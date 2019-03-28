@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from "@angular/core";
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {Scenario} from '../../../../models/scenario';
@@ -9,13 +9,22 @@ import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {ScenarioType} from '../../../../models/entity-type';
 import {Utils} from '../../../../utils/utils';
 import {LoaderModule} from '../../../../components/loader/loader.component';
+import { BlocklyComponent } from "../../../../components/blockly/blockly.component";
+declare var Blockly: any;
 
 @Component({
   selector: 'wsm-scenario-create',
   templateUrl: './scenario-create.component.html',
-  styleUrls: ['./scenario-create.component.scss']
+  styleUrls: ['./scenario-create.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  // entryComponents: [
+  //   BlocklyComponent,
+  // ],
 })
 export class ScenarioCreateComponent implements AfterViewInit {
+  // @ViewChild('wsm-blockly', {read: BlocklyComponent}) public blocklyBlock : BlocklyComponent;
+
+
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
@@ -23,21 +32,24 @@ export class ScenarioCreateComponent implements AfterViewInit {
   private $description: string;
   private $script: string;
   private $publicity: boolean;
-  private $type: ScenarioType;
-  public scTypes: Map<ScenarioType, string> = new Map<ScenarioType, string>( [
-    [
-      ScenarioType.SCHEDULE_ACTION,
-      'Выполнение по расписанию'
-    ],
-    [
-      ScenarioType.SENSOR_ACTION,
-      'Выполнение при определенных показателях датчика'
-    ],
-    [
-      ScenarioType.USER_ACTION,
-      'Выполнение по пользовательскому требованию'
-    ]
-  ]);
+  private $type: ScenarioType = ScenarioType.USER_ACTION;
+  public scTypes = [
+    {
+      id: ScenarioType.USER_ACTION,
+      value: 'Выполнение по пользовательскому требованию'
+    },
+    {
+      id: ScenarioType.SENSOR_ACTION,
+      value: 'Выполнение при определенных показателях датчика'
+    },
+    {
+      id: ScenarioType.SCHEDULE_ACTION,
+      value: 'Выполнение по расписанию'
+    },
+  ];
+  private workspace: any;
+  private code: any;
+  @ViewChild('toolbox') toolbox: ElementRef;
 
   private scenarioId: number;
 
@@ -52,12 +64,19 @@ export class ScenarioCreateComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
+    this.workspace = Blockly.inject('blocklyDiv',
+      {toolbox: this.toolbox.nativeElement});
     this.defaultSelect();
     this.isCompleted$.next(true);
   }
 
+  public convertBlocksToJS() {
+    this.code = Blockly.JavaScript.workspaceToCode(this.workspace);
+    return this.code;
+  }
+
   public defaultSelect() {
-    this.selectedType = 'Выполнение по расписанию';
+    this.selectedType = 'Выполнение по пользовательскому требованию';
   }
 
   public get completed(): Observable<boolean> {
@@ -94,21 +113,24 @@ export class ScenarioCreateComponent implements AfterViewInit {
   }
 
   public set selectedType(str: string) {
+    // if (Utils.exists(str)) {
+    //   let okey: ScenarioType = null;
+    //   this.scTypes.forEach((value, key) => {
+    //     if (value === str) {
+    //       okey = key;
+    //     }
+    //   });
+    //   if (Utils.exists(okey)) {
+    //     this.$type = okey;
+    //   }
+    // }
     if (Utils.exists(str)) {
-      let okey: ScenarioType = null;
-      this.scTypes.forEach((value, key) => {
-        if (value === str) {
-          okey = key;
-        }
-      });
-      if (Utils.exists(okey)) {
-        this.$type = okey;
-      }
+      this.$type = this.scTypes.find(t => t.value === str).id;
     }
   }
 
   public get selectedType() {
-    return this.scTypes.get(this.$type);
+    return this.scTypes.find(t => t.id === this.$type).value;
   }
 
   public get publicity() {
@@ -143,10 +165,12 @@ export class ScenarioCreateComponent implements AfterViewInit {
   }
 
   public createScenario() {
-    this.dataService.addScenario(this.$name, this.$description, this.$script, this.$type, this.$publicity, this.$user.getValue().user_login);
-    this.router.navigate(['/scenario-list'], {
-      queryParams: {}
-    });
+    this.$script = this.convertBlocksToJS();
+    alert(this.$script);
+    // this.dataService.addScenario(this.$name, this.$description, this.$script, this.$type, this.$publicity, this.$user.getValue().user_login);
+    // this.router.navigate(['/scenario-list'], {
+    //   queryParams: {}
+    // });
   }
 
   public enabledToAdd() {

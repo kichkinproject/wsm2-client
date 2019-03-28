@@ -61,7 +61,8 @@ export class AppGuard implements CanActivate {
               })
               .then((response) => {
                 console.log(`${role.user_login} переидентифицирован`);
-                this.router.navigate(['/main/about']);
+                // this.router.navigate(this.router.);
+                // this.router.navigate(['/main/about']);
               });
           } else {
             alert('Ошибка идентификации');

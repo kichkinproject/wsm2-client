@@ -1,45 +1,72 @@
 <loader [complete]="completed|async" text="Загрузка"></loader>
 <div class="wsm-data-container">
-  <h2>Создание сценария</h2>
+  <h2 align="center">Создание сценария</h2>
   <div class="block-container" *ngIf="accessed">
     <div class="entity-block">
-      <div class="name">
-        <label>
-          Название сценария:
-          <input [(ngModel)]="name" placeholder='Название сценария'>
-          <span *ngIf="!checkName()">Не правильный формат ввода названия сценария</span>
-        </label>
-      </div>
-      <div class="desc">
-        <label>
-          Описание сценария:
-          <input [(ngModel)]="description" placeholder='Описание сценария'>
-          <span *ngIf="!checkDesc()">Не правильный формат ввода описания сценария</span>
-        </label>
-      </div>
-      <div class="scenario-types">
-        <label>
-          Тип сценария:
-          <select [(ngModel)]="selectedType">
-            <option [(ngRepeat)]="t in scTypes" value="{{t.value}}">{{t.value}}</option>
-          </select>
-        </label>
-      </div>
-      <div class="scenario-publicity">
-        <label>
-          Доступность сценария:
-          <mat-radio-button [(ngModel)]="publicity"></mat-radio-button>
-        </label>
-      </div>
-      <div class="script">
-        <label>
-          Код сценария:
-          <input [(ngModel)]="script" placeholder='Код сценария'>
-          <span *ngIf="!checkScript()">Не правильный формат ввода кода сценария</span>
-        </label>
+      <div class="scrolling-container">
+        <div class="scrolling-area">
+          <div class="name">
+            <label>
+              Название сценария:
+              <input [(ngModel)]="name" placeholder='Название сценария'>
+              <span *ngIf="!checkName()">Не правильный формат ввода названия сценария</span>
+            </label>
+          </div>
+          <div class="desc">
+            <label>
+              Описание сценария:
+              <input [(ngModel)]="description" placeholder='Описание сценария'>
+              <span *ngIf="!checkDesc()">Не правильный формат ввода описания сценария</span>
+            </label>
+          </div>
+          <div class="parents">
+            <label>
+              Тип сценария:
+              <div class="updating-field">
+                <select [(ngModel)]="selectedType">
+                  <option *ngFor="let t of scTypes" [ngValue]="t.value">
+                    {{ t.value }}
+                  </option>
+                </select>
+              </div>
+            </label>
+          </div>
+          <!--<div class="scenario-publicity">-->
+          <!--<label>-->
+          <!--Доступность сценария:-->
+          <!--<mat-radio-button [(ngModel)]="publicity"></mat-radio-button>-->
+          <!--</label>-->
+          <!--</div>-->
+          <div class="script">
+            <label>
+              Код сценария:
+              <div id="blocklyDiv" style="height: 440px; width: 1000px;"></div>
+              <xml id="toolbox" #toolbox style="display: none">
+                <category name="Переменные" custom="VARIABLE"></category>
+                <category name="Условия">
+                  <block type="controls_if"></block>
+                  <block type="controls_whileUntil"></block>
+                  <block type="controls_for"></block>
+                  <block type="controls_repeat_ext"></block>
+                </category>
+                <category name="Логика">
+                  <block type="logic_compare"></block>
+                </category>
+                <category name="Математические операции">
+                  <block type="math_number"></block>
+                  <block type="math_arithmetic"></block>
+                </category>
+                <category name="Текст">
+                  <block type="text"></block>
+                  <block type="text_print"></block>
+                </category>
+              </xml>
+            </label>
+          </div>
+        </div>
       </div>
     </div>
-    <button mat-icon-button (click)="createScenario()" [disabled]="!enabledToAdd()">
+    <button mat-icon-button (click)="createScenario()">
       <mat-icon>save</mat-icon>
     </button>
   </div>

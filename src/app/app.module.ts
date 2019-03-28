@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,6 +43,7 @@ export function appInit(config: AppConfig) {
     }) : [],
   ],
   bootstrap: [AppComponent],
+  schemas: [NO_ERRORS_SCHEMA],
   providers: [
     Wsm2AccountService,
     WsmAccountService,

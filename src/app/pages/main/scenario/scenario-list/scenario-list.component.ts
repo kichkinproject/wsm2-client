@@ -176,9 +176,9 @@ export class ScenarioListComponent implements AfterViewInit {
 
   public addNewScenario() {
     alert('Блок создания сценария временно не доступен');
-    // this.router.navigate(['main/scenario/scenario-create'], {
-    //   queryParams: {}
-    // });
+    this.router.navigate(['main/scenario/scenario-create'], {
+      queryParams: {}
+    });
   }
 
   public createReportOnScenarios() {

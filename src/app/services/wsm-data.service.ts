@@ -11,6 +11,7 @@ import {Scenario} from '../models/scenario';
 import {Thing} from '../models/thing';
 import {Sensor} from '../models/sensor';
 import {Controller} from '../models/controller';
+import { UserGroup } from "../models/user-group";
 
 const httpOptions: HttpHeaders = new HttpHeaders({
   'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -41,7 +42,7 @@ export class WsmDataService {
   private valueUrl = `${this.config.WebApiUrl}/values`;
 
   public getIntegrator(login: string) {
-    return fetch(this.userUrl + '/' + login, {
+    return fetch(this.userUrl + '/single/' + login, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -280,7 +281,7 @@ export class WsmDataService {
   }
 
   public getUser(login: string) {
-    return fetch(this.userUrl + '/' + login, {
+    return fetch(this.userUrl + '/single/' + login, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -499,8 +500,8 @@ export class WsmDataService {
         return response.json();
       }).then((response) => {
         console.log(response);
-        if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
-          response.filter(res => res.userType === 0).forEach(res => {
+        if (response.length !== 0) {
+          response.forEach(res => {
             scenarios.push(new Scenario(
               res.id,
               res.name,
@@ -530,8 +531,8 @@ export class WsmDataService {
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
-        response.filter(res => res.userType === 0).forEach(res => {
+      if (response.length !== 0) {
+        response.forEach(res => {
           scenarios.push(new Scenario(
             res.id,
             res.name,
@@ -600,8 +601,7 @@ export class WsmDataService {
             response.description,
             response.script,
             response.type,
-            creator,
-            publicity
+            publicity,
         )
             .then((response) => {
               if (response.ok || response.statusText !== 'No Content') {
@@ -618,7 +618,34 @@ export class WsmDataService {
   }
 
   public getScenarioByCreator(login: string) {
-
+    const scenarios: Array<Scenario> = [];
+    fetch(this.scenarioUrl + '/available', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0) {
+        response.forEach(res => {
+          scenarios.push(new Scenario(
+            res.id,
+            res.name,
+            res.description,
+            res.text,
+            ScenarioType.USER_ACTION,
+            true,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+      console.log(scenarios);
+    });
+    return scenarios;
   }
 
   public deleteScenario(id: number) {
@@ -1120,39 +1147,192 @@ export class WsmDataService {
   }
 
   public getUserGroup(id: number) {
+    return fetch(this.controllerUrl + '/byId/' + id.toString(), {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+      if (response.ok && response.statusText !== 'No Content') {
+        return response.json();
+      } else {
+        return response;
+      }
+    });
+  }
 
+  public getUserGroups2() {
+    return fetch(this.userGroupUrl + '/all', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
   public getUserGroups() {
-
+    const userGroups: Array<UserGroup> = [];
+    this.getUserGroups2().then((response) => {
+      console.log(response);
+      if (response.length !== 0) {
+        response.forEach(res => {
+          userGroups.push(new UserGroup(
+            res.id,
+            res.name,
+            res.description,
+            Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
+          ));
+        });
+      }
+      console.log(userGroups);
+    });
+    return userGroups;
   }
 
   public addUserGroup(name: string, description: string, parent: number) {
-
+    return fetch(this.userGroupUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        parentGroupId: parent !== -1 ? parent : null,
+      }),
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then((response) => {
+      console.log(response);
+      return response;
+    });
   }
 
   public updateUserGroup(id: number, name: string, desc: string, parent: number) {
-
+    return fetch(this.userGroupUrl, {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: id,
+        name: name,
+      }),
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then((response) => {
+      console.log(response);
+      return response;
+    });
   }
 
   public deleteUserGroup(id: number) {
-
+    return fetch(this.userGroupUrl + '/' + id.toString(), {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response;
+    });
   }
 
-  public getChildrenUserGroup(id: number)  {
-
+  public getAllChildrenUserGroup2(id: number) {
+    return fetch(this.userGroupUrl + '/children', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    });
   }
 
   public getAllChildrenUserGroup(id: number) {
-
+    const userGroups: Array<UserGroup> = [];
+    this.getAllChildrenUserGroup2(id)
+      .then((response) => {
+      console.log(response);
+      if (response.length !== 0) {
+        response.forEach(res => {
+          userGroups.push(new UserGroup(
+            res.id,
+            res.name,
+            res.description,
+            Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
+          ));
+        });
+      }
+      console.log(userGroups);
+    });
+    return userGroups;
   }
 
   public getUsersByGroup(id: number) {
-
+    const users: Array<User> = [];
+    fetch(this.userUrl + '/allSimpleUsers', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
+        response.filter(res => res.userGroup.id === id).forEach(res => {
+          users.push(new User(
+            res.login,
+            '',
+            res.fio,
+            res.info,
+            Roles.SIMPLE,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+      console.log(users);
+    });
+    return users;
   }
 
   public getUsersByChildrenGroup(id: number) {
-
+    const users: Array<User> = [];
+    fetch(this.userUrl + '/children/users', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then(function(response) {
+      console.log(response);
+      return response.json();
+    }).then((response) => {
+      console.log(response);
+      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+        response.filter(res => res.userType === 0).forEach(res => {
+          users.push(new User(
+            res.login,
+            '',
+            res.fio,
+            res.info,
+            Roles.SIMPLE,
+            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+          ));
+        });
+      }
+      console.log(users);
+    });
+    return users;
   }
 
   public getIntegratorsByGroup(id: number) {
@@ -1184,31 +1364,33 @@ export class WsmDataService {
   }
 
   public getIntegratorsByChildrenGroup(id: number) {
-    const integrators: Array<User> = [];
-    fetch(this.userUrl + '/allIntegrators', {
+    const users: Array<User> = [];
+    fetch(this.userUrl + '/children/integrators', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
     }).then(function(response) {
+      console.log(response);
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
-        response.filter(res => res.userGroup.id === id).forEach(res => {
-          integrators.push(new User(
+      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
+        response.filter(res => res.userType === 0).forEach(res => {
+          users.push(new User(
             res.login,
             '',
             res.fio,
             res.info,
-            Roles.INTEGRATOR,
+            Roles.SIMPLE,
             Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
           ));
         });
       }
+      console.log(users);
     });
-    return integrators;
+    return users;
   }
 
   public getScenarioController(id: number) {

@@ -7,6 +7,7 @@ import { GetCurrentUser, State } from "../../../../_state";
 import { Utils } from "../../../../utils/utils";
 import { select, Store } from "@ngrx/store";
 import { UserGroup } from "../../../../models/user-group";
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-user-group-create',
@@ -27,6 +28,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -37,8 +39,9 @@ export class UserGroupCreateComponent implements AfterViewInit {
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
+
     this.updateList();
-    this.selectedGroup = this.groups[0].name;
+      this.selectedGroup = this.groups[0].name;
     // this.defaultSelect();
 
     this.isCompleted$.next(true);
@@ -46,21 +49,45 @@ export class UserGroupCreateComponent implements AfterViewInit {
   }
 
   public updateList() {
+    // return this.serviceData.
     this.groups.splice(0, this.groups.length);
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
-      const allGroups = this.dataService.getUserGroups();
-      if (allGroups.length !== 0) {
-        allGroups.forEach(gr => this.groups.push(gr));
-      }
+      this.serviceData.getUserGroups2()
+        .then((response) => {
+          if (response.length !== 0) {
+            response.forEach(res => {
+              this.groups.push(new UserGroup(
+                res.id,
+                res.name,
+                res.description,
+                Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
+              ));
+            });
+          }
+        });
     }
     if (this.role() === Roles.INTEGRATOR) {
       this.groups.push(this.noGroup);
-      const user = this.dataService.getIntegrator(this.$user.getValue().user_login);
-      const children = this.dataService.getAllChildrenUserGroup(user.group);
-      if (children.length !== 0) {
-        children.forEach(ch => this.groups.push(ch))
-      }
+      this.serviceData.getIntegrator(this.$user.getValue().user_login)
+        .then((response) => {
+          if (Utils.missing(response.ok)) {
+            const group = response.userGroup.id;
+            this.serviceData.getAllChildrenUserGroup2(group)
+            .then((response1) => {
+              if (response1.length !== 0) {
+                response1.forEach(res => {
+                  this.groups.push(new UserGroup(
+                    res.id,
+                    res.name,
+                    res.description,
+                    Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+                  ));
+                });
+              }
+            });
+          }
+        });
     }
   }
 
@@ -87,8 +114,6 @@ export class UserGroupCreateComponent implements AfterViewInit {
       this.$description = str;
     }
   }
-
-
 
   public get selectedGroup() {
     return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
@@ -122,10 +147,15 @@ export class UserGroupCreateComponent implements AfterViewInit {
   }
 
   public createUserGroup() {
-    this.dataService.addUserGroup(this.$name, this.$description, this.$group.id);
-    this.router.navigate(['main/user-group/user-group-list'], {
-      queryParams: {}
-    });
+    this.isCompleted$.next(false);
+    this.serviceData.addUserGroup(this.$name, this.$description, this.$group.id)
+      .then((response) => {
+        this.router.navigate(['main/user-group/user-group-list'], {
+          queryParams: {}
+        });
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public enabledToAdd() {

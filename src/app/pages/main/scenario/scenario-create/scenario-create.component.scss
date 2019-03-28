@@ -1,0 +1,102 @@
+@import "../../../../../styles/mixins";
+
+:host {
+  //@include fill;
+  //z-index: 100;
+  //padding-top: 72px;
+}
+
+:host .wsm-data-container {
+  font-family: 'Times New Roman';
+}
+
+:host .block-container {
+  font-family: 'Times New Roman';
+  display: block;
+  width: rem(1200px);
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 5px;
+  background-color: change_color($bluish-grey, $alpha: 0.2);
+}
+
+:host .scrolling-container {
+  width: 100%;
+  height: 65%;
+  overflow-y: auto;
+}
+
+:host h2 {
+  display: inherit;
+}
+
+:host .scrolling-area {
+  position: relative;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  //flex-wrap: wrap;
+  max-width: rem(1400px);
+  flex-basis: rem(1400px);
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: flex-start;
+  min-height: 100%;
+}
+
+
+:host label {
+  display: block;
+  font-size: 120%;
+  padding: 5px;
+  white-space: pre;
+}
+
+:host input {
+  padding: 5px;
+  display: block;
+  width: 1000px;
+
+}
+
+:host select {
+  padding: 5px;
+  display: inline-block;
+  width: 840px;
+  margin: 0 10px 0  0;
+}
+
+:host button[mat-icon-button] {
+  margin: 10px 0px;
+  display: block;
+  //align-self: right;
+  font-size: rem(28px);
+  @include defaultIcon;
+  font-size: rem(28px);
+
+  &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    @include themify($themes) {
+      background-color: change_color($azure, $alpha: 0.2);
+    }
+  }
+  @include themify($themes) {
+    background-color: themed('button', 'icon', 'color');
+  }
+}
+
+:host wsm-blockly {
+  padding: 5px;
+  display: block;
+  width: 1000px;
+}
+
+:host .updating-field {
+  display: inline-block;
+  width: 800px;
+}
+
+:host .updating-button {
+  margin: 10px;
+}
+
