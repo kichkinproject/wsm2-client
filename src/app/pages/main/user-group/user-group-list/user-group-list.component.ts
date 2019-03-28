@@ -36,14 +36,47 @@ export class UserGroupListComponent  implements AfterViewInit {
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        this.groups = this.serviceData.getUserGroups();
+        this.isCompleted$.next(false);
+        this.serviceData.getUserGroups2()
+          .then((response) => {
+            return response.json();
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.length !== 0) {
+              response.forEach(res => {
+                this.groups.push(new UserGroup(
+                  res.id,
+                  res.name,
+                  res.description,
+                  Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+                ));
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       case Roles.INTEGRATOR:
-        this.groups = this.serviceData.getAllChildrenUserGroup(user.group);
+        this.isCompleted$.next(false);
+        this.serviceData.getAllChildrenUserGroup2()
+          .then((response) => {
+            if (response.length !== 0) {
+              response.forEach(res => {
+                this.groups.push(new UserGroup(
+                  res.id,
+                  res.name,
+                  res.description,
+                  Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
+                ));
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       case Roles.SIMPLE:
         this.groups.slice(0, this.groups.length);
@@ -52,11 +85,9 @@ export class UserGroupListComponent  implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+
   }
 
   public get completed(): Observable<boolean> {
@@ -74,11 +105,8 @@ export class UserGroupListComponent  implements AfterViewInit {
   }
 
   public updateUserGroupList() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public editUserGroup(id: number) {
@@ -121,13 +149,12 @@ export class UserGroupListComponent  implements AfterViewInit {
 
   public removeUserGroup(id: number) {
     if (confirm(`Вы уверены, что хотите удалить данную группу пользователей?`)) {
-      this.isCompleted$.next(false);
-      this.cd.detectChanges();
+      // this.isCompleted$.next(false);
       this.serviceData.deleteUserGroup(id)
         .then((response) => {
           this.updateCollection();
-          this.isCompleted$.next(true);
-          this.cd.detectChanges();
+          // this.isCompleted$.next(true);
+          // this.cd.detectChanges();
         });
     }
   }

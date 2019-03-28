@@ -59,8 +59,7 @@ export class WsmDataService {
   }
 
   public getIntegrators() {
-    const integrators: Array<User> = [];
-    fetch(this.userUrl + '/allIntegrators', {
+    return fetch(this.userUrl + '/allIntegrators', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -68,22 +67,7 @@ export class WsmDataService {
       },
     }).then((response) => {
       return response.json();
-    }).then((response) => {
-      console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userType !== 0).length !== 0) {
-        response.filter(res => res.userType !== 0).forEach(res => {
-          integrators.push(new User(
-            res.login,
-            '',
-            res.fio,
-            res.info,
-            Roles.INTEGRATOR,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
-          ));
-        });
-      }
     });
-    return integrators;
   }
 
   // public getIntegrators2(): Array<User> {
@@ -179,9 +163,8 @@ export class WsmDataService {
     });
   }
 
-  public getAdmins(): Array<User> {
-    const admins: Array<User> = [];
-    fetch(this.adminUrl, {
+  public getAdmins() {
+    return fetch(this.adminUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -190,23 +173,7 @@ export class WsmDataService {
     }).then(function(response) {
       console.log(response);
       return response.json();
-    }).then((response) => {
-      console.log(response);
-      if (response.length !== 0 && response.filter(res => res.login !== 'system_author').length !== 0) {
-        response.filter(res => res.login !== 'system_author').forEach(res => {
-          admins.push(new User(
-            res.login,
-            '',
-            res.fio,
-            res.info,
-            Roles.ADMIN,
-            -1
-          ));
-        });
-      }
-      console.log(admins);
     });
-    return admins;
   }
 
   public addAdmin(login: string, password: string, name: string, info: string) {
@@ -341,8 +308,7 @@ export class WsmDataService {
   }
 
   public getUsers() {
-    const users: Array<User> = [];
-    fetch(this.userUrl, {
+    return fetch(this.userUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -351,23 +317,7 @@ export class WsmDataService {
     }).then(function(response) {
       console.log(response);
       return response.json();
-    }).then((response) => {
-      console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
-        response.filter(res => res.userType === 0).forEach(res => {
-          users.push(new User(
-            res.login,
-            '',
-            res.fio,
-            res.info,
-            Roles.SIMPLE,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
-          ));
-        });
-      }
-      console.log(users);
     });
-    return users;
   }
 
   public addUser(login: string, password: string, name: string, info: string, group: number) {
@@ -1147,7 +1097,7 @@ export class WsmDataService {
   }
 
   public getUserGroup(id: number) {
-    return fetch(this.controllerUrl + '/byId/' + id.toString(), {
+    return fetch(this.userGroupUrl + '/byId/' + id.toString(), {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -1169,30 +1119,34 @@ export class WsmDataService {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
-    }).then(function(response) {
+    }).then((response) => {
       console.log(response);
-      return response.json();
+      return response;
     });
   }
 
-  public getUserGroups() {
-    const userGroups: Array<UserGroup> = [];
-    this.getUserGroups2().then((response) => {
-      console.log(response);
-      if (response.length !== 0) {
-        response.forEach(res => {
-          userGroups.push(new UserGroup(
-            res.id,
-            res.name,
-            res.description,
-            Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
-          ));
-        });
-      }
-      console.log(userGroups);
-    });
-    return userGroups;
-  }
+  // public getUserGroups() {
+  //   const userGroups: Array<UserGroup> = [];
+  //
+  //   this.getUserGroups2().then((response) => {
+  //     if (Utils.exists(respone.ok)) {
+  //       const resp = response.json;
+  //     }
+  //     console.log(response);
+  //     if (response.length !== 0) {
+  //       response.forEach(res => {
+  //         userGroups.push(new UserGroup(
+  //           res.id,
+  //           res.name,
+  //           res.description,
+  //           Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
+  //         ));
+  //       });
+  //     }
+  //     console.log(userGroups);
+  //   });
+  //   return userGroups;
+  // }
 
   public addUserGroup(name: string, description: string, parent: number) {
     return fetch(this.userGroupUrl, {
@@ -1242,7 +1196,7 @@ export class WsmDataService {
     });
   }
 
-  public getAllChildrenUserGroup2(id: number) {
+  public getAllChildrenUserGroup2() {
     return fetch(this.userGroupUrl + '/children', {
       method: 'GET',
       headers: {
@@ -1255,25 +1209,25 @@ export class WsmDataService {
     });
   }
 
-  public getAllChildrenUserGroup(id: number) {
-    const userGroups: Array<UserGroup> = [];
-    this.getAllChildrenUserGroup2(id)
-      .then((response) => {
-      console.log(response);
-      if (response.length !== 0) {
-        response.forEach(res => {
-          userGroups.push(new UserGroup(
-            res.id,
-            res.name,
-            res.description,
-            Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
-          ));
-        });
-      }
-      console.log(userGroups);
-    });
-    return userGroups;
-  }
+  // public getAllChildrenUserGroup(id: number) {
+  //   const userGroups: Array<UserGroup> = [];
+  //   this.getAllChildrenUserGroup2(id)
+  //     .then((response) => {
+  //     console.log(response);
+  //     if (response.length !== 0) {
+  //       response.forEach(res => {
+  //         userGroups.push(new UserGroup(
+  //           res.id,
+  //           res.name,
+  //           res.description,
+  //           Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
+  //         ));
+  //       });
+  //     }
+  //     console.log(userGroups);
+  //   });
+  //   return userGroups;
+  // }
 
   public getUsersByGroup(id: number) {
     const users: Array<User> = [];
@@ -1336,36 +1290,22 @@ export class WsmDataService {
   }
 
   public getIntegratorsByGroup(id: number) {
-    const integrators: Array<User> = [];
     fetch(this.userUrl + '/allIntegrators', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
-    }).then(function(response) {
+    }).then((response) => {
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
-        response.filter(res => res.userGroup.id === id).forEach(res => {
-          integrators.push(new User(
-            res.login,
-            '',
-            res.fio,
-            res.info,
-            Roles.INTEGRATOR,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
-          ));
-        });
-      }
+      return response.filter(res => res.userGroup.id === id);
     });
-    return integrators;
   }
 
-  public getIntegratorsByChildrenGroup(id: number) {
-    const users: Array<User> = [];
-    fetch(this.userUrl + '/children/integrators', {
+  public getIntegratorsByChildrenGroup() {
+    return fetch(this.userUrl + '/children/integrators', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -1374,23 +1314,7 @@ export class WsmDataService {
     }).then(function(response) {
       console.log(response);
       return response.json();
-    }).then((response) => {
-      console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
-        response.filter(res => res.userType === 0).forEach(res => {
-          users.push(new User(
-            res.login,
-            '',
-            res.fio,
-            res.info,
-            Roles.SIMPLE,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
-          ));
-        });
-      }
-      console.log(users);
     });
-    return users;
   }
 
   public getScenarioController(id: number) {

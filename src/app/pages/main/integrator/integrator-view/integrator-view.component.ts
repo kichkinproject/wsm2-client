@@ -7,6 +7,7 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {UserGroup} from '../../../../models/user-group';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-integrator-view',
@@ -26,6 +27,7 @@ export class IntegratorViewComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -39,13 +41,25 @@ export class IntegratorViewComponent implements AfterViewInit {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.integratorLogin = this.activatedRoute.params['_value']['login'];
-    const integrator = this.dataService.getIntegrator(this.integratorLogin);
-    this.login = integrator.login;
-    this.name = integrator.name;
-    this.info = integrator.info;
-    this.group = this.dataService.getUserGroup(integrator.group).name;
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getIntegrator(this.integratorLogin)
+      .then((response) => {
+        this.login = response.login;
+        this.name = response.fio;
+        this.info = response.info;
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
+    //
+    // this.isCompleted$.next(false);
+    // // this.cd.detectChanges();
+    // this.integratorLogin = this.activatedRoute.params['_value']['login'];
+    // const integrator = this.dataService.getIntegrator(this.integratorLogin);
+    // this.login = integrator.login;
+    // this.name = integrator.name;
+    // this.info = integrator.info;
+    // this.group = this.dataService.getUserGroup(integrator.group).name;
+    // this.isCompleted$.next(true);
+    // this.cd.detectChanges();
   }
 
   public accessed() {

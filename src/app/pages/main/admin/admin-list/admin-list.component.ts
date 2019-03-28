@@ -41,7 +41,25 @@ export class AdminListComponent implements AfterViewInit {
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        this.admins = this.serviceData.getAdmins();
+        this.isCompleted$.next(false);
+        this.serviceData.getAdmins()
+          .then((response) => {
+          console.log(response);
+          if (response.length !== 0 && response.filter(res => res.login !== 'system_author').length !== 0) {
+            response.filter(res => res.login !== 'system_author').forEach(res => {
+              this.admins.push(new User(
+                res.login,
+                '',
+                res.fio,
+                res.info,
+                Roles.ADMIN,
+                -1
+              ));
+            });
+          }
+          this.isCompleted$.next(true);
+          this.cd.detectChanges();
+        });
         break;
       default:
         break;
@@ -49,11 +67,8 @@ export class AdminListComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -71,11 +86,7 @@ export class AdminListComponent implements AfterViewInit {
   }
 
   public updateAdminList() {
-    this.isCompleted$.next(false);
-    this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public editAdmin(login: string) {
@@ -122,13 +133,9 @@ export class AdminListComponent implements AfterViewInit {
 
   public removeAdmin(login: string) {
     if (confirm(`Вы уверены, что хотите удалить администратора ${login}?`)) {
-      this.isCompleted$.next(false);
-      this.cd.detectChanges();
       this.serviceData.deleteAdmin(login)
         .then((response) => {
           this.updateCollection();
-          this.isCompleted$.next(true);
-          this.cd.detectChanges();
         });
     }
   }

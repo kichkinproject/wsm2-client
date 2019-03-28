@@ -61,7 +61,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
                 res.id,
                 res.name,
                 res.description,
-                Utils.exists(response.parentGroupId) ? response.parentGroupId : -1
+                Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
               ));
             });
           }
@@ -69,22 +69,18 @@ export class UserGroupCreateComponent implements AfterViewInit {
     }
     if (this.role() === Roles.INTEGRATOR) {
       this.groups.push(this.noGroup);
-      this.serviceData.getIntegrator(this.$user.getValue().user_login)
+      this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
-          if (Utils.missing(response.ok)) {
-            const group = response.userGroup.id;
-            this.serviceData.getAllChildrenUserGroup2(group)
-            .then((response1) => {
-              if (response1.length !== 0) {
-                response1.forEach(res => {
-                  this.groups.push(new UserGroup(
-                    res.id,
-                    res.name,
-                    res.description,
-                    Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
-                  ));
-                });
-              }
+          return response.json();
+        }).then((response) => {
+          if (response.length !== 0) {
+            response.forEach(res => {
+              this.groups.push(new UserGroup(
+                res.id,
+                res.name,
+                res.description,
+                Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+              ));
             });
           }
         });
@@ -148,7 +144,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
 
   public createUserGroup() {
     this.isCompleted$.next(false);
-    this.serviceData.addUserGroup(this.$name, this.$description, this.$group.id)
+    this.serviceData.addUserGroup(this.$name, this.$description, this.$group.id !== 0 ? this.$group.id : null)
       .then((response) => {
         this.router.navigate(['main/user-group/user-group-list'], {
           queryParams: {}

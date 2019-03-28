@@ -7,6 +7,7 @@ import { GetCurrentUser, State } from "../../../../_state";
 import { UserGroup } from "../../../../models/user-group";
 import { Utils } from "../../../../utils/utils";
 import { select, Store } from "@ngrx/store";
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-user-group-edit',
@@ -28,6 +29,7 @@ export class UserGroupEditComponent  implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              public serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -37,35 +39,66 @@ export class UserGroupEditComponent  implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
-    // this.cd.detectChanges();
     this.groupId = +this.activatedRoute.params['_value']['id'];
-    const userGroup = this.dataService.getUserGroup(this.groupId);
-    this.name = userGroup.name;
-    this.description = userGroup.description;
     this.updateList();
-    this.selectedGroup = userGroup.parentId !== -1 ? this.dataService.getUserGroup(userGroup.parentId).name : this.noGroup.name;
-    // this.defaultSelect();
-
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getUserGroup(this.groupId)
+    //.then((response) => {
+    //return response.json();
+      .then((response) => {
+        if (Utils.missing(response.ok)) {
+          // const resp = response.json();
+          this.name = response.name;
+          this.description = response.description;
+          if (response.parentGroupId === null) {
+            this.selectedGroup = 'Нет родителя';
+          } else {
+            this.serviceData.getUserGroup(response.parentGroupId)
+              .then((response1) => {
+                this.selectedGroup = response1.name;
+              });
+          }
+        }
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
+    // this.cd.detectChanges();
   }
 
   public updateList() {
     this.groups.splice(0, this.groups.length);
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
-      const allGroups = this.dataService.getUserGroups();
-      if (allGroups.length !== 0) {
-        allGroups.forEach(gr => this.groups.push(gr));
-      }
+      this.serviceData.getUserGroups2()
+        .then((response) => {
+          if (response.length !== 0) {
+            response.forEach(res => {
+              this.groups.push(new UserGroup(
+                res.id,
+                res.name,
+                res.description,
+                Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+              ));
+            });
+          }
+        });
     }
     if (this.role() === Roles.INTEGRATOR) {
       this.groups.push(this.noGroup);
-      const user = this.dataService.getIntegrator(this.$user.getValue().user_login);
-      const children = this.dataService.getAllChildrenUserGroup(user.group);
-      if (children.length !== 0) {
-        children.forEach(ch => this.groups.push(ch))
-      }
+      this.serviceData.getAllChildrenUserGroup2()
+        .then((response) => {
+          return response.json();
+        }).then((response) => {
+        if (response.length !== 0) {
+          response.forEach(res => {
+            this.groups.push(new UserGroup(
+              res.id,
+              res.name,
+              res.description,
+              Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
+            ));
+          });
+        }
+      });
     }
   }
 

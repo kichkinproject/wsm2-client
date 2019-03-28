@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -7,7 +7,7 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {User} from '../../../../models/user';
-import { WsmDataService } from "../../../../services/wsm-data.service";
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-integrator-list',
@@ -38,16 +38,43 @@ export class IntegratorListComponent implements AfterViewInit {
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
-        this.integrators = this.serviceData.getIntegrators();
+        this.isCompleted$.next(false);
+        this.serviceData.getIntegrators()
+          .then((response) => {
+            if (response.length !== 0) {
+              response.forEach(res => {
+                this.integrators.push(new User(
+                  res.login,
+                  '',
+                  res.fio,
+                  res.info,
+                  Roles.INTEGRATOR,
+                  res.userGroup.id
+                ));
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       case Roles.INTEGRATOR:
-        this.serviceData.getUser(this.$user.getValue().user_login)
-          .then((response) => {
-            if (Utils.missing(response.ok)) {
-              this.integrators = Utils.pushAll([], this.serviceData.getIntegratorsByChildrenGroup(response.userGroup.id));
-            } else {
-              this.integrators = [];
-            }});
+        this.isCompleted$.next(false);
+        this.serviceData.getIntegratorsByChildrenGroup().then((response) => {
+          if (response.length !== 0) {
+            response.forEach(res => {
+              this.integrators.push(new User(
+                res.login,
+                '',
+                res.fio,
+                res.info,
+                Roles.INTEGRATOR,
+                res.userGroup.id
+              ));
+            });
+          }
+          this.isCompleted$.next(true);
+          this.cd.detectChanges();
+        });
         break;
       default:
         this.integrators.slice(0, this.integrators.length);
@@ -56,11 +83,8 @@ export class IntegratorListComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -78,11 +102,7 @@ export class IntegratorListComponent implements AfterViewInit {
   }
 
   public updateAdminList() {
-    this.isCompleted$.next(false);
-    this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public editIntegrator(login: string) {
@@ -129,13 +149,9 @@ export class IntegratorListComponent implements AfterViewInit {
 
   public removeIntegrator(login: string) {
     if (confirm(`Вы уверены, что хотите удалить интегратора ${login}?`)) {
-      this.isCompleted$.next(false);
-      this.cd.detectChanges();
       this.serviceData.deleteIntegrator(login)
         .then((response) => {
           this.updateCollection();
-          this.isCompleted$.next(true);
-          this.cd.detectChanges();
         });
     }
   }

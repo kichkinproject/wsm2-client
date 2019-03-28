@@ -8,6 +8,7 @@ import { UserGroup } from "../../../../models/user-group";
 import { Role, Roles } from "../../../../models/role";
 import { Utils } from "../../../../utils/utils";
 import { select, Store } from "@ngrx/store";
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-user-group-view',
@@ -29,6 +30,7 @@ export class UserGroupViewComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -40,12 +42,26 @@ export class UserGroupViewComponent implements AfterViewInit {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.groupId = +this.activatedRoute.params['_value']['id'];
-    const userGroup = this.dataService.getUserGroup(this.groupId);
-    this.name = userGroup.name;
-    this.description = userGroup.description;
-    this.parentGroup = userGroup.parentId !== -1 ? this.dataService.getUserGroup(userGroup.parentId).name : this.noGroup.name;
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getUserGroup(this.groupId)
+      //.then((response) => {
+        //return response.json();
+      .then((response) => {
+        if (Utils.missing(response.ok)) {
+          // const resp = response.json();
+          this.name = response.name;
+          this.description = response.description;
+          if (response.parentGroupId === null) {
+            this.parentGroup = 'Нет родителя';
+          } else {
+            this.serviceData.getUserGroup(response.parentGroupId)
+              .then((response1) => {
+                this.parentGroup = response1.name;
+            });
+          }
+        }
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public get completed(): Observable<boolean> {
