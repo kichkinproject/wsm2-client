@@ -10,6 +10,7 @@ import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
 import { Controller } from "../../../../models/controller";
 import { Sensor } from "../../../../models/sensor";
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-sensor-list',
@@ -21,7 +22,7 @@ export class SensorListComponent implements AfterViewInit {
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Array<Subscription> = [];
-  private sensors: Array<Scenario> = [];
+  private sensors: Array<Sensor> = [];
   private baseRole = Roles;
   private controllers: Array<Controller> = [];
   private controllerHidden: Map<number, boolean> = new Map<number, boolean>();
@@ -30,6 +31,7 @@ export class SensorListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -40,13 +42,32 @@ export class SensorListComponent implements AfterViewInit {
   private updateCollection() {
     const role = this.$user.getValue().user_role;
     const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
-    const integrators: Array<User> = [];
+    this.sensors = [];
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
         this.sensors.slice(0, this.sensors.length);
         break;
       case Roles.INTEGRATOR:
+        this.serviceData.getIntegrator(this.$user.getValue().user_login)
+          .then((response) => {
+            if (Utils.missing(response.ok)) {
+              this.serviceData.getSensorsByGroup(response.userGroupId)
+                .then((response1) => {
+                  if (Utils.missing(response1.ok)) {
+                    response1.forEach(res => {
+                      this.sensors.push(new Sensor(res.id,
+                        res.name,
+                        res.description,
+                        res.type,
+                        res.userGroupId,
+                        res.controllerId));
+                    });
+                  }
+                });
+            }
+          });
+        // this.serviceData.getSensorsByGroup()
         this.sensors = Utils.pushAll([], this.dataService.getSensorsByGroup(user.group));
         break;
       case Roles.SIMPLE:

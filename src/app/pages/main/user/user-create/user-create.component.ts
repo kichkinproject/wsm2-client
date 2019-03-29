@@ -213,11 +213,6 @@ export class UserCreateComponent implements AfterViewInit {
   }
 
   public createUser() {
-    this.dataService.addUser(this.$login, this.$password, this.$name, this.$info, this.$group.id);
-    this.router.navigate(['main/user/user-list'], {
-      queryParams: {}
-    });
-
     this.isCompleted$.next(false);
     this.serviceData.addUser(this.$login, this.$password, this.$name, this.$info, this.$group.id !== 0 ? this.$group.id : null)
       .then((response) => {

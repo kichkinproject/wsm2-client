@@ -8,6 +8,7 @@ import { Wsm2DataService } from "../../../../services/wsm2-data.service";
 import { Controller } from "../../../../models/controller";
 import { Utils } from "../../../../utils/utils";
 import { Thing } from "../../../../models/thing";
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-controller-thing-link',
@@ -27,6 +28,7 @@ export class ControllerThingLinkComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -35,21 +37,44 @@ export class ControllerThingLinkComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.controllerId = +this.activatedRoute.params['_value']['id'];
-    this.controller = this.dataService.getController(this.controllerId);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getController(this.controllerId).then((response) => {
+      this.controller = new Controller(
+        response.id,
+        response.name,
+        response.description,
+        response.type,
+        response.userGroupId
+      );
+      this.updateCollection();
+    });
   }
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     switch (role) {
       case Roles.INTEGRATOR:
-        this.things = Utils.pushAll([], this.dataService.getThingsByGroup(user.group));
+        this.isCompleted$.next(false);
+        this.things = [];
+        this.serviceData.getIntegrator(this.$user.getValue().user_login)
+          .then((response) => {
+            if (Utils.missing(response.ok)) {
+              this.serviceData.getThingsByGroup(response.userGroupId)
+                .then((response1) => {
+                  if (response1.length !== 0) {
+                    this.things.push(new Thing(response1.id,
+                      response1.name,
+                      response1.description,
+                      response1.type,
+                      response1.userGroupId,
+                      response1.controllerId));
+                  }
+                });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       default:
         this.things.slice(0, this.things.length);
@@ -63,18 +88,24 @@ export class ControllerThingLinkComponent implements AfterViewInit {
 
   public createLinkThing(id) {
     this.isCompleted$.next(false);
-    this.dataService.createThingControllerLink(id, this.controller.id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.createThingControllerLink(id, this.controller.id)
+      .then((response) => {
+        this.updateCollection();
+      }).then((response) => {
+      this.isCompleted$.next(true);
+      this.cd.detectChanges();
+    });
   }
 
   public destroyLinkThing(id) {
     this.isCompleted$.next(false);
-    this.dataService.destroyThingControllerLink(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.destroyThingControllerLink(id)
+      .then((response) => {
+        this.updateCollection();
+      }).then((response) => {
+      this.isCompleted$.next(true);
+      this.cd.detectChanges();
+    });
   }
 
   public accessed() {
@@ -91,9 +122,6 @@ export class ControllerThingLinkComponent implements AfterViewInit {
   }
 
   public updateThingList() {
-    this.isCompleted$.next(false);
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 }

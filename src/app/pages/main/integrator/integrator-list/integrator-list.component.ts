@@ -35,6 +35,7 @@ export class IntegratorListComponent implements AfterViewInit {
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
+    this.integrators = [];
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from "@angular/core";
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {Scenario} from '../../../../models/scenario';
@@ -9,7 +9,8 @@ import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {ScenarioType} from '../../../../models/entity-type';
 import {Utils} from '../../../../utils/utils';
 import {LoaderModule} from '../../../../components/loader/loader.component';
-import { BlocklyComponent } from "../../../../components/blockly/blockly.component";
+import {WsmDataService} from '../../../../services/wsm-data.service';
+// import { BlocklyComponent } from "../../../../components/blockly/blockly.component";
 declare var Blockly: any;
 
 @Component({
@@ -17,13 +18,11 @@ declare var Blockly: any;
   templateUrl: './scenario-create.component.html',
   styleUrls: ['./scenario-create.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
-  // entryComponents: [
-  //   BlocklyComponent,
-  // ],
 })
 export class ScenarioCreateComponent implements AfterViewInit {
-  // @ViewChild('wsm-blockly', {read: BlocklyComponent}) public blocklyBlock : BlocklyComponent;
-
+  workspace: any;
+  code: any;
+  @ViewChild('toolbox') toolbox: ElementRef;
 
   private $user: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
   protected isCompleted$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -31,6 +30,7 @@ export class ScenarioCreateComponent implements AfterViewInit {
   private $name: string;
   private $description: string;
   private $script: string;
+  private baseRoles = Roles;
   private $publicity: boolean;
   private $type: ScenarioType = ScenarioType.USER_ACTION;
   public scTypes = [
@@ -47,16 +47,16 @@ export class ScenarioCreateComponent implements AfterViewInit {
       value: 'Выполнение по расписанию'
     },
   ];
-  private workspace: any;
-  private code: any;
-  @ViewChild('toolbox') toolbox: ElementRef;
+
 
   private scenarioId: number;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
+              private serviceData: WsmDataService,
               public store: Store<State>,
-              private dataService: Wsm2DataService) {
+              private dataService: Wsm2DataService,
+              private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role)),
     );
@@ -167,6 +167,34 @@ export class ScenarioCreateComponent implements AfterViewInit {
   public createScenario() {
     this.$script = this.convertBlocksToJS();
     alert(this.$script);
+    this.isCompleted$.next(false);
+    if (this.role() === this.baseRoles.INTEGRATOR) {
+      this.serviceData.getIntegrator(this.$user.getValue().user_login)
+        .then((response) => {
+          if (Utils.missing(response.ok)) {
+            this.serviceData.addScenario(this.$name, this.$description, this.$script, this.$type, false, this.$user.getValue().user_login, response.userGroupId)
+              .then((response) => {
+                this.router.navigate(['main/scenario/scenario-list'], {
+                  queryParams: {}
+                });
+                this.isCompleted$.next(true);
+                this.cd.detectChanges();
+              });
+          }
+        });
+    } else {
+      this.serviceData.addScenario(this.$name, this.$description, this.$script, this.$type, false, this.$user.getValue().user_login, 1)
+        .then((response) => {
+          this.router.navigate(['main/scenario/scenario-list'], {
+            queryParams: {}
+          });
+          this.isCompleted$.next(true);
+          this.cd.detectChanges();
+        });
+    }
+
+
+
     // this.dataService.addScenario(this.$name, this.$description, this.$script, this.$type, this.$publicity, this.$user.getValue().user_login);
     // this.router.navigate(['/scenario-list'], {
     //   queryParams: {}
@@ -176,8 +204,6 @@ export class ScenarioCreateComponent implements AfterViewInit {
   public enabledToAdd() {
     return Utils.exists(this.$name)
     && Utils.exists(this.$description)
-    && Utils.exists(this.$type)
-    && Utils.exists(this.$script)
-    && Utils.exists(this.$publicity);
+    && Utils.exists(this.$type);
   }
 }

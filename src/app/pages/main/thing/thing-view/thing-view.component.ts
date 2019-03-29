@@ -62,7 +62,7 @@ export class ThingViewComponent implements AfterViewInit {
     this.name = thing.name;
     this.description = thing.description;
     this.typeThing = this.scTypes.get(thing.type);
-    this.masterThing = this.dataService.getUserGroup(thing.master);
+    // this.masterThing = this.dataService.getUserGroup(thing.master);
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
@@ -121,17 +121,5 @@ export class ThingViewComponent implements AfterViewInit {
   public role() {
     return this.$user.getValue().user_role;
   }
-
-  public set masterThing(uGr: UserGroup) {
-    if (Utils.exists(uGr)) {
-      this.$master = uGr.id;
-
-    }
-  }
-
-  public get masterThing() {
-    return this.dataService.getUserGroup(this.$master);
-  }
-
 
 }

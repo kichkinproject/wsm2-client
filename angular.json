@@ -56,10 +56,9 @@
             "scripts": [
               "node_modules/moment/min/moment.min.js",
               "node_modules/moment/locale/ru.js",
-              "node_modules/blockly/blocks_compressed.js",
               "node_modules/blockly/blockly_compressed.js",
-              "node_modules/blockly/javascript_compressed.js",
-              "node_modules/blockly/msg/js/en.js"
+              "node_modules/blockly/blocks_compressed.js",
+              "node_modules/blockly/javascript_compressed.js"
             ]
           },
           "configurations": {

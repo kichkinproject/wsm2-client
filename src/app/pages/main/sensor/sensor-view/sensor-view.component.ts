@@ -8,6 +8,7 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {UserGroup} from '../../../../models/user-group';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-sensor-view',
@@ -47,6 +48,7 @@ export class SensorViewComponent  implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -57,14 +59,16 @@ export class SensorViewComponent  implements AfterViewInit {
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
-    this.sensorId = +this.activatedRoute.params['_value']['id'];
-    const sensor = this.dataService.getSensor(this.sensorId);
-    this.name = sensor.name;
-    this.description = sensor.description;
-    this.typeSensor = this.scTypes.get(sensor.type);
-    this.masterSensor = this.dataService.getUserGroup(sensor.master);
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.sensorId = this.activatedRoute.params['_value']['id'];
+    this.serviceData.getSensor(this.sensorId)
+      .then((response) => {
+        this.name = response.name;
+        this.description = response.description;
+        this.typeSensor = this.scTypes.get(response.type);
+        // this.masterSensor = response.userGroupId;
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public get completed(): Observable<boolean> {
@@ -116,17 +120,6 @@ export class SensorViewComponent  implements AfterViewInit {
 
   public role() {
     return this.$user.getValue().user_role;
-  }
-
-  public set masterSensor(uGr: UserGroup) {
-    if (Utils.exists(uGr)) {
-      this.$master = uGr.id;
-
-    }
-  }
-
-  public get masterSensor() {
-    return this.dataService.getUserGroup(this.$master);
   }
 
 }

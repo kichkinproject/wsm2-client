@@ -36,6 +36,7 @@ export class ScenarioListComponent implements AfterViewInit {
   constructor(public router: Router,
                public activatedRoute: ActivatedRoute,
                public store: Store<State>,
+               
                private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -175,7 +176,6 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public addNewScenario() {
-    alert('Блок создания сценария временно не доступен');
     this.router.navigate(['main/scenario/scenario-create'], {
       queryParams: {}
     });

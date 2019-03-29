@@ -9,6 +9,7 @@ import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {Controller} from '../../../../models/controller';
 import {UserGroup} from '../../../../models/user-group';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-controller-view',
@@ -48,6 +49,7 @@ export class ControllerViewComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -58,14 +60,15 @@ export class ControllerViewComponent implements AfterViewInit {
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
-    this.controllerId = +this.activatedRoute.params['_value']['id'];
-    const controller = this.dataService.getController(this.controllerId);
-    this.name = controller.name;
-    this.description = controller.description;
-    this.typeContr = this.scTypes.get(controller.type);
-    this.masterContr = this.dataService.getUserGroup(controller.master);
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.controllerId = this.activatedRoute.params['_value']['id'];
+    this.serviceData.getController(this.controllerId)
+      .then((response) => {
+        this.name = response.name;
+        this.description = response.description;
+        this.typeContr = this.scTypes.get(response.type);
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public defaultSelect() {
@@ -114,13 +117,6 @@ export class ControllerViewComponent implements AfterViewInit {
     return this.scTypes.get(this.$type);
   }
 
-  public set masterContr(uGr: UserGroup) {
-    if (Utils.exists(uGr)) {
-      this.$master = uGr.id;
-
-    }
-  }
-
   public accessed() {
     const role = this.role();
     return role !== Roles.NONE;
@@ -129,10 +125,5 @@ export class ControllerViewComponent implements AfterViewInit {
   public role() {
     return this.$user.getValue().user_role;
   }
-
-  public get masterContr() {
-    return this.dataService.getUserGroup(this.$master);
-  }
-
 
 }

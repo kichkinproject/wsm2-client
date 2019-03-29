@@ -7,6 +7,8 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {Controller} from '../../../../models/controller';
+import {WsmDataService} from '../../../../services/wsm-data.service';
+import {User} from '../../../../models/user';
 
 @Component({
   selector: 'wsm-controller-list',
@@ -25,6 +27,7 @@ export class ControllerListComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -34,14 +37,31 @@ export class ControllerListComponent implements AfterViewInit {
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
         this.controllers.slice(0, this.controllers.length);
         break;
       case Roles.INTEGRATOR:
-        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
+        this.isCompleted$.next(false);
+        this.controllers = [];
+        this.serviceData.getIntegrator(this.$user.getValue().user_login)
+          .then((response) => {
+            if (Utils.missing(response.ok)) {
+              this.serviceData.getControllersByGroup(response.userGroupId)
+                .then((response1) => {
+                  if (response1.length !== 0) {
+                    this.controllers.push(new Controller(response1.id,
+                      response1.name,
+                      response1.description,
+                      response1.type,
+                      response1.userGroupId));
+                  }
+                });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
+          });
         break;
       case Roles.SIMPLE:
         this.controllers.slice(0, this.controllers.length);
@@ -53,31 +73,48 @@ export class ControllerListComponent implements AfterViewInit {
   }
 
   public createThingLinks(id) {
-    if (Utils.exists(this.dataService.getController(id))) {
-      this.router.navigate(['main/controller/controller-thing-link', id.toString()], {
-        queryParams: {}
+    this.serviceData.getController(id)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const contr = new Controller(
+            response.id,
+            response.name,
+            response.description,
+            response.type,
+            response.userGroupId
+          );
+          this.router.navigate(['main/controller/controller-thing-link', id.toString()], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим настроить устройства для не существующего контроллера');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим настроить устройства для не существующего контроллера');
-    }
   }
 
   public createSensorLinks(id) {
-    if (Utils.exists(this.dataService.getController(id))) {
-      this.router.navigate(['main/controller/controller-sensor-link', id.toString()], {
-        queryParams: {}
+    this.serviceData.getController(id)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const contr = new Controller(
+            response.id,
+            response.name,
+            response.description,
+            response.type,
+            response.userGroupId
+          );
+          this.router.navigate(['main/controller/controller-sensor-link', id.toString()], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим настроить датчики для не существующего контроллера');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим настроить датчики для не существующего контроллера');
-    }
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -95,30 +132,37 @@ export class ControllerListComponent implements AfterViewInit {
   }
 
   public updateControllersList() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public viewController(id: number) {
-    if (Utils.exists(this.dataService.getController(id))) {
-      this.router.navigate(['main/controller/controller-view', id.toString()], {
-        queryParams: {}
+    this.serviceData.getController(id)
+      .then((response) => {
+        if (Utils.exists(response)) {
+          const contr = new Controller(
+            response.id,
+            response.name,
+            response.description,
+            response.type,
+            response.userGroupId
+          );
+          this.router.navigate(['main/controller/controller-view', id.toString()], {
+            queryParams: {}
+          });
+        } else {
+          console.log('Ошибка, хотим просмотреть не существующий контроллер');
+        }
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующий контроллер');
-    }
   }
 
   public removeController(id: number) {
-    this.isCompleted$.next(false);
-    // this.cd.detectChanges();
-    this.dataService.deleteController(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    if (confirm(`Вы уверены, что хотите удалить контроллер?`)) {
+      this.serviceData.deleteController(id)
+        .then((response) => {
+          this.updateCollection();
+        });
+    }
   }
 
   public accessed() {

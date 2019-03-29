@@ -40,33 +40,34 @@
           <div class="script">
             <label>
               Код сценария:
-              <div id="blocklyDiv" style="height: 440px; width: 1000px;"></div>
-              <xml id="toolbox" #toolbox style="display: none">
-                <category name="Переменные" custom="VARIABLE"></category>
-                <category name="Условия">
-                  <block type="controls_if"></block>
-                  <block type="controls_whileUntil"></block>
-                  <block type="controls_for"></block>
-                  <block type="controls_repeat_ext"></block>
-                </category>
-                <category name="Логика">
-                  <block type="logic_compare"></block>
-                </category>
-                <category name="Математические операции">
-                  <block type="math_number"></block>
-                  <block type="math_arithmetic"></block>
-                </category>
-                <category name="Текст">
-                  <block type="text"></block>
-                  <block type="text_print"></block>
-                </category>
-              </xml>
+              <div>
+                <div id="blocklyDiv" style="height: 440px; width: 1000px;"></div>
+                <xml id="toolbox" #toolbox style="display: none">
+                  <category name="Условия">
+                    <block type="controls_if"></block>
+                    <block type="controls_whileUntil"></block>
+                    <block type="controls_for"></block>
+                    <block type="controls_repeat_ext"></block>
+                  </category>
+                  <category name="Логика">
+                    <block type="logic_compare"></block>
+                  </category>
+                  <category name="Математические операции">
+                    <block type="math_number"></block>
+                    <block type="math_arithmetic"></block>
+                  </category>
+                  <category name="Текст">
+                    <block type="text"></block>
+                    <block type="text_print"></block>
+                  </category>
+                </xml>
+              </div>
             </label>
           </div>
         </div>
       </div>
     </div>
-    <button mat-icon-button (click)="createScenario()">
+    <button mat-icon-button [disabled]="!enabledToAdd" (click)="createScenario()">
       <mat-icon>save</mat-icon>
     </button>
   </div>

@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ScenarioCreateComponent } from './scenario-create.component';
 import {MatIconModule, MatListModule, MatSidenavModule, MatSlideToggleModule, MatToolbarModule} from '@angular/material';
 import { LoaderModule } from "../../../../components/loader/loader.component";
-import {BlocklyModule} from "../../../../components/blockly/blockly.component";
+// import {BlocklyModule} from "../../../../components/blockly/blockly.component";
 
 const routes: Routes = [
   {
@@ -26,7 +26,6 @@ const routes: Routes = [
     MatSlideToggleModule,
     MatToolbarModule,
     LoaderModule,
-    BlocklyModule
   ],
   exports: [
     ScenarioCreateComponent,

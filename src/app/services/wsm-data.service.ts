@@ -490,7 +490,7 @@ export class WsmDataService {
             res.text,
             ScenarioType.USER_ACTION,
             true,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+            Utils.exists(response.userGroupId) ? response.userGroupId : -1
           ));
         });
       }
@@ -499,7 +499,7 @@ export class WsmDataService {
     return scenarios;
   }
 
-  public addScenario(name: string, description: string, script: string, type: ScenarioType, publicity: boolean, creator: string = '') {
+  public addScenario(name: string, description: string, script: string, type: ScenarioType, publicity: boolean, creator: string = '', userGroup: number) {
     return fetch(this.scenarioUrl, {
       method: 'POST',
       body: JSON.stringify({
@@ -508,7 +508,8 @@ export class WsmDataService {
         script: script,
         author:creator,
         type: type,
-        publicity: publicity
+        publicity: publicity,
+        userGroupId: userGroup
       }),
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -542,7 +543,7 @@ export class WsmDataService {
     });
   }
 
-  public duplicateScenario(id: number, creator: string, publicity: boolean = false) {
+  public duplicateScenario(id: number, creator: string, publicity: boolean = false, userGroup) {
     this.getScenario(id)
       .then((response) => {
         if (Utils.exists(response.ok)) {
@@ -552,6 +553,8 @@ export class WsmDataService {
             response.script,
             response.type,
             publicity,
+            creator,
+            userGroup
         )
             .then((response) => {
               if (response.ok || response.statusText !== 'No Content') {
@@ -628,8 +631,7 @@ export class WsmDataService {
   }
 
   public getSensors() {
-    const sensors: Array<Sensor> = [];
-    fetch(this.sensorUrl, {
+    return fetch(this.sensorUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -638,58 +640,31 @@ export class WsmDataService {
     }).then(function(response) {
       console.log(response);
       return response.json();
-    }).then((response) => {
-      console.log(response);
-      if (response.length !== 0) {
-        response.forEach(res => {
-          sensors.push(new Sensor(
-            res.id,
-            res.name,
-            res.description,
-            res.type,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
-            res.controllerId
-          ));
-        });
-      }
-      console.log(sensors);
     });
-    return sensors;
   }
 
   public getSensorsByGroup(id: number) {
-    const sensors: Array<Sensor> = [];
-    fetch(this.sensorUrl, {
+    return fetch(this.sensorUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
-    }).then(function(response) {
+    }).then((response) => {
       console.log(response);
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.userGroup.id === id) {
-        response.filter(res => res.userGroup.id === id).forEach(res => {
-          sensors.push(new Sensor(
-            res.id,
-            res.name,
-            res.description,
-            res.type,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
-            res.controllerId
-          ));
-        });
+      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
+        return response.filter(res => res.userGroup.id === id);
+      } else {
+        return [];
       }
-      console.log(sensors);
     });
-    return sensors;
   }
 
   public getSensorsByController(id: number) {
-    const sensors: Array<Sensor> = [];
-    fetch(this.sensorUrl, {
+    return fetch(this.sensorUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -700,21 +675,12 @@ export class WsmDataService {
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.controllerId === id) {
-        response.filter(res => res.controllerId === id).forEach(res => {
-          sensors.push(new Sensor(
-            res.id,
-            res.name,
-            res.description,
-            res.type,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
-            res.controllerId
-          ));
-        });
+      if (response.length !== 0 && response.filter(res => res.controllerId === id).length !== 0) {
+        response.filter(res => res.controllerId === id)
+      } else {
+        return [];
       }
-      console.log(sensors);
     });
-    return sensors;
   }
 
   public addSensor(name: string, description: string, type: SensorType, master: number, controller: number = -1) {
@@ -738,7 +704,7 @@ export class WsmDataService {
   }
 
   public createSensorControllerLink(id: number, controller: number) {
-    this.getSensor(id)
+    return this.getSensor(id)
       .then((response) => {
         if (Utils.missing(response.ok)) {
           return fetch(this.sensorUrl, {
@@ -763,7 +729,7 @@ export class WsmDataService {
   }
 
   public destroySensorControllerLink(id: number) {
-    this.getSensor(id)
+    return this.getSensor(id)
       .then((response) => {
         if (Utils.missing(response.ok)) {
           return fetch(this.sensorUrl, {
@@ -847,8 +813,7 @@ export class WsmDataService {
   }
 
   public getThingsByGroup(id: number) {
-    const things: Array<Thing> = [];
-    fetch(this.thingUrl, {
+    return fetch(this.thingUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -859,26 +824,16 @@ export class WsmDataService {
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
-        response.filter(res => res.userGroup.id === id).forEach(res => {
-          things.push(new Thing(
-            res.id,
-            res.name,
-            res.description,
-            res.type,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
-            res.controllerId
-          ));
-        });
+      if (response.length !== 0 && response.filter(res => res.userGroupId === id).length !== 0) {
+        return response.filter(res => res.userGroupId === id);
+      } else {
+        return response;
       }
-      console.log(things);
     });
-    return things;
   }
 
   public getThingsByController(id: number) {
-    const things: Array<Thing> = [];
-    fetch(this.thingUrl, {
+    return fetch(this.thingUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -890,20 +845,11 @@ export class WsmDataService {
     }).then((response) => {
       console.log(response);
       if (response.length !== 0 && response.filter(res => res.controllerId === id).length !== 0) {
-        response.filter(res => res.controllerId === id).forEach(res => {
-          things.push(new Thing(
-            res.id,
-            res.name,
-            res.description,
-            res.type,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
-            res.controllerId
-          ));
-        });
+        return response.filter(res => res.controllerId === id);
+      } else {
+        return response;
       }
-      console.log(things);
     });
-    return things;
   }
 
   public addThing(name: string, description: string, type: ThingType, master: number, controller: number = -1) {
@@ -927,7 +873,7 @@ export class WsmDataService {
   }
 
   public createThingControllerLink(id: number, controller: number) {
-    this.getThing(id)
+    return this.getThing(id)
       .then((response) => {
         if (Utils.missing(response.ok)) {
           return fetch(this.thingUrl, {
@@ -952,7 +898,7 @@ export class WsmDataService {
   }
 
   public destroyThingControllerLink(id: number) {
-    this.getThing(id)
+    return this.getThing(id)
       .then((response) => {
         if (Utils.missing(response.ok)) {
           return fetch(this.userUrl, {
@@ -1036,32 +982,23 @@ export class WsmDataService {
 
 
   public getControllersByGroup(id: number) {
-    const controllers: Array<Controller> = [];
-    fetch(this.controllerUrl, {
+    return fetch(this.controllerUrl, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
-    }).then(function(response) {
+    }).then((response) => {
       console.log(response);
       return response.json();
     }).then((response) => {
       console.log(response);
       if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
-        response.filter(res => res.userGroup.id === id).forEach(res => {
-          controllers.push(new Controller(
-            res.id,
-            res.name,
-            res.description,
-            res.type,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
-          ));
-        });
+        return response.filter(res => res.userGroup.id === id);
+      } else {
+        return response;
       }
-      console.log(controllers);
     });
-    return controllers;
   }
 
   public addController(name: string, description: string, type: ControllerType, master: number) {
@@ -1262,8 +1199,7 @@ export class WsmDataService {
   }
 
   public getUsersByChildrenGroup() {
-    const users: Array<User> = [];
-    fetch(this.userUrl + '/children/users', {
+    return fetch(this.userUrl + '/children/users', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -1272,23 +1208,7 @@ export class WsmDataService {
     }).then(function(response) {
       console.log(response);
       return response.json();
-    }).then((response) => {
-      console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userType === 0).length !== 0) {
-        response.filter(res => res.userType === 0).forEach(res => {
-          users.push(new User(
-            res.login,
-            '',
-            res.fio,
-            res.info,
-            Roles.SIMPLE,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
-          ));
-        });
-      }
-      console.log(users);
     });
-    return users;
   }
 
   public getIntegratorsByGroup(id: number) {
