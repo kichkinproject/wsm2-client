@@ -96,15 +96,54 @@ export class WsmDataService {
     });
   }
 
-  public updateIntegrator(login: string, password: string, name: string, info: string, group: number) {
+  public updateUserByAdmin(login: string, name: string, info: string, group: number) {
+    return fetch(this.userUrl + '/admin', {
+      method: 'POST',
+      body: JSON.stringify({
+        login: login,
+        fio: name,
+        info: info,
+        userGroupId: group,
+        userType: 0
+      }),
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then((response) => {
+      console.log(response);
+      return response;
+    });
+  }
+
+  public updateIntegratorByAdmin(login: string, name: string, info: string, group: number) {
+    return fetch(this.userUrl + '/admin', {
+      method: 'POST',
+      body: JSON.stringify({
+        login: login,
+        fio: name,
+        info: info,
+        userGroupId: group,
+        userType: 1
+      }),
+      headers: {
+        'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
+        'Content-Type': 'application/json'
+      },
+    }).then((response) => {
+      console.log(response);
+      return response;
+    });
+  }
+
+  public updateIntegrator(login: string, name: string, info: string, group: number) {
     return fetch(this.userUrl, {
       method: 'PUT',
       body: JSON.stringify({
         login: login,
         fio: name,
-        password: password,
         info: info,
-        userGroup: group,
+        userGroupId: group,
         userType: 1
       }),
       headers: {
@@ -130,7 +169,7 @@ export class WsmDataService {
         'Content-Type': 'application/json'
       }
     })
-      .then((response) => this.updateIntegrator(login, newPass, name, info, group));
+      .then((response) => this.updateIntegrator(login, name, info, group));
   }
 
   public deleteIntegrator(login: string) {
@@ -341,13 +380,12 @@ export class WsmDataService {
     });
   }
 
-  public updateUser(login: string, password: string, name: string, info: string, group: number) {
+  public updateUser(login: string, name: string, info: string, group: number) {
     return fetch(this.userUrl, {
       method: 'PUT',
       body: JSON.stringify({
         login: login,
         fio: name,
-        password: password,
         info: info,
         userGroup: group,
         userType: 0
@@ -375,7 +413,7 @@ export class WsmDataService {
         'Content-Type': 'application/json'
       }
     })
-      .then((response) => this.updateUser(login, newPass, name, info, group));
+      .then((response) => this.updateUser(login, name, info, group));
   }
 
   public deleteUser(login: string) {
@@ -1144,7 +1182,7 @@ export class WsmDataService {
       },
     }).then(function(response) {
       console.log(response);
-      return response.json();
+      return response;
     });
   }
 

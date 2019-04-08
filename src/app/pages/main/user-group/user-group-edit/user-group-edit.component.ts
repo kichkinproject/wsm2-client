@@ -86,7 +86,7 @@ export class UserGroupEditComponent  implements AfterViewInit {
         });
     }
     if (this.role() === Roles.INTEGRATOR) {
-      this.groups.push(this.noGroup);
+      // this.groups.push(this.noGroup);
       this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
           return response.json();

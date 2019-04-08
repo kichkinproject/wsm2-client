@@ -41,7 +41,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
     // this.cd.detectChanges();
 
     this.updateList();
-    this.selectedGroup = this.groups[0].name;
+    // this.selectedGroup = this.groups[0].name;
     // this.defaultSelect();
 
     this.isCompleted$.next(true);
@@ -68,10 +68,16 @@ export class UserGroupCreateComponent implements AfterViewInit {
               ));
             });
           }
+          return response;
+        })
+        .then((response) => {
+          if (Utils.missing(this.selectedGroup)) {
+            this.selectedGroup = this.groups[0].name;
+          }
         });
     }
     if (this.role() === Roles.INTEGRATOR) {
-      this.groups.push(this.noGroup);
+      // this.groups.push(this.noGroup);
       this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
           return response.json();
@@ -85,6 +91,12 @@ export class UserGroupCreateComponent implements AfterViewInit {
                 Utils.exists(res.parentGroupId) ? res.parentGroupId : -1
               ));
             });
+          }
+        return response;
+      })
+        .then((response) => {
+          if (Utils.missing(this.selectedGroup)) {
+            this.selectedGroup = this.groups[0].name;
           }
         });
     }
@@ -115,7 +127,11 @@ export class UserGroupCreateComponent implements AfterViewInit {
   }
 
   public get selectedGroup() {
-    return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
+    if (this.role() === Roles.INTEGRATOR) {
+      return Utils.exists(this.$group) ? this.$group.name : null;
+    } else {
+      return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
+    }
   }
 
   public set selectedGroup(str: string) {

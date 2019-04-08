@@ -58,10 +58,16 @@ export class IntegratorCreateComponent implements AfterViewInit {
               ));
             });
           }
+          return response;
+        })
+        .then((response) => {
+          if (Utils.missing(this.selectedGroup)) {
+            this.selectedGroup = this.groups[0].name;
+          }
         });
     }
     if (this.role() === Roles.INTEGRATOR) {
-      this.groups.push(this.noGroup);
+      // this.groups.push(this.noGroup);
       this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
           return response.json();
@@ -76,6 +82,12 @@ export class IntegratorCreateComponent implements AfterViewInit {
             ));
           });
         }
+        return response;
+      })
+        .then((response) => {
+          if (Utils.missing(this.selectedGroup)) {
+            this.selectedGroup = this.groups[0].name;
+          }
       });
     }
     // this.groups.splice(0, this.groups.length);
@@ -99,13 +111,16 @@ export class IntegratorCreateComponent implements AfterViewInit {
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     this.updateList();
-    this.selectedGroup = this.groups[0].name;
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
 
   public get selectedGroup() {
-    return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
+    if (this.role() === Roles.INTEGRATOR) {
+      return Utils.exists(this.$group) ? this.$group.name : null;
+    } else {
+      return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
+    }
   }
 
   public set selectedGroup(str: string) {

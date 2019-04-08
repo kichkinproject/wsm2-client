@@ -28,7 +28,7 @@ export class CabinetComponent implements AfterViewInit {
   private $name: string;
   private $info: string;
   private $group: string;
-  private grgr: any;
+  private grgr: number;
   private currentUser: User;
   private baseRole = Roles;
   private currentRole = '';
@@ -68,10 +68,21 @@ export class CabinetComponent implements AfterViewInit {
             // this.repeatPassword = this.currentUser.password;
             this.name = response.fio;
             this.info = response.info;
-            this.group = Utils.missing(response.userGroup) ? 'Нет группы' : response.userGroup.name;
-            this.grgr = response.userGroup;
-            this.isCompleted$.next(true);
-            this.cd.detectChanges();
+            if (Utils.missing(response.userGroupId)) {
+              this.group = 'Нет группы';
+            } else {
+              this.serviceData.getUserGroup(response.userGroupId)
+                .then((response1) => {
+                  this.group = response1.name;
+                  this.grgr = response1.id;
+                  this.isCompleted$.next(true);
+                  this.cd.detectChanges();
+                });
+            }
+            // this.group = Utils.missing(response.userGroupId) ? 'Нет группы' : response.userGroup.name;
+            // this.grgr = response.userGroup;
+            // this.isCompleted$.next(true);
+            // this.cd.detectChanges();
           });
         break;
       case this.baseRole.SIMPLE:
@@ -83,9 +94,20 @@ export class CabinetComponent implements AfterViewInit {
             // this.repeatPassword = this.currentUser.password;
             this.name = response.fio;
             this.info = response.info;
-            this.$group = Utils.missing(response.userGroup) ? 'Нет группы' : response.userGroup.name;
-            this.isCompleted$.next(true);
-            this.cd.detectChanges();
+            if (Utils.missing(response.userGroupId)) {
+              this.group = 'Нет группы';
+            } else {
+              this.serviceData.getUserGroup(response.userGroupId)
+                .then((response1) => {
+                  this.group = response1.name;
+                  this.grgr = response1.id;
+                  this.isCompleted$.next(true);
+                  this.cd.detectChanges();
+                });
+            }
+            // this.$group = Utils.missing(response.userGroup) ? 'Нет группы' : response.userGroup.name;
+            // this.isCompleted$.next(true);
+            // this.cd.detectChanges();
           });
         break;
     }
@@ -120,7 +142,7 @@ export class CabinetComponent implements AfterViewInit {
   }
 
   public set old(str: string) {
-    if (Utils.exists(str)) {
+    if (str !== null && str !== undefined) {
       this.$old = str;
     }
   }
@@ -130,7 +152,7 @@ export class CabinetComponent implements AfterViewInit {
   }
 
   public set password(str: string) {
-    if (Utils.exists(str)) {
+    if (str !== null && str !== undefined) {
       this.$password = str;
     }
   }
@@ -140,7 +162,7 @@ export class CabinetComponent implements AfterViewInit {
   }
 
   public set repeatPassword(str: string) {
-    if (Utils.exists(str)) {
+    if (str !== null && str !== undefined) {
       this.$repeat = str;
     }
   }
@@ -207,11 +229,22 @@ export class CabinetComponent implements AfterViewInit {
   }
 
   public enabledToSave() {
-    return Utils.exists(this.$login)
-      && Utils.exists(this.$old)
-      && Utils.exists(this.$name)
-      && Utils.exists(this.$info)
-      && (Utils.missing(this.$password) || this.checkPasswords());
+    switch(this.role()) {
+      case Roles.ADMIN:
+        return Utils.exists(this.$login)
+          && Utils.exists(this.$old)
+          && Utils.exists(this.$name)
+          && Utils.exists(this.$info)
+          && (Utils.missing(this.$password) || this.checkPasswords());
+        break;
+      case Roles.INTEGRATOR:
+      case Roles.SIMPLE:
+        return Utils.exists(this.$login)
+          && Utils.exists(this.$name)
+          && Utils.exists(this.$info)
+          && ((Utils.missing(this.$old) && Utils.missing(this.$password)) || this.checkPasswords());
+        break;
+    }
   }
 
   public saveCurrentSettings() {
@@ -242,8 +275,8 @@ export class CabinetComponent implements AfterViewInit {
         }
         break;
       case this.baseRole.INTEGRATOR:
-        if (Utils.missing(this.$password)) {
-          this.serviceData.updateIntegrator(this.$login, this.$old, this.$name, this.$info, this.grgr.id)
+        if (Utils.missing(this.$password) && Utils.missing(this.$old)) {
+          this.serviceData.updateIntegrator(this.$login, this.$name, this.$info, this.grgr)
             .then((response) => {
               if (response.ok) {
                 this.router.navigate(['main/about'], {
@@ -254,7 +287,7 @@ export class CabinetComponent implements AfterViewInit {
               }
             });
         } else {
-          this.serviceData.updateIntegratorWithPassword(this.$login, this.$old, this.$password, this.$name, this.$info, this.grgr.id)
+          this.serviceData.updateIntegratorWithPassword(this.$login, this.$old, this.$password, this.$name, this.$info, this.grgr)
             .then((response) => {
               if (response.ok) {
                 this.router.navigate(['main/about'], {
@@ -265,9 +298,10 @@ export class CabinetComponent implements AfterViewInit {
               }
             });
         }
-        const simpleIntegrator = this.dataService.getIntegrator(this.simpleLogin);
-        if (Utils.missing(this.$password)) {
-          this.serviceData.updateUser(this.$login, this.$old, this.$name, this.$info, this.grgr.id)
+        break;
+      case Roles.SIMPLE:
+        if (Utils.missing(this.$password) && Utils.missing(this.$old)) {
+          this.serviceData.updateUser(this.$login, this.$name, this.$info, this.grgr)
             .then((response) => {
               if (response.ok) {
                 this.router.navigate(['main/about'], {
@@ -278,7 +312,7 @@ export class CabinetComponent implements AfterViewInit {
               }
             });
         } else {
-          this.serviceData.updateUserWithPassword(this.$login, this.$old, this.$password, this.$name, this.$info, this.grgr.id)
+          this.serviceData.updateUserWithPassword(this.$login, this.$old, this.$password, this.$name, this.$info, this.grgr)
             .then((response) => {
               if (response.ok) {
                 this.router.navigate(['main/about'], {

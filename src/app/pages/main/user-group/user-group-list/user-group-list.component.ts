@@ -46,6 +46,7 @@ export class UserGroupListComponent  implements AfterViewInit {
           })
           .then((response) => {
             console.log(response);
+            this.groups = [];
             if (response.length !== 0) {
               response.forEach(res => {
                 this.groups.push(new UserGroup(
@@ -64,6 +65,10 @@ export class UserGroupListComponent  implements AfterViewInit {
         this.isCompleted$.next(false);
         this.serviceData.getAllChildrenUserGroup2()
           .then((response) => {
+            return response.json();
+          })
+          .then((response) => {
+            this.groups = [];
             if (response.length !== 0) {
               response.forEach(res => {
                 this.groups.push(new UserGroup(

@@ -25,7 +25,6 @@ export class IntegratorEditComponent implements AfterViewInit {
   private $group: UserGroup;
   private groups: Array<UserGroup> = [];
   private noGroup: UserGroup = new UserGroup(0, 'Нет группы', '');
-  private $password: string;
 
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
@@ -62,7 +61,7 @@ export class IntegratorEditComponent implements AfterViewInit {
         });
     }
     if (this.role() === Roles.INTEGRATOR) {
-      this.groups.push(this.noGroup);
+      // this.groups.push(this.noGroup);
       this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
           return response.json();
@@ -105,19 +104,19 @@ export class IntegratorEditComponent implements AfterViewInit {
         this.login = response.login;
         this.name = response.fio;
         this.info = response.info;
-        if (response.userGroup === null) {
+        if (Utils.missing(response.userGroupId)) {
           this.selectedGroup = 'Нет группы';
         } else {
-          this.serviceData.getUserGroup(response.userGroup.id)
+          this.serviceData.getUserGroup(response.userGroupId)
             .then((response1) => {
               this.selectedGroup = response1.name;
+              this.isCompleted$.next(true);
+              this.cd.detectChanges();
             });
         }
-        this.isCompleted$.next(true);
-        this.cd.detectChanges();
       });
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    // this.isCompleted$.next(true);
+    // this.cd.detectChanges();
   }
 
   public accessed() {
@@ -140,16 +139,6 @@ export class IntegratorEditComponent implements AfterViewInit {
   public set login(str: string) {
     if (Utils.exists(str)) {
       this.$login = str;
-    }
-  }
-
-  public get password() {
-    return this.$password;
-  }
-
-  public set password(str: string) {
-    if (Utils.exists(str)) {
-      this.$password = str;
     }
   }
 
@@ -182,27 +171,52 @@ export class IntegratorEditComponent implements AfterViewInit {
   }
 
   public saveIntegrator() {
-    this.serviceData.getIntegrator(this.$login)
-      .then((response) => {
-        this.isCompleted$.next(false);
-        this.serviceData.updateIntegrator(this.$login, this.$password, this.$name, this.$info, this.$group.id !== 0 ? this.$group.id : null)
-          .then((response1) => {
-            if (!response1.ok) {
-              alert('Изменить интегратора не получилось. Скорее всего неправильно введен пароль');
-            } else {
-              this.router.navigate(['main/integrator/integrator-list'], {
-                queryParams: {}
+    switch(this.role()) {
+      case Roles.MAIN_ADMIN:
+      case Roles.ADMIN:
+        this.serviceData.getIntegrator(this.$login)
+          .then((response) => {
+            this.isCompleted$.next(false);
+            this.serviceData.updateIntegratorByAdmin(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+              .then((response1) => {
+                if (!response1.ok) {
+                  alert('Изменить интегратора не получилось.');
+                } else {
+                  this.router.navigate(['main/integrator/integrator-list'], {
+                    queryParams: {}
+                  });
+                }
+                this.isCompleted$.next(true);
+                this.cd.detectChanges();
               });
-            }
-            this.isCompleted$.next(true);
-            this.cd.detectChanges();
           });
-      });
+        break;
+      case Roles.INTEGRATOR:
+        this.serviceData.getIntegrator(this.$login)
+          .then((response) => {
+            this.isCompleted$.next(false);
+            this.serviceData.updateIntegrator(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+              .then((response1) => {
+                if (!response1.ok) {
+                  alert('Изменить интегратора не получилось.');
+                } else {
+                  this.router.navigate(['main/integrator/integrator-list'], {
+                    queryParams: {}
+                  });
+                }
+                this.isCompleted$.next(true);
+                this.cd.detectChanges();
+              });
+          });
+        break;
+        default:
+          alert('Вы не можете изменять интеграторов');
+          break;
+    }
   }
 
   public enabledToSave() {
     return Utils.exists(this.$login)
-      && Utils.exists(this.$password)
       && Utils.exists(this.$name)
       && Utils.exists(this.$info);
   }

@@ -40,22 +40,22 @@ export class UserCreateComponent implements AfterViewInit {
   }
 
   public updateList() {
-    this.groups.splice(0, this.groups.length);
-    if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
-      this.groups.push(this.noGroup);
-      const allGroups = this.dataService.getUserGroups();
-      if (allGroups.length !== 0) {
-        allGroups.forEach(gr => this.groups.push(gr));
-      }
-    }
-    if (this.role() === Roles.INTEGRATOR) {
-      this.groups.push(this.noGroup);
-      const user = this.dataService.getIntegrator(this.$user.getValue().user_login);
-      const children = this.dataService.getAllChildrenUserGroup(user.group);
-      if (children.length !== 0) {
-        children.forEach(ch => this.groups.push(ch));
-      }
-    }
+    // this.groups.splice(0, this.groups.length);
+    // if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
+    //   this.groups.push(this.noGroup);
+    //   const allGroups = this.dataService.getUserGroups();
+    //   if (allGroups.length !== 0) {
+    //     allGroups.forEach(gr => this.groups.push(gr));
+    //   }
+    // }
+    // if (this.role() === Roles.INTEGRATOR) {
+    //   this.groups.push(this.noGroup);
+    //   const user = this.dataService.getIntegrator(this.$user.getValue().user_login);
+    //   const children = this.dataService.getAllChildrenUserGroup(user.group);
+    //   if (children.length !== 0) {
+    //     children.forEach(ch => this.groups.push(ch));
+    //   }
+    // }
 
     this.groups.splice(0, this.groups.length);
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
@@ -75,10 +75,16 @@ export class UserCreateComponent implements AfterViewInit {
               ));
             });
           }
+          return response;
+        })
+        .then((response) => {
+          if (Utils.missing(this.selectedGroup)) {
+            this.selectedGroup = this.groups[0].name;
+          }
         });
     }
     if (this.role() === Roles.INTEGRATOR) {
-      this.groups.push(this.noGroup);
+      // this.groups.push(this.noGroup);
       this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
           return response.json();
@@ -93,6 +99,12 @@ export class UserCreateComponent implements AfterViewInit {
             ));
           });
         }
+        return response;
+      })
+        .then((response) => {
+          if (Utils.missing(this.selectedGroup)) {
+            this.selectedGroup = this.groups[0].name;
+          }
       });
     }
   }
@@ -100,13 +112,16 @@ export class UserCreateComponent implements AfterViewInit {
   public ngAfterViewInit() {
     this.isCompleted$.next(false);
     this.updateList();
-    this.selectedGroup = this.groups[0].name;
     this.isCompleted$.next(true);
     this.cd.detectChanges();
   }
 
   public get selectedGroup() {
-    return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
+    if (this.role() === Roles.INTEGRATOR) {
+      return Utils.exists(this.$group) ? this.$group.name : null;
+    } else {
+      return Utils.exists(this.$group) ? this.$group.name : this.noGroup.name;
+    }
   }
 
   public set selectedGroup(str: string) {

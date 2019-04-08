@@ -21,7 +21,6 @@ export class UserEditComponent implements AfterViewInit {
   private subscriptions: Array<Subscription> = [];
   private $login: string;
   private $name: string;
-  private $password: string;
   private $info: string;
   private $group: UserGroup;
   private groups: Array<UserGroup> = [];
@@ -87,7 +86,7 @@ export class UserEditComponent implements AfterViewInit {
         });
     }
     if (this.role() === Roles.INTEGRATOR) {
-      this.groups.push(this.noGroup);
+      // this.groups.push(this.noGroup);
       this.serviceData.getAllChildrenUserGroup2()
         .then((response) => {
           return response.json();
@@ -127,16 +126,6 @@ export class UserEditComponent implements AfterViewInit {
 
   public role() {
     return this.$user.getValue().user_role;
-  }
-
-  public get password() {
-    return this.$password;
-  }
-
-  public set password(str: string) {
-    if (Utils.exists(str)) {
-      this.$password = str;
-    }
   }
 
   public get completed(): Observable<boolean> {
@@ -182,27 +171,52 @@ export class UserEditComponent implements AfterViewInit {
   }
 
   public saveUser() {
-    this.serviceData.getUser(this.$login)
-      .then((response) => {
-        this.isCompleted$.next(false);
-        this.serviceData.updateUser(this.$login, this.$password, this.$name, this.$info, this.$group.id !== 0 ? this.$group.id : null)
-          .then((response1) => {
-            if (!response1.ok) {
-              alert('Изменить пользователя не получилось. Скорее всего неправильно введен пароль');
-            } else {
-              this.router.navigate(['main/user/user-list'], {
-                queryParams: {}
+    switch(this.role()) {
+      case Roles.MAIN_ADMIN:
+      case Roles.ADMIN:
+        this.serviceData.getUser(this.$login)
+          .then((response) => {
+            this.isCompleted$.next(false);
+            this.serviceData.updateUserByAdmin(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+              .then((response1) => {
+                if (!response1.ok) {
+                  alert('Изменить пользователя не получилось.');
+                } else {
+                  this.router.navigate(['main/integrator/integrator-list'], {
+                    queryParams: {}
+                  });
+                }
+                this.isCompleted$.next(true);
+                this.cd.detectChanges();
               });
-            }
-            this.isCompleted$.next(true);
-            this.cd.detectChanges();
           });
-      });
+        break;
+      case Roles.INTEGRATOR:
+        this.serviceData.getUser(this.$login)
+          .then((response) => {
+            this.isCompleted$.next(false);
+            this.serviceData.updateUser(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+              .then((response1) => {
+                if (!response1.ok) {
+                  alert('Изменить пользователя не получилось.');
+                } else {
+                  this.router.navigate(['main/integrator/integrator-list'], {
+                    queryParams: {}
+                  });
+                }
+                this.isCompleted$.next(true);
+                this.cd.detectChanges();
+              });
+          });
+        break;
+      default:
+        alert('Вы не можете изменять интеграторов');
+        break;
+    }
   }
 
   public enabledToSave() {
     return Utils.exists(this.$login)
-      && Utils.exists(this.$password)
       && Utils.exists(this.$name)
       && Utils.exists(this.$info);
   }
