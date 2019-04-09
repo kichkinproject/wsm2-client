@@ -9,6 +9,7 @@ import { Controller } from "../../../../models/controller";
 import { Utils } from "../../../../utils/utils";
 import { Thing } from "../../../../models/thing";
 import { Sensor } from "../../../../models/sensor";
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-sensor-controller-link',
@@ -28,6 +29,7 @@ export class SensorControllerLinkComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -36,42 +38,71 @@ export class SensorControllerLinkComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.sensorId = +this.activatedRoute.params['_value']['id'];
-    this.sensor = this.dataService.getSensor(this.sensorId);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getSensor(this.sensorId)
+      .then((response) => {
+        this.sensor = new Sensor(
+          response.id,
+          response.name,
+          response.description,
+          response.type,
+          response.userGroupId,
+          response.controllerId
+        );
+      })
+      .then((response) => {
+        this.updateCollection();
+      });
   }
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     switch (role) {
       case Roles.INTEGRATOR:
-        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
+        this.isCompleted$.next(false);
+        this.controllers = [];
+        this.serviceData.getIntegrator(this.$user.getValue().user_login)
+          .then((response) => {
+            if (Utils.missing(response.ok)) {
+              this.serviceData.getControllersByGroup(response.userGroupId)
+                .then((response1) => {
+                  if (response1.length !== 0) {
+                    response1.forEach(res1 => {
+                      this.controllers.push(new Controller(res1.id,
+                        res1.name,
+                        res1.description,
+                        res1.type,
+                        res1.userGroupId));
+                    });
+                  }
+                  this.isCompleted$.next(true);
+                  this.cd.detectChanges();
+                });
+            }
+          });
         break;
       default:
+        this.isCompleted$.next(false);
         this.controllers.slice(0, this.controllers.length);
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
         break;
     }
   }
 
   public createLinkSensor(id) {
-    this.isCompleted$.next(false);
-    this.dataService.createSensorControllerLink(this.sensor.id, id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.createSensorControllerLink(this.sensor.id, id)
+      .then((response) => {
+        this.updateCollection();
+      });
   }
 
   public destroyLinkSensor() {
-    this.isCompleted$.next(false);
-    this.dataService.destroySensorControllerLink(this.sensor.id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.destroySensorControllerLink(this.sensor.id)
+      .then((response) => {
+        this.updateCollection();
+      });
   }
 
   public accessed() {
@@ -92,9 +123,6 @@ export class SensorControllerLinkComponent implements AfterViewInit {
   }
 
   public updateControllersList() {
-    this.isCompleted$.next(false);
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 }

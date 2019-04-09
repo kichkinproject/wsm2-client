@@ -39,16 +39,19 @@ export class ControllerThingLinkComponent implements AfterViewInit {
   public ngAfterViewInit() {
     // this.cd.detectChanges();
     this.controllerId = +this.activatedRoute.params['_value']['id'];
-    this.serviceData.getController(this.controllerId).then((response) => {
-      this.controller = new Controller(
-        response.id,
-        response.name,
-        response.description,
-        response.type,
-        response.userGroupId
-      );
-      this.updateCollection();
-    });
+    this.serviceData.getController(this.controllerId)
+        .then((response) => {
+        this.controller = new Controller(
+          response.id,
+          response.name,
+          response.description,
+          response.type,
+          response.userGroupId
+        );
+      })
+      .then((response) => {
+        this.updateCollection();
+      });
   }
 
   private updateCollection() {
@@ -79,7 +82,10 @@ export class ControllerThingLinkComponent implements AfterViewInit {
           });
         break;
       default:
+        this.isCompleted$.next(false);
         this.things.slice(0, this.things.length);
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
         break;
     }
   }
@@ -89,7 +95,6 @@ export class ControllerThingLinkComponent implements AfterViewInit {
   }
 
   public createLinkThing(id) {
-    this.isCompleted$.next(false);
     this.serviceData.createThingControllerLink(id, this.controller.id)
       .then((response) => {
         this.updateCollection();
@@ -97,7 +102,6 @@ export class ControllerThingLinkComponent implements AfterViewInit {
   }
 
   public destroyLinkThing(id) {
-    this.isCompleted$.next(false);
     this.serviceData.destroyThingControllerLink(id)
       .then((response) => {
         this.updateCollection();

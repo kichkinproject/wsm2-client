@@ -39,16 +39,19 @@ export class ControllerSensorLinkComponent implements AfterViewInit {
 
   public ngAfterViewInit() {
     this.controllerId = +this.activatedRoute.params['_value']['id'];
-    this.serviceData.getController(this.controllerId).then((response) => {
-      this.controller = new Controller(
-        response.id,
-        response.name,
-        response.description,
-        response.type,
-        response.userGroupId
-      );
-      this.updateCollection();
-    });
+    this.serviceData.getController(this.controllerId)
+      .then((response) => {
+        this.controller = new Controller(
+          response.id,
+          response.name,
+          response.description,
+          response.type,
+          response.userGroupId
+        );
+      })
+      .then(response => {
+        this.updateCollection();
+      });
   }
 
   private updateCollection() {
@@ -79,7 +82,10 @@ export class ControllerSensorLinkComponent implements AfterViewInit {
           });
         break;
       default:
+        this.isCompleted$.next(false);
         this.sensors.slice(0, this.sensors.length);
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
         break;
     }
   }
