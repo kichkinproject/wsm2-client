@@ -714,7 +714,7 @@ export class WsmDataService {
     }).then((response) => {
       console.log(response);
       if (response.length !== 0 && response.filter(res => res.controllerId === id).length !== 0) {
-        response.filter(res => res.controllerId === id)
+        response.filter(res => res.controllerId === id);
       } else {
         return [];
       }
@@ -1094,9 +1094,9 @@ export class WsmDataService {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
         'Content-Type': 'application/json'
       },
-    }).then((response) => {
-      console.log(response);
-      return response;
+    })
+      .then(response => {
+        return response.json();
     });
   }
 

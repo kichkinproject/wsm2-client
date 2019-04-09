@@ -10,6 +10,7 @@ import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
 import {Thing} from '../../../../models/thing';
 import { Controller } from "../../../../models/controller";
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-thing-list',
@@ -32,6 +33,7 @@ export class ThingListComponent  implements AfterViewInit {
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
               private dataService: Wsm2DataService,
+              private serviceData: WsmDataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
@@ -63,17 +65,78 @@ export class ThingListComponent  implements AfterViewInit {
         this.things.slice(0, this.things.length);
         break;
       case Roles.INTEGRATOR:
-        this.things = Utils.pushAll([], this.dataService.getThingsByGroup(user.group));
+        this.isCompleted$.next(false);
+        this.things = [];
+        this.serviceData.getIntegrator(this.$user.getValue().user_login)
+          .then((response) => {
+            if (Utils.missing(response.ok)) {
+              this.serviceData.getThingsByGroup(response.userGroupId)
+                .then((response1) => {
+                  if (response1.length !== 0) {
+                    this.things.push(new Thing(response1.id,
+                      response1.name,
+                      response1.description,
+                      response1.type,
+                      response1.userGroupId,
+                      response1.controllerId));
+                  }
+                  this.isCompleted$.next(true);
+                  this.cd.detectChanges();
+                });
+            }
+          });
         break;
       case Roles.SIMPLE:
-        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
-        this.controllerHidden.clear();
-        this.controllerThings.clear();
-        this.controllers.forEach((cnt) => {
-          this.controllerHidden.set(cnt.id, true);
-          const contrThings = this.dataService.getThingsByController(cnt.id);
-          this.controllerThings.set(cnt.id, contrThings);
-        });
+        this.isCompleted$.next(false);
+        this.controllers = [];
+        this.serviceData.getUser(this.$user.getValue().user_login)
+          .then((response) => {
+            if (Utils.missing(response.ok)) {
+              this.serviceData.getControllersByGroup(response.userGroupId)
+                .then((response1) => {
+                  if (response1.length !== 0) {
+                    response1.forEach(res1 => {
+                      this.controllers.push(new Controller(res1.id,
+                        res1.name,
+                        res1.description,
+                        res1.type,
+                        res1.userGroupId));
+                    });
+                  }
+                  this.controllerHidden.clear();
+                  this.controllerThings.clear();
+                  if (this.controllers.length !== 0) {
+                    let i = 0;
+                    this.controllers.forEach((cnt) => {
+                      this.controllerHidden.set(cnt.id, true);
+                      this.serviceData.getThingsByController(cnt.id)
+                        .then(response2 => {
+                          if (response2.length !== 0) {
+                            const contrThings: Array<Thing> = new Array<Thing>();
+                            response2.forEach(res2 => {
+                              contrThings.push(new Thing(res2.id,
+                                res2.name,
+                                res2.description,
+                                res2.type,
+                                res2.userGroupId,
+                                res2.controllerId));
+                            });
+                            this.controllerThings.set(cnt.id, contrThings);
+                          }
+                        });
+                      i++;
+                      if (i === this.controllers.length) {
+                        this.isCompleted$.next(true);
+                        this.cd.detectChanges();
+                      }
+                    });
+                  } else {
+                    this.isCompleted$.next(true);
+                    this.cd.detectChanges();
+                  }
+                });
+            }
+          });
         break;
       default:
         this.things.slice(0, this.things.length);

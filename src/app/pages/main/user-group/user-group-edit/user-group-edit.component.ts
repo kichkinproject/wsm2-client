@@ -70,9 +70,6 @@ export class UserGroupEditComponent  implements AfterViewInit {
       this.groups.push(this.noGroup);
       this.serviceData.getUserGroups2()
         .then((response) => {
-          return response.json();
-        })
-        .then((response) => {
           if (response.length !== 0 && response.filter(res => res.id !== this.groupId)) {
             response.filter(res => res.id !== this.groupId).forEach(res => {
               this.groups.push(new UserGroup(

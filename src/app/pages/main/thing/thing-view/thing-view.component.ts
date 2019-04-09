@@ -8,6 +8,7 @@ import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Utils} from '../../../../utils/utils';
 import {UserGroup} from '../../../../models/user-group';
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-thing-view',
@@ -47,6 +48,7 @@ export class ThingViewComponent implements AfterViewInit {
   constructor(public router: Router,
               public activatedRoute: ActivatedRoute,
               public store: Store<State>,
+              private serviceData: WsmDataService,
               private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
@@ -58,13 +60,15 @@ export class ThingViewComponent implements AfterViewInit {
     this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.thingId = +this.activatedRoute.params['_value']['id'];
-    const thing = this.dataService.getThing(this.thingId);
-    this.name = thing.name;
-    this.description = thing.description;
-    this.typeThing = this.scTypes.get(thing.type);
-    // this.masterThing = this.dataService.getUserGroup(thing.master);
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.getSensor(this.thingId)
+      .then((response) => {
+        this.name = response.name;
+        this.description = response.description;
+        this.typeThing = this.scTypes.get(response.type);
+        // this.masterSensor = response.userGroupId;
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public defaultSelect() {

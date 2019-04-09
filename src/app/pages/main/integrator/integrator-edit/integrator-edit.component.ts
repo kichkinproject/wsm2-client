@@ -44,9 +44,6 @@ export class IntegratorEditComponent implements AfterViewInit {
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
       this.serviceData.getUserGroups2()
-        .then(response => {
-          return response.json();
-        })
         .then((response) => {
           if (response.length !== 0) {
             response.forEach(res => {
@@ -177,7 +174,7 @@ export class IntegratorEditComponent implements AfterViewInit {
         this.serviceData.getIntegrator(this.$login)
           .then((response) => {
             this.isCompleted$.next(false);
-            this.serviceData.updateIntegratorByAdmin(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+            this.serviceData.updateIntegratorByAdmin(this.$login, this.$name, this.$info, (this.$group.id !== 0 && this.$group.id !== -1)  ? this.$group.id : -1)
               .then((response1) => {
                 if (!response1.ok) {
                   alert('Изменить интегратора не получилось.');
@@ -195,7 +192,7 @@ export class IntegratorEditComponent implements AfterViewInit {
         this.serviceData.getIntegrator(this.$login)
           .then((response) => {
             this.isCompleted$.next(false);
-            this.serviceData.updateIntegrator(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+            this.serviceData.updateIntegrator(this.$login, this.$name, this.$info, (this.$group.id !== 0 && this.$group.id !== -1)  ? this.$group.id : -1)
               .then((response1) => {
                 if (!response1.ok) {
                   alert('Изменить интегратора не получилось.');

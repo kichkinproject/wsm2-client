@@ -42,9 +42,6 @@ export class UserGroupListComponent  implements AfterViewInit {
         this.isCompleted$.next(false);
         this.serviceData.getUserGroups2()
           .then((response) => {
-            return response.json();
-          })
-          .then((response) => {
             console.log(response);
             this.groups = [];
             if (response.length !== 0) {

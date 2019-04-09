@@ -63,17 +63,19 @@ export class ControllerThingLinkComponent implements AfterViewInit {
               this.serviceData.getThingsByGroup(response.userGroupId)
                 .then((response1) => {
                   if (response1.length !== 0) {
-                    this.things.push(new Thing(response1.id,
-                      response1.name,
-                      response1.description,
-                      response1.type,
-                      response1.userGroupId,
-                      response1.controllerId));
+                    response1.forEach(res1 => {
+                      this.things.push(new Thing(res1.id,
+                        res1.name,
+                        res1.description,
+                        res1.type,
+                        res1.userGroupId,
+                        res1.controllerId));
+                    });
                   }
+                  this.isCompleted$.next(true);
+                  this.cd.detectChanges();
                 });
             }
-            this.isCompleted$.next(true);
-            this.cd.detectChanges();
           });
         break;
       default:
@@ -91,10 +93,7 @@ export class ControllerThingLinkComponent implements AfterViewInit {
     this.serviceData.createThingControllerLink(id, this.controller.id)
       .then((response) => {
         this.updateCollection();
-      }).then((response) => {
-      this.isCompleted$.next(true);
-      this.cd.detectChanges();
-    });
+      });
   }
 
   public destroyLinkThing(id) {
@@ -102,10 +101,7 @@ export class ControllerThingLinkComponent implements AfterViewInit {
     this.serviceData.destroyThingControllerLink(id)
       .then((response) => {
         this.updateCollection();
-      }).then((response) => {
-      this.isCompleted$.next(true);
-      this.cd.detectChanges();
-    });
+      });
   }
 
   public accessed() {

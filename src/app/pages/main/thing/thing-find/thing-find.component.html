@@ -7,7 +7,6 @@
         Введите ID устройства:
         <input [(ngModel)]="thingId" placeholder='thing'>
         <span *ngIf="thingNotFound()">Не найдено ни одно устройство по заданному ID</span>
-        <span *ngIf="thingExisting()">Такое устройство уже есть в системе</span>
       </label>
       <button mat-icon-button (click)="findThing()" title="Найти устройство">
         <mat-icon>find_replace</mat-icon>

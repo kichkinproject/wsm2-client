@@ -63,17 +63,19 @@ export class ControllerSensorLinkComponent implements AfterViewInit {
               this.serviceData.getSensorsByGroup(response.userGroupId)
                 .then((response1) => {
                   if (response1.length !== 0) {
-                    this.sensors.push(new Sensor(response1.id,
-                      response1.name,
-                      response1.description,
-                      response1.type,
-                      response1.userGroupId,
-                      response1.controllerId));
+                    response1.forEach(res1 => {
+                      this.sensors.push(new Sensor(res1.id,
+                        res1.name,
+                        res1.description,
+                        res1.type,
+                        res1.userGroupId,
+                        res1.controllerId));
+                    });
                   }
+                  this.isCompleted$.next(true);
+                  this.cd.detectChanges();
                 });
             }
-            this.isCompleted$.next(true);
-            this.cd.detectChanges();
           });
         break;
       default:
@@ -83,14 +85,10 @@ export class ControllerSensorLinkComponent implements AfterViewInit {
   }
 
   public createLinkSensor(id) {
-    this.isCompleted$.next(false);
     this.serviceData.createSensorControllerLink(id, this.controller.id)
       .then((response) => {
         this.updateCollection();
-      }).then((response) => {
-      this.isCompleted$.next(true);
-      this.cd.detectChanges();
-    });
+      });
   }
 
   public destroyLinkSensor(id) {
@@ -98,10 +96,7 @@ export class ControllerSensorLinkComponent implements AfterViewInit {
     this.serviceData.destroySensorControllerLink(id)
       .then((response) => {
         this.updateCollection();
-      }).then((response) => {
-      this.isCompleted$.next(true);
-      this.cd.detectChanges();
-    });
+      });
   }
 
   public accessed() {

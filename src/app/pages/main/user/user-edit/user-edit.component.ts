@@ -69,9 +69,6 @@ export class UserEditComponent implements AfterViewInit {
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
       this.serviceData.getUserGroups2()
-        .then(response => {
-          return response.json();
-        })
         .then((response) => {
           if (response.length !== 0) {
             response.forEach(res => {
@@ -177,7 +174,7 @@ export class UserEditComponent implements AfterViewInit {
         this.serviceData.getUser(this.$login)
           .then((response) => {
             this.isCompleted$.next(false);
-            this.serviceData.updateUserByAdmin(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+            this.serviceData.updateUserByAdmin(this.$login, this.$name, this.$info, (this.$group.id !== 0 && this.$group.id !== -1)  ? this.$group.id : -1)
               .then((response1) => {
                 if (!response1.ok) {
                   alert('Изменить пользователя не получилось.');
@@ -195,7 +192,7 @@ export class UserEditComponent implements AfterViewInit {
         this.serviceData.getUser(this.$login)
           .then((response) => {
             this.isCompleted$.next(false);
-            this.serviceData.updateUser(this.$login, this.$name, this.$info, (this.$group.id !== 0 || this.$group.id !== -1)  ? this.$group.id : -1)
+            this.serviceData.updateUser(this.$login, this.$name, this.$info, (this.$group.id !== 0 && this.$group.id !== -1)  ? this.$group.id : -1)
               .then((response1) => {
                 if (!response1.ok) {
                   alert('Изменить пользователя не получилось.');

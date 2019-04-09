@@ -54,9 +54,6 @@ export class UserGroupCreateComponent implements AfterViewInit {
     if (this.role() === Roles.ADMIN || this.role() === Roles.MAIN_ADMIN) {
       this.groups.push(this.noGroup);
       this.serviceData.getUserGroups2()
-        .then(response => {
-          return response.json();
-        })
         .then((response) => {
           if (response.length !== 0) {
             response.forEach(res => {
