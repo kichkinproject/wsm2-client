@@ -164,7 +164,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SCHEDULE_ACTION ,
       publicity: true,
-      creator: ''
+      creator: 0
     },
     {
       id: 2,
@@ -173,7 +173,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SCHEDULE_ACTION ,
       publicity: true,
-      creator: ''
+      creator: 0
     },
     {
       id: 3,
@@ -182,7 +182,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SENSOR_ACTION,
       publicity: true,
-      creator: ''
+      creator: 0
     },
     {
       id: 4,
@@ -191,7 +191,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.USER_ACTION,
       publicity: true,
-      creator: ''
+      creator: 0
     },
     {
       id: 5,
@@ -200,7 +200,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.USER_ACTION,
       publicity: true,
-      creator: ''
+      creator: 0
     },
     {
       id: 6,
@@ -209,7 +209,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.USER_ACTION,
       publicity: false,
-      creator: 'integrator_Vasya'
+      creator: 0
     },
     {
       id: 7,
@@ -218,7 +218,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SCHEDULE_ACTION,
       publicity: false,
-      creator: 'integrator_Vasya'
+      creator: 0
     },
     {
       id: 8,
@@ -227,7 +227,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.USER_ACTION ,
       publicity: false,
-      creator: 'integrator_Tenechka'
+      creator: 0
     },
     {
       id: 9,
@@ -236,7 +236,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.USER_ACTION,
       publicity: false,
-      creator: 'integrator_Tenechka'
+      creator: 0
     },
     {
       id: 10,
@@ -245,7 +245,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SCHEDULE_ACTION,
       publicity: false,
-      creator: 'integrator_Valentin'
+      creator: 0
     },
     {
       id: 11,
@@ -254,7 +254,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SCHEDULE_ACTION ,
       publicity: false,
-      creator: 'integrator_Olga'
+      creator: 0
     },
     {
       id: 12,
@@ -263,7 +263,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SCHEDULE_ACTION ,
       publicity: false,
-      creator: 'integrator_Olga'
+      creator: 0
     },
     {
       id: 13,
@@ -272,7 +272,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SENSOR_ACTION,
       publicity: false,
-      creator: 'integrator_Kirill'
+      creator: 0
     },
     {
       id: 14,
@@ -281,7 +281,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.USER_ACTION,
       publicity: false,
-      creator: 'integrator_Kirill'
+      creator: 0
     },
     {
       id: 15,
@@ -290,7 +290,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.USER_ACTION,
       publicity: false,
-      creator: 'integrator_Yurka'
+      creator: 0
     },
     {
       id: 16,
@@ -299,7 +299,7 @@ export class WsmData {
       script: 'Скрипт на утвержденном с заказчиком языке',
       type: ScenarioType.SCHEDULE_ACTION,
       publicity: false,
-      creator: 'integrator_Yurka'
+      creator: 0
     },
   ];
 

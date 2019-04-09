@@ -173,7 +173,7 @@ export class ScenarioCreateComponent implements AfterViewInit {
         .then((response) => {
           if (Utils.missing(response.ok)) {
             this.serviceData.addScenario(this.$name, this.$description, this.$script, this.$type, false, this.$user.getValue().user_login, response.userGroupId)
-              .then((response) => {
+              .then((response1) => {
                 this.router.navigate(['main/scenario/scenario-list'], {
                   queryParams: {}
                 });
@@ -192,13 +192,6 @@ export class ScenarioCreateComponent implements AfterViewInit {
           this.cd.detectChanges();
         });
     }
-
-
-
-    // this.dataService.addScenario(this.$name, this.$description, this.$script, this.$type, this.$publicity, this.$user.getValue().user_login);
-    // this.router.navigate(['/scenario-list'], {
-    //   queryParams: {}
-    // });
   }
 
   public enabledToAdd() {

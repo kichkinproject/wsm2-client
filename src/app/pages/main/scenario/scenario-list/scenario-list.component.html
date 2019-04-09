@@ -3,10 +3,10 @@
   <h2 align="center">Список сценариев</h2>
   <div class="block-container">
     <div class="buttons-block">
-      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && role() !== baseRole.MAIN_ADMIN" (click)="addNewScenario()" title="Создать сценарий">
+      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && role() !== baseRole.MAIN_ADMIN && role() !== baseRole.ADMIN" (click)="addNewScenario()" title="Создать сценарий">
         <mat-icon>add_box</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && role() !== baseRole.MAIN_ADMIN" (click)="updoadNewScenario()" title="Загрузить сценарий">
+      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && role() !== baseRole.MAIN_ADMIN && role() !== baseRole.ADMIN" (click)="updoadNewScenario()" title="Загрузить сценарий">
         <mat-icon>publish</mat-icon>
       </button>
       <button mat-icon-button *ngIf="role() === baseRole.MAIN_ADMIN || role() === baseRole.ADMIN" (click)="createReportOnScenarios()" title="Сгенерировать отчет">
@@ -15,10 +15,10 @@
       <button mat-icon-button (click)="updateScenarioList()" title="Обновить список сценариев">
         <mat-icon>cached</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && publicity" (click)="onlyPrivate()" title="Сценарии в общем доступе">
+      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && role() !== baseRole.MAIN_ADMIN && role() !== baseRole.ADMIN && publicity" (click)="onlyPrivate()" title="Сценарии в общем доступе">
         <mat-icon>cloud_queue</mat-icon>
       </button>
-      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && !publicity" (click)="onlyPublic()" title="Сценарии доступные мне">
+      <button mat-icon-button *ngIf="role() !== baseRole.SIMPLE && role() !== baseRole.MAIN_ADMIN && role() !== baseRole.ADMIN && !publicity" (click)="onlyPublic()" title="Сценарии доступные мне">
         <mat-icon>cloud_off</mat-icon>
       </button>
       <button mat-icon-button *ngIf="role() === baseRole.INTEGRATOR" (click)="createControllerScenario()" title="Загрузить сценарии в контроллеры">
@@ -37,7 +37,7 @@
               <p class="item-description">{{scenario.description}}</p>
             </div>
             <div class="element-buttons">
-              <button mat-icon-button *ngIf="role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR" (click)="doubleScenario(scenario.id)" title="Дублировать сценарий">
+              <button mat-icon-button *ngIf="role() === baseRole.INTEGRATOR" (click)="doubleScenario(scenario.id)" title="Дублировать сценарий">
                 <mat-icon>call_split</mat-icon>
               </button>
               <button mat-icon-button *ngIf="(role() === baseRole.ADMIN || role() === baseRole.INTEGRATOR) && scenario.creator === $user.getValue().user_login" (click)="editScenario(scenario.id)" title="Редактировать сценарий">

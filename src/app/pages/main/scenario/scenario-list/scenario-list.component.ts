@@ -11,6 +11,7 @@ import {Utils} from '../../../../utils/utils';
 import {ScenarioType} from '../../../../models/entity-type';
 import {Controller} from '../../../../models/controller';
 import { ScenarioController } from "../../../../models/scenario-controller";
+import { WsmDataService } from "../../../../services/wsm-data.service";
 
 @Component({
   selector: 'wsm-scenario-list',
@@ -36,8 +37,8 @@ export class ScenarioListComponent implements AfterViewInit {
   constructor(public router: Router,
                public activatedRoute: ActivatedRoute,
                public store: Store<State>,
-               
-               private dataService: Wsm2DataService,
+              public serviceData: WsmDataService,
+              private dataService: Wsm2DataService,
               private cd: ChangeDetectorRef) {
     this.subscriptions.push(
       this.store.pipe(select(GetCurrentUser)).subscribe(role => this.$user.next(role))
@@ -102,24 +103,20 @@ export class ScenarioListComponent implements AfterViewInit {
   public onlyPrivate() {
     this.publicity = false;
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
+    this.scenarios = [];
     switch (role) {
-      case Roles.MAIN_ADMIN:
-        this.scenarios = this.dataService.getPrivateScenarios();
-        break;
-      case Roles.ADMIN:
-        this.scenarios = this.dataService.getScenarioByCreator(user.login);
-        break;
       case Roles.INTEGRATOR:
-        this.scenarios = [];
-        let integrators: Array<User> = [];
-        integrators = Utils.pushAll([], this.dataService.getIntegratorsByChildrenGroup(user.group));
-        if (integrators.length !== 0) {
-          integrators.forEach((integr) => {
-            const integrScens = this.dataService.getScenarioByCreator(integr.login);
-            integrScens.forEach(sc => this.scenarios.push(sc));
+        this.isCompleted$.next(false);
+        this.serviceData.getPrivateScenarios()
+          .then((response) => {
+            if (response.length !== 0) {
+              response.forEach(res => {
+                this.scenarios.push(res);
+              });
+            }
+            this.isCompleted$.next(true);
+            this.cd.detectChanges();
           });
-        }
         break;
     }
   }
@@ -142,7 +139,17 @@ export class ScenarioListComponent implements AfterViewInit {
 
   public onlyPublic() {
     this.publicity = true;
-    this.scenarios = this.dataService.getPublicScenarios();
+    this.isCompleted$.next(false);
+    this.serviceData.getPublicScenarios()
+      .then((response) => {
+        if (response.length !== 0) {
+          response.forEach(res => {
+            this.scenarios.push(res);
+          });
+        }
+        this.isCompleted$.next(true);
+        this.cd.detectChanges();
+      });
   }
 
   public activated(controller: number, scenario: number) {
@@ -164,11 +171,8 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -186,11 +190,8 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public updateScenarioList() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public editScenario(id: number) {
@@ -223,12 +224,10 @@ export class ScenarioListComponent implements AfterViewInit {
   }
 
   public doubleScenario(id: number) {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
-    this.dataService.duplicateScenario(id, this.$user.getValue().user_login);
+    // this.serviceData
+    this.serviceData.duplicateScenario(id, );
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public removeScenario(id: number) {

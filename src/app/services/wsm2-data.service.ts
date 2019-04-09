@@ -270,7 +270,7 @@ export class Wsm2DataService extends ApiService {
     return max;
   }
 
-  public addScenario(name: string, description: string, script: string, type: ScenarioType, publicity: boolean, creator: string = ''): Scenario {
+  public addScenario(name: string, description: string, script: string, type: ScenarioType, publicity: boolean, creator: number = null): Scenario {
     let newId = this.findMaxIndex(this.$scenarioData) + 1;
     while (Utils.exists(this.getScenario(newId))) {
       newId++;
@@ -288,13 +288,13 @@ export class Wsm2DataService extends ApiService {
     scenario.publicity = publicity;
   }
 
-  public duplicateScenario(id: number, creator: string, publicity: boolean = false) {
+  public duplicateScenario(id: number, creator: number, publicity: boolean = false) {
     const scenario = this.getScenario(id);
     return this.addScenario(scenario.name, scenario.description, scenario.script, scenario.type, publicity, creator);
   }
 
-  public getScenarioByCreator(login: string) {
-    return this.$scenarioData.filter((scen) => scen.creator === login);
+  public getScenarioByCreator(groupId: number) {
+    return this.$scenarioData.filter((scen) => scen.creator === groupId);
   }
 
   public deleteScenario(id: number) {

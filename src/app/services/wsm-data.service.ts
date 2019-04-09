@@ -477,7 +477,7 @@ export class WsmDataService {
 
   public getPublicScenarios() {
     const scenarios: Array<Scenario> = [];
-      fetch(this.scenarioUrl + '/public', {
+    return fetch(this.scenarioUrl + '/public', {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -497,18 +497,18 @@ export class WsmDataService {
               res.text,
               ScenarioType.USER_ACTION,
               true,
-              Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+              Utils.exists(response.userGroupId) ? response.userGroupId : -1
             ));
           });
         }
         console.log(scenarios);
+        return scenarios;
       });
-      return scenarios;
   }
 
   public getPrivateScenarios() {
     const scenarios: Array<Scenario> = [];
-    fetch(this.scenarioUrl + '/children', {
+    return fetch(this.scenarioUrl + '/children', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -533,8 +533,8 @@ export class WsmDataService {
         });
       }
       console.log(scenarios);
+      return scenarios;
     });
-    return scenarios;
   }
 
   public addScenario(name: string, description: string, script: string, type: ScenarioType, publicity: boolean, creator: string = '', userGroup: number) {
@@ -582,7 +582,7 @@ export class WsmDataService {
   }
 
   public duplicateScenario(id: number, creator: string, publicity: boolean = false, userGroup) {
-    this.getScenario(id)
+    return this.getScenario(id)
       .then((response) => {
         if (Utils.exists(response.ok)) {
           this.addScenario(
@@ -608,9 +608,9 @@ export class WsmDataService {
       });
   }
 
-  public getScenarioByCreator(login: string) {
+  public getScenarioByCreator() {
     const scenarios: Array<Scenario> = [];
-    fetch(this.scenarioUrl + '/available', {
+    return fetch(this.scenarioUrl + '/available', {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -630,13 +630,13 @@ export class WsmDataService {
             res.text,
             ScenarioType.USER_ACTION,
             true,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1
+            Utils.exists(response.userGroupId) ? response.userGroupId : -1
           ));
         });
       }
       console.log(scenarios);
+      return scenarios;
     });
-    return scenarios;
   }
 
   public deleteScenario(id: number) {

@@ -8,9 +8,9 @@ export class Scenario {
   script: string;
   type: ScenarioType;
   publicity: boolean;
-  creator: string;
+  creator: number;
 
-  constructor(id: number, name: string, description: string, script: string, type: ScenarioType, publicity: boolean = true, creator: string = '') {
+  constructor(id: number, name: string, description: string, script: string, type: ScenarioType, publicity: boolean = true, creator: number = null) {
     this.id = id;
     this.name = name;
     this.description = description;
