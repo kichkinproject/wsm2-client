@@ -94,14 +94,40 @@ export class SensorControllerLinkComponent implements AfterViewInit {
   public createLinkSensor(id) {
     this.serviceData.createSensorControllerLink(this.sensor.id, id)
       .then((response) => {
-        this.updateCollection();
+        this.serviceData.getSensor(this.sensorId)
+          .then((response1) => {
+            this.sensor = new Sensor(
+              response1.id,
+              response1.name,
+              response1.description,
+              response1.type,
+              response1.userGroupId,
+              response1.controllerId
+            );
+          })
+          .then((response1) => {
+            this.updateCollection();
+          });
       });
   }
 
   public destroyLinkSensor() {
     this.serviceData.destroySensorControllerLink(this.sensor.id)
       .then((response) => {
-        this.updateCollection();
+        this.serviceData.getSensor(this.sensorId)
+          .then((response1) => {
+            this.sensor = new Sensor(
+              response1.id,
+              response1.name,
+              response1.description,
+              response1.type,
+              response1.userGroupId,
+              response1.controllerId
+            );
+          })
+          .then((response1) => {
+            this.updateCollection();
+          });
       });
   }
 

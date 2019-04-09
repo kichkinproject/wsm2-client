@@ -19,7 +19,7 @@
               <p class="item-description">{{sensor.description}}</p>
             </div>
             <div class="element-buttons">
-              <button mat-icon-button *ngIf="sensor.controller !== controller.id" [disabled]="sensor.controller !== -1" (click)="createLinkSensor(sensor.id)" title="Датчик не подключен">
+              <button mat-icon-button *ngIf="sensor.controller !== controller.id" (click)="createLinkSensor(sensor.id)" title="Датчик не подключен">
                 <mat-icon>check_box_outline_blank</mat-icon>
               </button>
               <button mat-icon-button *ngIf="sensor.controller === controller.id" (click)="destroyLinkSensor(sensor.id)" title="Датчик подключен">

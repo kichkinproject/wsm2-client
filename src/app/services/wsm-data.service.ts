@@ -693,8 +693,8 @@ export class WsmDataService {
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
-        return response.filter(res => res.userGroup.id === id);
+      if (response.length !== 0 && response.filter(res => res.userGroupId === id).length !== 0) {
+        return response.filter(res => res.userGroupId === id);
       } else {
         return [];
       }
@@ -748,10 +748,11 @@ export class WsmDataService {
           return fetch(this.sensorUrl, {
             method: 'PUT',
             body: JSON.stringify({
+              id: id,
               name: response.name,
               description: response.description,
               type: response.type,
-              userGroupId: response.master,
+              userGroupId: response.userGroupId,
               controllerId: controller
             }),
             headers: {
@@ -773,11 +774,12 @@ export class WsmDataService {
           return fetch(this.sensorUrl, {
             method: 'PUT',
             body: JSON.stringify({
+              id: id,
               name: response.name,
               description: response.description,
               type: response.type,
-              userGroupId: response.master,
-              controllerId: -1
+              userGroupId: response.userGroupId,
+              controllerId: null
             }),
             headers: {
               'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -920,8 +922,9 @@ export class WsmDataService {
               name: response.name,
               description: response.description,
               type: response.type,
-              userGroupId: response.master,
-              controllerId: controller
+              userGroupId: response.userGroupId,
+              controllerId: controller,
+              id: id
             }),
             headers: {
               'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -939,14 +942,15 @@ export class WsmDataService {
     return this.getThing(id)
       .then((response) => {
         if (Utils.missing(response.ok)) {
-          return fetch(this.userUrl, {
+          return fetch(this.thingUrl, {
             method: 'PUT',
             body: JSON.stringify({
+              id: id,
               name: response.name,
               description: response.description,
               type: response.type,
-              userGroupId: response.master,
-              controllerId: -1
+              userGroupId: response.userGroupId,
+              controllerId: null
             }),
             headers: {
               'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),
@@ -1009,7 +1013,7 @@ export class WsmDataService {
             res.name,
             res.description,
             res.type,
-            Utils.exists(response.userGroup.id) ? response.userGroup.id : -1,
+            Utils.exists(response.userGroupId) ? response.userGroupId : -1,
           ));
         });
       }
@@ -1031,8 +1035,8 @@ export class WsmDataService {
       return response.json();
     }).then((response) => {
       console.log(response);
-      if (response.length !== 0 && response.filter(res => res.userGroup.id === id).length !== 0) {
-        return response.filter(res => res.userGroup.id === id);
+      if (response.length !== 0 && response.filter(res => res.userGroupId === id).length !== 0) {
+        return response.filter(res => res.userGroupId === id);
       } else {
         return response;
       }
@@ -1148,7 +1152,7 @@ export class WsmDataService {
         id: id,
         name: name,
         description: desc,
-        parentGroupId: parent !== -1 ? parent : null
+        parentGroupId: parent
       }),
       headers: {
         'Authorization': 'Bearer ' + window.sessionStorage.getItem('access'),

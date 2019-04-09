@@ -94,14 +94,40 @@ export class ThingControllerLinkComponent implements AfterViewInit {
   public createLinkThing(id) {
     this.serviceData.createThingControllerLink(this.thing.id, id)
       .then((response) => {
-        this.updateCollection();
+        this.serviceData.getThing(this.thingId)
+          .then((response1) => {
+            this.thing = new Thing(
+              response1.id,
+              response1.name,
+              response1.description,
+              response1.type,
+              response1.userGroupId,
+              response1.controllerId
+            );
+          })
+          .then((response1) => {
+            this.updateCollection();
+          });
       });
   }
 
   public destroyLinkThing() {
     this.serviceData.destroyThingControllerLink(this.thing.id)
       .then((response) => {
-        this.updateCollection();
+        this.serviceData.getThing(this.thingId)
+          .then((response1) => {
+            this.thing = new Thing(
+              response1.id,
+              response1.name,
+              response1.description,
+              response1.type,
+              response1.userGroupId,
+              response1.controllerId
+            );
+          })
+          .then((response1) => {
+            this.updateCollection();
+          });
       });
   }
 

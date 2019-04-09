@@ -28,10 +28,10 @@
               <button mat-icon-button (click)="viewThing(thing.id)" title="Просмотреть устройство">
                 <mat-icon>visibility</mat-icon>
               </button>
-              <button mat-icon-button *ngIf="thing.controller === -1" (click)="createLinkController(thing.id)" title="Подключиться к контроллеру">
+              <button mat-icon-button *ngIf="thing.controller === null" (click)="createLinkController(thing.id)" title="Подключиться к контроллеру">
                 <mat-icon>phonelink</mat-icon>
               </button>
-              <button mat-icon-button *ngIf="thing.controller !== -1" (click)="destroyLinkController(thing.id)" title="Отсоединиться от контроллера">
+              <button mat-icon-button *ngIf="thing.controller !== null" (click)="destroyLinkController(thing.id)" title="Отсоединиться от контроллера">
                 <mat-icon>phonelink_off</mat-icon>
               </button>
               <button mat-icon-button (click)="removeThing(thing.id)" title="Удалить устройство">

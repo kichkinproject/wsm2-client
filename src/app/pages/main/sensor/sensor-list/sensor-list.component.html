@@ -28,10 +28,10 @@
               <button mat-icon-button (click)="viewSensor(sensor.id)" title="Просмотреть датчик">
                 <mat-icon>visibility</mat-icon>
               </button>
-              <button mat-icon-button *ngIf="sensor.controller === -1" (click)="createLinkController(sensor.id)" title="Подключиться к контроллеру">
+              <button mat-icon-button *ngIf="sensor.controller === null" (click)="createLinkController(sensor.id)" title="Подключиться к контроллеру">
                 <mat-icon>phonelink</mat-icon>
               </button>
-              <button mat-icon-button *ngIf="sensor.controller !== -1" (click)="destroyLinkController(sensor.id)" title="Отсоединиться от контроллера">
+              <button mat-icon-button *ngIf="sensor.controller !== null" (click)="destroyLinkController(sensor.id)" title="Отсоединиться от контроллера">
                 <mat-icon>phonelink_off</mat-icon>
               </button>
               <button mat-icon-button (click)="removeSensor(sensor.id)" title="Удалить датчик">

@@ -68,7 +68,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
           return response;
         })
         .then((response) => {
-          if (Utils.missing(this.selectedGroup)) {
+          if (Utils.missing(this.$group)) {
             this.selectedGroup = this.groups[0].name;
           }
         });
@@ -92,7 +92,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
         return response;
       })
         .then((response) => {
-          if (Utils.missing(this.selectedGroup)) {
+          if (Utils.missing(this.$group)) {
             this.selectedGroup = this.groups[0].name;
           }
         });
@@ -160,7 +160,7 @@ export class UserGroupCreateComponent implements AfterViewInit {
 
   public createUserGroup() {
     this.isCompleted$.next(false);
-    this.serviceData.addUserGroup(this.$name, this.$description, this.$group.id !== 0 ? this.$group.id : null)
+    this.serviceData.addUserGroup(this.$name, this.$description, this.$group.id !== 0 ? this.$group.id : -1)
       .then((response) => {
         this.router.navigate(['main/user-group/user-group-list'], {
           queryParams: {}

@@ -148,11 +148,8 @@ export class SensorListComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -166,22 +163,24 @@ export class SensorListComponent implements AfterViewInit {
   }
 
   public createLinkController(id) {
-    if (Utils.exists(this.dataService.getThing(id))) {
-      this.router.navigate(['main/sensor/sensor-controller-link', id.toString()], {
-        queryParams: {}
+    this.serviceData.getThing(id)
+      .then((response) => {
+        this.router.navigate(['main/sensor/sensor-controller-link', id.toString()], {
+          queryParams: {}
+        });
+      })
+      .catch((response) => {
+        console.log('Ошибка, хотим настроить связь несуществующему датчику');
+
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующее устройство');
-    }
     // this.dataService.createSensorControllerLink()
   }
 
   public destroyLinkController(id) {
-    this.isCompleted$.next(false);
-    this.dataService.destroySensorControllerLink(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.destroySensorControllerLink(id)
+      .then((response) => {
+        this.updateCollection();
+      });
   }
 
   public createReportOnSensors() {
@@ -189,30 +188,28 @@ export class SensorListComponent implements AfterViewInit {
   }
 
   public updateSensorList() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public viewSensor(id: number) {
-    if (Utils.exists(this.dataService.getSensor(id))) {
-      this.router.navigate(['main/sensor/sensor-view', id.toString()], {
-        queryParams: {}
+    this.serviceData.getSensor(id)
+      .then((response) => {
+        this.router.navigate(['main/sensor/sensor-view', id.toString()], {
+          queryParams: {}
+        });
+      })
+      .catch(error => {
+        console.log('Ошибка, хотим просмотреть не существующий датчик');
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующий датчик');
-    }
   }
 
   public removeSensor(id: number) {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
-    this.dataService.deleteSensor(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.deleteSensor(id)
+      .then(response => {
+        this.updateCollection();
+      });
   }
 
   public accessed() {

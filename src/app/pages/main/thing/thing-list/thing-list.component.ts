@@ -73,12 +73,14 @@ export class ThingListComponent  implements AfterViewInit {
               this.serviceData.getThingsByGroup(response.userGroupId)
                 .then((response1) => {
                   if (response1.length !== 0) {
-                    this.things.push(new Thing(response1.id,
-                      response1.name,
-                      response1.description,
-                      response1.type,
-                      response1.userGroupId,
-                      response1.controllerId));
+                    response1.forEach(res1 => {
+                      this.things.push(new Thing(res1.id,
+                        res1.name,
+                        res1.description,
+                        res1.type,
+                        res1.userGroupId,
+                        res1.controllerId));
+                    });
                   }
                   this.isCompleted$.next(true);
                   this.cd.detectChanges();
@@ -145,31 +147,30 @@ export class ThingListComponent  implements AfterViewInit {
   }
 
   public createLinkController(id) {
-    if (Utils.exists(this.dataService.getThing(id))) {
-      this.router.navigate(['main/thing/thing-controller-link', id.toString()], {
-        queryParams: {}
+    this.serviceData.getThing(id)
+      .then((response) => {
+        this.router.navigate(['main/thing/thing-controller-link', id.toString()], {
+          queryParams: {}
+        });
+      })
+      .catch((response) => {
+        console.log('Ошибка, хотим настроить связь несуществующему устройству');
+
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующее устройство');
-    }
     // alert('Блок настройки связи с контроллером временно не доступен');
     // this.dataService.createSensorControllerLink()
   }
 
   public destroyLinkController(id) {
-    this.isCompleted$.next(false);
-    this.dataService.destroyThingControllerLink(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.destroyThingControllerLink(id)
+      .then((response) => {
+        this.updateCollection();
+      });
   }
 
   public ngAfterViewInit() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public get completed(): Observable<boolean> {
@@ -187,30 +188,28 @@ export class ThingListComponent  implements AfterViewInit {
   }
 
   public updateThingsList() {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
     this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
   }
 
   public viewThing(id: number) {
-    if (Utils.exists(this.dataService.getThing(id))) {
-      this.router.navigate(['main/thing/thing-view', id.toString()], {
-        queryParams: {}
+    this.serviceData.getThing(id)
+      .then((response) => {
+        this.router.navigate(['main/thing/thing-view', id.toString()], {
+          queryParams: {}
+        });
+      })
+      .catch(error => {
+        console.log('Ошибка, хотим просмотреть не существующее устройство');
       });
-    } else {
-      console.log('Ошибка, хотим просмотреть не существующее устройство');
-    }
   }
 
   public removeThing(id: number) {
-    this.isCompleted$.next(false);
     // this.cd.detectChanges();
-    this.dataService.deleteThing(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
-    this.cd.detectChanges();
+    this.serviceData.deleteThing(id)
+      .then((response) => {
+      this.updateCollection();
+    });
   }
 
   public accessed() {
