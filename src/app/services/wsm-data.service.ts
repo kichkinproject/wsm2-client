@@ -528,7 +528,7 @@ export class WsmDataService {
             res.text,
             ScenarioType.USER_ACTION,
             true,
-            Utils.exists(response.userGroupId) ? response.userGroupId : -1
+            Utils.exists(response.userGroupId) ? response.userGroupId : null
           ));
         });
       }

@@ -194,7 +194,7 @@ export class ScenarioCreateComponent implements AfterViewInit {
     }
   }
 
-  public enabledToAdd() {
+  public get enabledToAdd() {
     return Utils.exists(this.$name)
     && Utils.exists(this.$description)
     && Utils.exists(this.$type);

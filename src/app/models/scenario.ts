@@ -8,9 +8,10 @@ export class Scenario {
   script: string;
   type: ScenarioType;
   publicity: boolean;
-  creator: number;
+  creator: string;
+  group: number;
 
-  constructor(id: number, name: string, description: string, script: string, type: ScenarioType, publicity: boolean = true, creator: number = null) {
+  constructor(id: number, name: string, description: string, script: string, type: ScenarioType, publicity: boolean = true, creator: string = '', group: number = null) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -18,5 +19,6 @@ export class Scenario {
     this.type = type;
     this.publicity = publicity;
     this.creator = creator;
+    this.group = group;
   }
 }

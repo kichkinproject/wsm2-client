@@ -157,150 +157,166 @@ export class WsmData {
   ];
 
   private scenarioData: Array<Scenario> = [
-    {
-      id: 1,
-      name: 'Сценарий - Электроэнергия ночь',
-      description: 'С 23:30 до 06:00 свет не включается при движении, можно включить только руками.',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SCHEDULE_ACTION ,
-      publicity: true,
-      creator: 0
-    },
-    {
-      id: 2,
-      name: 'Сценарий - Электроэнергия день',
-      description: 'С 9:00 до 18:00 в будние дни свет не включается при движении, можно включить только руками.',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SCHEDULE_ACTION ,
-      publicity: true,
-      creator: 0
-    },
-    {
-      id: 3,
-      name: 'Сценарий - Тепло',
-      description: 'Сценарий включения тепла при достижении 18 градусов в помещении',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SENSOR_ACTION,
-      publicity: true,
-      creator: 0
-    },
-    {
-      id: 4,
-      name: 'Сценарий - управление водонагревателем',
-      description: 'Сценарий управления водонагревателем по желанию пользователя',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.USER_ACTION,
-      publicity: true,
-      creator: 0
-    },
-    {
-      id: 5,
-      name: 'Сценарий - управление сигнализацией',
-      description: 'Сценарий управления сигнализацией по желанию пользователя',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.USER_ACTION,
-      publicity: true,
-      creator: 0
-    },
-    {
-      id: 6,
-      name: 'Сценарий Сидоровы Интернет',
-      description: 'Сценарий включает родительский контроль для интернета и каналов по телевизору',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.USER_ACTION,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 7,
-      name: 'Сценарий Сидоровы Теплый пол',
-      description: 'Сценарий включает теплый пол в будние дни в 14:00 (за полчаса до прихода ребенка из школы)',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SCHEDULE_ACTION,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 8,
-      name: 'Сценарий Банан Вода',
-      description: 'Сценарий перекрытия воды',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.USER_ACTION ,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 9,
-      name: 'Сценарий Банан Чайник',
-      description: 'Сценарий управления чайником по желанию пользователя',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.USER_ACTION,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 10,
-      name: 'Сценарий свет на лестничной клетке',
-      description: 'Сценарий управления светом на лестничной клетке по желанию пользователя',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SCHEDULE_ACTION,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 11,
-      name: 'Сценарий - Аптека электроэнергия',
-      description: 'Сценарий отключения электроприборов кроме холодильников в аптеке в период с 23:00 до 08:00',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SCHEDULE_ACTION ,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 12,
-      name: 'Сценарий - Вывеска',
-      description: 'Сценарий управления вывеской - с 9:00 до 18:00 в будние дни свет вывеска не горит.',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SCHEDULE_ACTION ,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 13,
-      name: 'Сценарий - Вода Кафе',
-      description: 'Сценарий управления горячей водой - повторный нагрев воды в водонагревателе, если она остынет до 10 градусов',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SENSOR_ACTION,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 14,
-      name: 'Сценарий - управление водонагревателем',
-      description: 'Сценарий управления водонагревателем по желанию пользователя',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.USER_ACTION,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 15,
-      name: 'Сценарий - управление вентиляцией',
-      description: 'Сценарий управления вентиляцией по желанию пользователя',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.USER_ACTION,
-      publicity: false,
-      creator: 0
-    },
-    {
-      id: 16,
-      name: 'Сценарий - управление сигнализацией',
-      description: 'Сценарий включает сигнализацию в 19:00 и отключает в 10:00 в будние дни',
-      script: 'Скрипт на утвержденном с заказчиком языке',
-      type: ScenarioType.SCHEDULE_ACTION,
-      publicity: false,
-      creator: 0
-    },
+    // {
+    //   id: 1,
+    //   name: 'Сценарий - Электроэнергия ночь',
+    //   description: 'С 23:30 до 06:00 свет не включается при движении, можно включить только руками.',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SCHEDULE_ACTION,
+    //   publicity: true,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 2,
+    //   name: 'Сценарий - Электроэнергия день',
+    //   description: 'С 9:00 до 18:00 в будние дни свет не включается при движении, можно включить только руками.',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SCHEDULE_ACTION ,
+    //   publicity: true,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 3,
+    //   name: 'Сценарий - Тепло',
+    //   description: 'Сценарий включения тепла при достижении 18 градусов в помещении',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SENSOR_ACTION,
+    //   publicity: true,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 4,
+    //   name: 'Сценарий - управление водонагревателем',
+    //   description: 'Сценарий управления водонагревателем по желанию пользователя',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.USER_ACTION,
+    //   publicity: true,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 5,
+    //   name: 'Сценарий - управление сигнализацией',
+    //   description: 'Сценарий управления сигнализацией по желанию пользователя',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.USER_ACTION,
+    //   publicity: true,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 6,
+    //   name: 'Сценарий Сидоровы Интернет',
+    //   description: 'Сценарий включает родительский контроль для интернета и каналов по телевизору',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.USER_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 7,
+    //   name: 'Сценарий Сидоровы Теплый пол',
+    //   description: 'Сценарий включает теплый пол в будние дни в 14:00 (за полчаса до прихода ребенка из школы)',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SCHEDULE_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 8,
+    //   name: 'Сценарий Банан Вода',
+    //   description: 'Сценарий перекрытия воды',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.USER_ACTION ,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 9,
+    //   name: 'Сценарий Банан Чайник',
+    //   description: 'Сценарий управления чайником по желанию пользователя',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.USER_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 10,
+    //   name: 'Сценарий свет на лестничной клетке',
+    //   description: 'Сценарий управления светом на лестничной клетке по желанию пользователя',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SCHEDULE_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 11,
+    //   name: 'Сценарий - Аптека электроэнергия',
+    //   description: 'Сценарий отключения электроприборов кроме холодильников в аптеке в период с 23:00 до 08:00',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SCHEDULE_ACTION ,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 12,
+    //   name: 'Сценарий - Вывеска',
+    //   description: 'Сценарий управления вывеской - с 9:00 до 18:00 в будние дни свет вывеска не горит.',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SCHEDULE_ACTION ,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 13,
+    //   name: 'Сценарий - Вода Кафе',
+    //   description: 'Сценарий управления горячей водой - повторный нагрев воды в водонагревателе, если она остынет до 10 градусов',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SENSOR_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 14,
+    //   name: 'Сценарий - управление водонагревателем',
+    //   description: 'Сценарий управления водонагревателем по желанию пользователя',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.USER_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 15,
+    //   name: 'Сценарий - управление вентиляцией',
+    //   description: 'Сценарий управления вентиляцией по желанию пользователя',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.USER_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
+    // {
+    //   id: 16,
+    //   name: 'Сценарий - управление сигнализацией',
+    //   description: 'Сценарий включает сигнализацию в 19:00 и отключает в 10:00 в будние дни',
+    //   script: 'Скрипт на утвержденном с заказчиком языке',
+    //   type: ScenarioType.SCHEDULE_ACTION,
+    //   publicity: false,
+    //   creator: '',
+    //   group: 0
+    // },
   ];
 
   private sensorData: Array<Sensor> = [

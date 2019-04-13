@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {Role, Roles} from '../../../../models/role';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -6,12 +6,10 @@ import {select, Store} from '@ngrx/store';
 import {GetCurrentUser, State} from '../../../../_state';
 import {Wsm2DataService} from '../../../../services/wsm2-data.service';
 import {Scenario} from '../../../../models/scenario';
-import {User} from '../../../../models/user';
 import {Utils} from '../../../../utils/utils';
-import {ScenarioType} from '../../../../models/entity-type';
 import {Controller} from '../../../../models/controller';
-import { ScenarioController } from "../../../../models/scenario-controller";
-import { WsmDataService } from "../../../../services/wsm-data.service";
+import {ScenarioController} from '../../../../models/scenario-controller';
+import {WsmDataService} from '../../../../services/wsm-data.service';
 
 @Component({
   selector: 'wsm-scenario-list',
@@ -47,7 +45,7 @@ export class ScenarioListComponent implements AfterViewInit {
 
   private updateCollection() {
     const role = this.$user.getValue().user_role;
-    const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
+    // const user = this.dataService.getSomeUser(this.$user.getValue().user_login);
     switch (role) {
       case Roles.MAIN_ADMIN:
       case Roles.ADMIN:
@@ -62,23 +60,73 @@ export class ScenarioListComponent implements AfterViewInit {
         }
         break;
       case Roles.SIMPLE:
-        this.controllers = Utils.pushAll([], this.dataService.getControllersByGroup(user.group));
-        this.controllerHidden.clear();
-        this.controllerScenarios.clear();
-        this.controllers.forEach((cnt) => {
-          this.controllerHidden.set(cnt.id, true);
-          const scenarioControllers = this.dataService.getScenarioControllersByController(cnt.id);
-          const scens: Array<Scenario> = [];
-          if (Utils.exists(scenarioControllers) && scenarioControllers.length !== 0) {
-            scenarioControllers.forEach(sC => {
-              const scenario = this.dataService.getScenario(sC.scenarioId);
-              if (Utils.exists(scenario)) {
-                scens.push(scenario);
-              }
-            });
-          }
-          this.controllerScenarios.set(cnt.id, scens);
-        });
+        // this.serviceData.getUser(this.$user.getValue().user_login)
+        //   .then((response) => {
+        //     this.isCompleted$.next(false);
+        //     this.serviceData.getControllersByGroup(response.userGroupId)
+        //       .then((response1) => {
+        //         this.controllerHidden.clear();
+        //         this.controllerScenarios.clear();
+        //         if (response1.length !== 0) {
+        //           response1.forEach(res1 => {
+        //             this.controllers.push(new Controller(res1.id,
+        //               res1.name,
+        //               res1.description,
+        //               res1.type,
+        //               res1.userGroupId));
+        //           });
+        //           let i = 0;
+        //           this.controllers.forEach(cnt => {
+        //             this.controllerHidden.set(cnt.id, true);
+        //             this.serviceData.getScenarioControllersByController(cnt.id)
+        //               .then((response2) => {
+        //                 const scenarioControllers = [];
+        //                 if (response2.length !== 0) {
+        //                   response2.forEach(res2 => {
+        //                     scenarioControllers.push(new ScenarioController(res2.id,
+        //                       res2.scenarioId,
+        //                       res2.controllerId,
+        //                       res2.turnedOn));
+        //                   });
+        //                   i++;
+        //                   let j = 0;
+        //                   const scens: Array<Scenario> = [];
+        //                   scenarioControllers.forEach(scCnt => {
+        //                     this.serviceData.getScenario(scCnt.scenarioId)
+        //                       .then((response3) => {
+        //                           scens.push(new Scenario(response3.id,
+        //                             response3.name,
+        //                             response3.description,
+        //                             response3.text,
+        //                             response3.type,
+        //                             response3.publicity,
+        //                             response3.author,
+        //                             response3.userGroupId));
+        //                           j++;
+        //                           if (j === scenarioControllers.length) {
+        //                             this.controllerScenarios.set(cnt.id, scens);
+        //                             if (i === this.controllers.length) {
+        //                               this.isCompleted$.next(true);
+        //                               this.cd.detectChanges();
+        //                             }
+        //                           }
+        //                       });
+        //                   });
+        //                 } else {
+        //                   i++;
+        //                   if (i === this.controllers.length) {
+        //                     this.isCompleted$.next(true);
+        //                     this.cd.detectChanges();
+        //                   }
+        //                 }
+        //               });
+        //           });
+        //         }
+        //       });
+        //   });
+
+
+
         // integrators = Utils.pushAll([], this.dataService.getIntegratorsByGroup(user.group));
         // if (integrators.length !== 0) {
         //   integrators.forEach((integr) => {
@@ -226,15 +274,25 @@ export class ScenarioListComponent implements AfterViewInit {
   public doubleScenario(id: number) {
     // this.cd.detectChanges();
     // this.serviceData
-    this.serviceData.duplicateScenario(id, );
-    this.updateCollection();
+    if (this.role() === Roles.INTEGRATOR) {
+      this.serviceData.getIntegrator(this.$user.getValue().user_login)
+        .then((response) => {
+          if (Utils.missing(response.ok)) {
+            this.serviceData.duplicateScenario(id, this.$user.getValue().user_login, false, response.userGroupId)
+              .then(response1 => {
+                this.updateCollection();
+              });
+          } else {
+          }
+        });
+    }
   }
 
   public removeScenario(id: number) {
-    this.isCompleted$.next(false);
-    this.dataService.deleteScenario(id);
-    this.updateCollection();
-    this.isCompleted$.next(true);
+    this.serviceData.deleteScenario(id)
+      .then((response) => {
+        this.updateCollection();
+      });
   }
 
   public createControllerScenario() {
